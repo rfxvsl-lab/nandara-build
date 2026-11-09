@@ -34,3 +34,6 @@ dist-ssr
 # Data lokal (fallback penyimpanan lead saat Appwrite belum dikonfigurasi)
 .data/
 .env
+
+# Appwrite lokal
+dev/appwrite/.env

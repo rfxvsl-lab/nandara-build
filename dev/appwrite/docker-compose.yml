@@ -1,0 +1,54 @@
+# Appwrite 2.6.2 minimal untuk uji integrasi Nandara Build (tanpa socket Docker, tanpa Functions/Sites).
+x-aw: &aw
+  image: appwrite/appwrite:2.6.2
+  env_file: .env
+  networks: [appwrite]
+  depends_on:
+    postgresql: { condition: service_healthy }
+    redis: { condition: service_healthy }
+  volumes:
+    - uploads:/storage/uploads:rw
+    - cache:/storage/cache:rw
+    - config:/storage/config:rw
+services:
+  appwrite:
+    <<: *aw
+    container_name: aw-api
+    ports: ["127.0.0.1:9080:80"]
+  appwrite-worker:
+    <<: *aw
+    container_name: aw-worker
+    entrypoint: worker
+    environment:
+      - _APP_WORKERS_NUM=1
+  postgresql:
+    image: appwrite/postgres:0.1.0
+    container_name: aw-postgres
+    init: true
+    shm_size: 512m
+    networks: [appwrite]
+    volumes: [pg:/var/lib/postgresql:rw]
+    environment:
+      - POSTGRES_DB=appwrite
+      - POSTGRES_USER=appwrite
+      - POSTGRES_PASSWORD=${_APP_DB_PASS}
+    healthcheck:
+      test: [CMD-SHELL, pg_isready -U appwrite -d appwrite]
+      interval: 5s
+      retries: 20
+    command: [postgres]
+  redis:
+    image: redis:7.4.7-alpine
+    container_name: aw-redis
+    networks: [appwrite]
+    healthcheck:
+      test: [CMD, redis-cli, ping]
+      interval: 5s
+      retries: 12
+networks:
+  appwrite: {}
+volumes:
+  uploads: {}
+  cache: {}
+  config: {}
+  pg: {}

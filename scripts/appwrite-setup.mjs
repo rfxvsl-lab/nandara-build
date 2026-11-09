@@ -174,8 +174,18 @@ await step(`bucket "${bucketId}"`, () =>
   ]),
 );
 
-console.log("\nSelesai. Isi env berikut di Appwrite Sites:");
-console.log(`  APPWRITE_DATABASE_ID=${databaseId}\n  APPWRITE_LEADS_TABLE_ID=${tableId}`);
 console.log(
-  `  APPWRITE_PROJECTS_TABLE_ID=${projectsTable}\n  APPWRITE_TESTIMONIALS_TABLE_ID=${testimonialsTable}\n  APPWRITE_MEDIA_BUCKET_ID=${bucketId}`,
+  "\nSelesai. Env berikut sudah sesuai nilai bawaan aplikasi (isi bila Anda memakai ID lain):",
 );
+for (const [k, v] of [
+  ["APPWRITE_DATABASE_ID", databaseId],
+  ["APPWRITE_LEADS_TABLE_ID", tableId],
+  ["APPWRITE_PROJECTS_TABLE_ID", projectsTable],
+  ["APPWRITE_TESTIMONIALS_TABLE_ID", testimonialsTable],
+  ["APPWRITE_SETTINGS_TABLE_ID", settingsTable],
+  ["APPWRITE_CLIENT_PROJECTS_TABLE_ID", clientTable],
+  ["APPWRITE_MEDIA_BUCKET_ID", bucketId],
+  ["APPWRITE_PORTAL_BUCKET_ID", portalBucket],
+]) {
+  console.log(`  ${k}=${v}`);
+}
