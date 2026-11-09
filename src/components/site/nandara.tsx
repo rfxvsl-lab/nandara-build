@@ -1,11 +1,10 @@
 import type { ReactNode } from "react";
 
-export const WA_NUMBER = "0851-9418-9182";
-export const WA_LINK = "https://wa.me/6285194189182";
+import { cn } from "@/lib/utils";
 
 export function Section({
   id,
-  className = "",
+  className,
   children,
 }: {
   id?: string;
@@ -13,61 +12,109 @@ export function Section({
   children: ReactNode;
 }) {
   return (
-    <section id={id} className={`scroll-mt-24 px-5 py-20 sm:px-8 md:py-28 ${className}`}>
-      <div className="mx-auto w-full max-w-6xl">{children}</div>
+    <section id={id} className={cn("scroll-mt-20 px-4 py-16 sm:px-8 md:py-28", className)}>
+      <div className="mx-auto w-full max-w-[1200px]">{children}</div>
     </section>
   );
 }
 
-export function Eyebrow({ children }: { children: ReactNode }) {
+/** Label teknis bergaya gambar kerja, mis. "01 — Layanan" (design.md §4.1). */
+export function Eyebrow({
+  children,
+  index,
+  tone = "light",
+}: {
+  children: ReactNode;
+  index?: string;
+  tone?: "light" | "dark";
+}) {
   return (
-    <span className="inline-flex items-center gap-2 rounded-full border border-gold/40 bg-gold-soft/50 px-4 py-1.5 text-[0.7rem] font-semibold uppercase tracking-[0.18em] text-navy">
-      <span className="h-1.5 w-1.5 rounded-full bg-gold-deep" />
+    <span
+      className={cn(
+        "label-mono inline-flex items-center gap-2",
+        tone === "dark" ? "text-gold" : "text-gold-ink",
+      )}
+    >
+      {index ? <span>{index} —</span> : <span aria-hidden className="h-px w-6 bg-current" />}
       {children}
     </span>
   );
 }
 
-export function Italic({ children }: { children: ReactNode }) {
+/** Aksen serif italic untuk 1–3 kata di judul. */
+export function Italic({
+  children,
+  tone = "light",
+}: {
+  children: ReactNode;
+  tone?: "light" | "dark";
+}) {
   return (
-    <em className="font-serif font-medium italic text-gold-deep">{children}</em>
+    <em
+      className={cn(
+        "font-serif font-normal italic tracking-normal",
+        tone === "dark" ? "text-gold" : "text-gold-ink",
+      )}
+    >
+      {children}
+    </em>
   );
 }
 
-export function GoldButton({
-  href,
-  children,
-  className = "",
-}: {
+type ButtonProps = {
   href: string;
   children: ReactNode;
   className?: string;
-}) {
+};
+
+function linkTarget(href: string) {
+  return href.startsWith("http") ? { target: "_blank", rel: "noreferrer" } : {};
+}
+
+const buttonBase =
+  "inline-flex min-h-12 items-center justify-center gap-2 rounded-md px-6 py-3 text-sm font-semibold transition-colors duration-150";
+
+/** Tombol utama (emas). Maksimal satu per layar HP — design.md §2.3. */
+export function GoldButton({ href, children, className }: ButtonProps) {
   return (
     <a
       href={href}
-      target={href.startsWith("http") ? "_blank" : undefined}
-      rel={href.startsWith("http") ? "noreferrer" : undefined}
-      className={`inline-flex items-center justify-center gap-2 rounded-full bg-gold px-6 py-3.5 text-sm font-semibold text-navy shadow-[0_12px_30px_-12px_oklch(0.66_0.113_82/0.7)] transition-all hover:-translate-y-0.5 hover:bg-gold-deep hover:text-white ${className}`}
+      {...linkTarget(href)}
+      className={cn(buttonBase, "bg-gold text-navy hover:bg-gold-300", className)}
     >
       {children}
     </a>
   );
 }
 
-export function GhostButton({
-  href,
-  children,
-  className = "",
-}: {
-  href: string;
-  children: ReactNode;
-  className?: string;
-}) {
+/** Tombol sekunder bergaris navy (latar terang). */
+export function OutlineButton({ href, children, className }: ButtonProps) {
   return (
     <a
       href={href}
-      className={`inline-flex items-center justify-center gap-2 rounded-full border border-navy/15 bg-white/80 px-6 py-3.5 text-sm font-semibold text-navy backdrop-blur transition-all hover:-translate-y-0.5 hover:border-navy/40 ${className}`}
+      {...linkTarget(href)}
+      className={cn(
+        buttonBase,
+        "border-[1.5px] border-navy text-navy hover:bg-navy hover:text-paper",
+        className,
+      )}
+    >
+      {children}
+    </a>
+  );
+}
+
+/** Tombol sekunder untuk section gelap (navy). */
+export function GhostButton({ href, children, className }: ButtonProps) {
+  return (
+    <a
+      href={href}
+      {...linkTarget(href)}
+      className={cn(
+        buttonBase,
+        "border border-gold/50 text-paper hover:border-gold hover:bg-white/5",
+        className,
+      )}
     >
       {children}
     </a>

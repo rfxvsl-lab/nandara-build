@@ -1,217 +1,143 @@
 import { createFileRoute } from "@tanstack/react-router";
 import {
   ArrowRight,
-  BadgeCheck,
-  CalendarCheck,
   Check,
   Compass,
-  FileSpreadsheet,
-  Gift,
-  HardHat,
   Instagram,
-  Facebook,
+  Menu,
   MessageCircle,
-  PencilRuler,
-  ScrollText,
-  ShieldCheck,
   Target,
-  Wallet,
+  X,
 } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-import logo from "@/assets/nandara-logo.png.asset.json";
 import heroVilla from "@/assets/hero-villa.jpg";
-import detailMaterial from "@/assets/detail-material.jpg";
-import interiorSpace from "@/assets/interior-space.jpg";
-import processSite from "@/assets/process-site.jpg";
+import logo from "@/assets/nandara-logo.png";
 import {
   Eyebrow,
   GhostButton,
   GoldButton,
   Italic,
+  OutlineButton,
   Section,
-  WA_LINK,
-  WA_NUMBER,
 } from "@/components/site/nandara";
+import {
+  CONTACT,
+  HERO_POINTS,
+  MISSION,
+  NAV,
+  REASONS,
+  SERVICES,
+  SITE,
+  VISION,
+  waLink,
+} from "@/content/site";
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Nandara Build — Solusi Konstruksi & Renovasi Tanpa Repot" },
-      {
-        name: "description",
-        content:
-          "Jasa arsitektur, perencanaan RAB transparan, dan kontraktor renovasi di Jawa Timur. Gratis survei, gratis desain, SPK resmi, tepat waktu.",
-      },
-      {
-        property: "og:title",
-        content: "Nandara Build — We Design. We Build. You Enjoy.",
-      },
+      { title: `${SITE.name} — ${SITE.headline}` },
+      { name: "description", content: SITE.description },
+      { property: "og:title", content: `${SITE.name} — ${SITE.tagline}` },
       {
         property: "og:description",
         content:
           "Perencanaan matang, RAB 100% transparan, dan garansi ketepatan waktu untuk rumah impian Anda.",
       },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   component: Index,
 });
 
-const NAV = [
-  { label: "Home", href: "#home" },
-  { label: "Layanan", href: "#layanan" },
-  { label: "Visi & Misi", href: "#visi-misi" },
-  { label: "Mengapa Kami", href: "#mengapa-kami" },
-  { label: "Kontak", href: "#kontak" },
-];
-
-const HERO_CARDS = [
-  {
-    icon: ScrollText,
-    title: "SPK Resmi & Legal",
-    body: "Berpayung hukum & amanah",
-  },
-  {
-    icon: Wallet,
-    title: "RAB 100% Transparan",
-    body: "Tanpa biaya tak terduga",
-  },
-  {
-    icon: Gift,
-    title: "Free Design & Survey",
-    body: "Konsultasi awal tanpa biaya",
-  },
-];
-
-const SERVICES = [
-  {
-    icon: PencilRuler,
-    name: "Jasa Arsitektur & Desain",
-    body: "Konsep rancangan gambar, visual 3D, dan penataan tata ruang yang matang sebelum dibangun.",
-    image: detailMaterial,
-  },
-  {
-    icon: FileSpreadsheet,
-    name: "Jasa Perencanaan & RAB",
-    body: "Estimasi biaya terperinci, akurat, dan transparan yang disesuaikan dengan budget Anda.",
-    image: interiorSpace,
-  },
-  {
-    icon: HardHat,
-    name: "Kontraktor Bangunan & Renovasi",
-    body: "Pelaksanaan konstruksi rumah baru, renovasi fasad, hingga pengerjaan interior.",
-    image: processSite,
-  },
-];
-
-const REASONS = [
-  {
-    icon: Compass,
-    title: "Gratis Biaya Survei & Konsultasi",
-    body: "Diskusi kebutuhan dan cek lokasi langsung tanpa biaya.",
-  },
-  {
-    icon: PencilRuler,
-    title: "Gratis Desain & Perencanaan",
-    body: "Untuk klien yang melanjutkan eksekusi konstruksi bersama kami.",
-  },
-  {
-    icon: ShieldCheck,
-    title: "SPK Resmi & Legal",
-    body: "Spesifikasi material dan garansi tertulis yang berpayung hukum.",
-  },
-  {
-    icon: CalendarCheck,
-    title: "Tepat Waktu (Time Schedule)",
-    body: "Proyek terpantau rapi tanpa keterlambatan yang merugikan Anda.",
-  },
-  {
-    icon: BadgeCheck,
-    title: "RAB Jujur & Transparan",
-    body: "Berdasarkan standar harga material terbaru, tanpa jebakan biaya siluman.",
-  },
-];
-
-const MISSION = [
-  "Memahami kebutuhan dan gaya hidup setiap klien.",
-  "Mengutamakan transparansi biaya di setiap tahap.",
-  "Menjaga kerapian dan profesionalitas di lapangan.",
-  "Memberikan garansi dan tanggung jawab atas hasil kerja.",
-];
+function Wordmark({ size = "md" }: { size?: "md" | "lg" }) {
+  return (
+    <span className="flex min-w-0 items-center gap-3">
+      <img
+        src={logo}
+        alt=""
+        className={size === "lg" ? "h-12 w-12 shrink-0" : "h-10 w-10 shrink-0"}
+        width={size === "lg" ? 48 : 40}
+        height={size === "lg" ? 48 : 40}
+      />
+      <span className="min-w-0 leading-none">
+        <span className="block text-sm font-extrabold uppercase tracking-[0.22em] text-navy">
+          Nandara
+        </span>
+        <span className="label-mono mt-1 block text-[0.625rem] tracking-[0.42em] text-gold-ink">
+          Build
+        </span>
+      </span>
+    </span>
+  );
+}
 
 function Header() {
   const [open, setOpen] = useState(false);
 
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e: KeyboardEvent) => e.key === "Escape" && setOpen(false);
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [open]);
+
   return (
-    <header className="sticky top-0 z-50 border-b border-navy/5 bg-white/85 backdrop-blur-xl">
-      <div className="mx-auto grid w-full max-w-6xl grid-cols-[minmax(0,1fr)_auto] items-center gap-4 px-5 py-3.5 sm:px-8">
-        <a href="#home" className="flex min-w-0 items-center gap-3">
-          <img
-            src={logo.url}
-            alt="Logo Nandara Build"
-            className="h-11 w-11 shrink-0 object-contain"
-            width={44}
-            height={44}
-          />
-          <span className="hidden min-w-0 sm:block">
-            <span className="block truncate text-sm font-extrabold uppercase tracking-[0.22em] text-navy">
-              Nandara
-            </span>
-            <span className="block text-[0.6rem] font-semibold uppercase tracking-[0.42em] text-gold-deep">
-              Build
-            </span>
-          </span>
+    <header className="sticky top-0 z-50 border-b border-stone bg-paper/90 backdrop-blur-md">
+      <div className="mx-auto flex h-16 w-full max-w-[1200px] items-center justify-between gap-4 px-4 sm:px-8">
+        <a href="#home" aria-label={`${SITE.name} — ke atas`}>
+          <Wordmark />
         </a>
 
         <div className="flex items-center gap-2">
-          <nav className="hidden items-center gap-7 lg:flex">
+          <nav aria-label="Navigasi utama" className="hidden items-center gap-7 lg:flex">
             {NAV.map((item) => (
               <a
                 key={item.href}
                 href={item.href}
-                className="text-sm font-medium text-navy/70 transition-colors hover:text-gold-deep"
+                className="text-sm font-medium text-navy-700 transition-colors hover:text-gold-ink"
               >
                 {item.label}
               </a>
             ))}
           </nav>
-          <GoldButton href={WA_LINK} className="hidden px-5 py-3 sm:inline-flex">
+          <GoldButton href={waLink()} className="ml-4 hidden sm:inline-flex">
             Konsultasi Gratis
           </GoldButton>
           <button
             type="button"
-            aria-label="Buka menu"
+            aria-label={open ? "Tutup menu" : "Buka menu"}
+            aria-expanded={open}
+            aria-controls="menu-mobile"
             onClick={() => setOpen((v) => !v)}
-            className="grid h-11 w-11 shrink-0 place-items-center rounded-full border border-navy/10 text-navy lg:hidden"
+            className="grid h-12 w-12 shrink-0 place-items-center rounded-md border border-stone text-navy lg:hidden"
           >
-            <span className="flex flex-col gap-1">
-              <span className="block h-0.5 w-4 bg-current" />
-              <span className="block h-0.5 w-4 bg-current" />
-              <span className="block h-0.5 w-4 bg-current" />
-            </span>
+            {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
           </button>
         </div>
       </div>
 
       {open && (
-        <nav className="border-t border-navy/5 bg-white px-5 py-4 lg:hidden">
+        <nav
+          id="menu-mobile"
+          aria-label="Navigasi utama"
+          className="border-t border-stone bg-paper px-4 pb-6 pt-2 lg:hidden"
+        >
           <ul className="flex flex-col">
             {NAV.map((item) => (
               <li key={item.href}>
                 <a
                   href={item.href}
                   onClick={() => setOpen(false)}
-                  className="block border-b border-navy/5 py-3 text-sm font-medium text-navy/80"
+                  className="block border-b border-stone py-4 text-base font-medium text-navy"
                 >
                   {item.label}
                 </a>
               </li>
             ))}
           </ul>
-          <GoldButton href={WA_LINK} className="mt-4 w-full">
-            Konsultasi Gratis
+          <GoldButton href={waLink()} className="mt-6 w-full">
+            <MessageCircle className="h-4 w-4" />
+            Konsultasi Gratis via WhatsApp
           </GoldButton>
         </nav>
       )}
@@ -221,34 +147,31 @@ function Header() {
 
 function Hero() {
   return (
-    <section id="home" className="px-5 pb-8 pt-8 sm:px-8 sm:pt-10">
-      <div className="mx-auto w-full max-w-6xl">
-        <div className="relative overflow-hidden rounded-[2rem] bg-navy">
+    <section id="home" className="px-4 pb-8 pt-6 sm:px-8 sm:pt-10">
+      <div className="mx-auto w-full max-w-[1200px]">
+        <div className="relative overflow-hidden rounded-lg bg-navy">
           <img
             src={heroVilla}
-            alt="Fasad rumah minimalis dua lantai modern"
+            alt="Fasad rumah modern dua lantai"
             width={1920}
             height={1200}
-            className="absolute inset-0 h-full w-full object-cover opacity-70"
+            fetchPriority="high"
+            className="absolute inset-0 h-full w-full object-cover opacity-60"
           />
-          <div className="absolute inset-0 bg-[linear-gradient(105deg,oklch(0.21_0.04_262/0.94)_0%,oklch(0.21_0.04_262/0.72)_46%,oklch(0.21_0.04_262/0.25)_100%)]" />
+          <div className="absolute inset-0 bg-[linear-gradient(105deg,rgb(20_33_61/0.95)_0%,rgb(20_33_61/0.75)_50%,rgb(20_33_61/0.3)_100%)]" />
 
           <div className="relative grid gap-10 px-6 py-14 sm:px-10 sm:py-20 lg:grid-cols-[1.05fr_0.95fr] lg:items-center lg:py-24">
             <div className="animate-rise">
-              <Eyebrow>Jawa Timur & Sekitarnya</Eyebrow>
-              <h1 className="mt-6 text-4xl font-extrabold leading-[1.05] tracking-tight text-white sm:text-5xl lg:text-6xl">
-                Solusi Konstruksi & Renovasi{" "}
-                <Italic>Tanpa Repot</Italic>
+              <Eyebrow tone="dark">{SITE.area}</Eyebrow>
+              <h1 className="mt-6 text-[2.5rem] font-extrabold leading-[1.04] tracking-tight text-paper sm:text-5xl lg:text-[4rem]">
+                Solusi Konstruksi & Renovasi <Italic tone="dark">Tanpa Repot</Italic>
               </h1>
-              <p className="mt-6 max-w-xl text-base leading-relaxed text-white/75">
-                <span className="font-semibold text-white">
-                  We Design. We Build. You Enjoy.
-                </span>{" "}
-                Perencanaan matang, RAB transparan, dan garansi ketepatan waktu
-                untuk rumah impian Anda.
+              <p className="mt-6 max-w-xl text-base leading-relaxed text-paper/80 sm:text-lg">
+                <span className="font-semibold text-paper">{SITE.tagline}</span> Perencanaan matang,
+                RAB transparan, dan garansi ketepatan waktu untuk rumah impian Anda.
               </p>
               <div className="mt-9 flex flex-col gap-3 sm:flex-row">
-                <GoldButton href={WA_LINK}>
+                <GoldButton href={waLink("konsultasi & survei gratis")}>
                   Konsultasi & Gratis Survei
                   <ArrowRight className="h-4 w-4" />
                 </GoldButton>
@@ -256,27 +179,25 @@ function Hero() {
               </div>
             </div>
 
-            <div className="grid gap-4 sm:grid-cols-3 lg:grid-cols-1 lg:justify-self-end">
-              {HERO_CARDS.map((card, i) => (
-                <div
-                  key={card.title}
-                  className="animate-rise rounded-2xl border border-white/15 bg-white/90 p-5 shadow-[0_24px_60px_-30px_oklch(0.21_0.04_262/0.9)] backdrop-blur-md lg:max-w-xs"
-                  style={{ animationDelay: `${0.15 + i * 0.12}s` }}
+            <ul className="grid gap-3 sm:grid-cols-3 lg:grid-cols-1 lg:justify-self-end">
+              {HERO_POINTS.map((point, i) => (
+                <li
+                  key={point.title}
+                  className="animate-rise rounded-md border border-white/10 bg-paper p-5 shadow-card lg:w-80"
+                  style={{ animationDelay: `${0.15 + i * 0.1}s` }}
                 >
                   <div className="flex items-start gap-3">
-                    <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-gold-soft text-gold-deep">
-                      <card.icon className="h-5 w-5" />
+                    <span className="grid h-10 w-10 shrink-0 place-items-center rounded-sm bg-sand text-gold-ink">
+                      <point.icon className="h-5 w-5" strokeWidth={1.5} />
                     </span>
                     <div className="min-w-0">
-                      <p className="text-sm font-bold text-navy">{card.title}</p>
-                      <p className="mt-1 text-xs leading-relaxed text-navy/60">
-                        {card.body}
-                      </p>
+                      <p className="text-sm font-bold text-navy">{point.title}</p>
+                      <p className="mt-1 text-sm leading-snug text-concrete">{point.body}</p>
                     </div>
                   </div>
-                </div>
+                </li>
               ))}
-            </div>
+            </ul>
           </div>
         </div>
       </div>
@@ -288,19 +209,19 @@ function Services() {
   return (
     <Section id="layanan">
       <div className="max-w-2xl">
-        <Eyebrow>Layanan Kami</Eyebrow>
-        <h2 className="mt-5 text-3xl font-extrabold tracking-tight text-navy sm:text-4xl">
+        <Eyebrow index="01">Layanan Kami</Eyebrow>
+        <h2 className="mt-5 text-3xl font-extrabold tracking-tight text-navy sm:text-[2.5rem] sm:leading-tight">
           Dari gambar pertama hingga <Italic>kunci diserahkan</Italic>
         </h2>
       </div>
 
       <div className="mt-12 grid gap-6 md:grid-cols-3">
-        {SERVICES.map((s) => (
+        {SERVICES.map((s, i) => (
           <article
             key={s.name}
-            className="group overflow-hidden rounded-3xl border border-navy/8 bg-white transition-all hover:-translate-y-1.5 hover:border-gold/50 hover:shadow-[0_30px_60px_-40px_oklch(0.21_0.04_262/0.6)]"
+            className="group overflow-hidden rounded-md border border-stone bg-white transition-shadow duration-150 hover:shadow-card"
           >
-            <div className="h-44 overflow-hidden">
+            <div className="aspect-[4/3] overflow-hidden">
               <img
                 src={s.image}
                 alt={s.name}
@@ -309,11 +230,20 @@ function Services() {
               />
             </div>
             <div className="p-6">
-              <span className="grid h-11 w-11 place-items-center rounded-xl bg-gold-soft text-gold-deep">
-                <s.icon className="h-5 w-5" />
-              </span>
-              <h3 className="mt-4 text-lg font-bold text-navy">{s.name}</h3>
-              <p className="mt-2 text-sm leading-relaxed text-navy/60">{s.body}</p>
+              <p className="label-mono text-concrete">Layanan {String(i + 1).padStart(2, "0")}</p>
+              <h3 className="mt-3 flex items-center gap-2 text-xl font-bold text-navy">
+                <s.icon className="h-5 w-5 shrink-0 text-gold-ink" strokeWidth={1.5} />
+                {s.name}
+              </h3>
+              <p className="mt-2 text-base leading-relaxed text-concrete">{s.body}</p>
+              <a
+                href={waLink(s.waTopic)}
+                target="_blank"
+                rel="noreferrer"
+                className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-gold-ink hover:underline"
+              >
+                Tanya layanan ini <ArrowRight className="h-4 w-4" />
+              </a>
             </div>
           </article>
         ))}
@@ -324,38 +254,33 @@ function Services() {
 
 function WhyUs() {
   return (
-    <Section id="mengapa-kami" className="bg-[oklch(0.984_0.003_247.858)]">
+    <Section id="mengapa-kami" className="bg-sand">
       <div className="grid gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
         <div>
-          <Eyebrow>Value Kami</Eyebrow>
-          <h2 className="mt-5 text-3xl font-extrabold leading-tight tracking-tight text-navy sm:text-4xl">
+          <Eyebrow index="02">Value Kami</Eyebrow>
+          <h2 className="mt-5 text-3xl font-extrabold leading-tight tracking-tight text-navy sm:text-[2.5rem]">
             Mengapa Memilih <Italic>Nandara Build?</Italic>
           </h2>
-          <p className="mt-5 max-w-md text-sm leading-relaxed text-navy/60">
-            Kami bekerja dengan angka yang bisa Anda periksa dan jadwal yang bisa
-            Anda pantau — arsitektural, tapi mudah dipahami.
+          <p className="mt-5 max-w-md text-base leading-relaxed text-concrete">
+            Kami bekerja dengan angka yang bisa Anda periksa dan jadwal yang bisa Anda pantau —
+            arsitektural, tapi mudah dipahami.
           </p>
-          <GoldButton href={WA_LINK} className="mt-8">
+          <OutlineButton href={waLink()} className="mt-8">
             <MessageCircle className="h-4 w-4" />
             Tanya Kami di WhatsApp
-          </GoldButton>
+          </OutlineButton>
         </div>
 
         <ul className="grid gap-4 sm:grid-cols-2">
           {REASONS.map((r) => (
-            <li
-              key={r.title}
-              className="rounded-2xl border border-navy/8 bg-white p-5 transition-all hover:-translate-y-1 hover:border-gold/50"
-            >
+            <li key={r.title} className="rounded-md border border-stone bg-white p-5">
               <div className="flex items-start gap-3">
-                <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-navy text-gold">
+                <span className="grid h-8 w-8 shrink-0 place-items-center rounded-sm bg-navy text-gold">
                   <Check className="h-4 w-4" />
                 </span>
                 <div className="min-w-0">
-                  <p className="text-sm font-bold text-navy">{r.title}</p>
-                  <p className="mt-1.5 text-xs leading-relaxed text-navy/60">
-                    {r.body}
-                  </p>
+                  <p className="text-base font-bold text-navy">{r.title}</p>
+                  <p className="mt-1.5 text-sm leading-relaxed text-concrete">{r.body}</p>
                 </div>
               </div>
             </li>
@@ -370,31 +295,23 @@ function VisionMission() {
   return (
     <Section id="visi-misi">
       <div className="grid gap-6 lg:grid-cols-2">
-        <div className="rounded-3xl border border-navy/8 bg-[oklch(0.984_0.003_247.858)] p-8 sm:p-10">
-          <span className="grid h-12 w-12 place-items-center rounded-2xl bg-gold-soft text-gold-deep">
-            <Target className="h-6 w-6" />
+        <div className="rounded-md border border-stone bg-white p-8 sm:p-10">
+          <span className="grid h-12 w-12 place-items-center rounded-sm bg-sand text-gold-ink">
+            <Target className="h-6 w-6" strokeWidth={1.5} />
           </span>
-          <h2 className="mt-6 text-xs font-semibold uppercase tracking-[0.3em] text-gold-deep">
-            Visi
-          </h2>
-          <p className="mt-4 text-xl font-semibold leading-snug text-navy sm:text-2xl">
-            Menjadi partner konstruksi terpercaya yang menghadirkan solusi
-            bangunan berkualitas, terukur, dan{" "}
-            <Italic>bernilai jangka panjang.</Italic>
-          </p>
+          <h2 className="label-mono mt-6 text-gold-ink">03 — Visi</h2>
+          <p className="mt-4 text-xl font-semibold leading-snug text-navy sm:text-2xl">{VISION}</p>
         </div>
 
-        <div className="rounded-3xl border border-navy/8 bg-white p-8 sm:p-10">
-          <span className="grid h-12 w-12 place-items-center rounded-2xl bg-navy text-gold">
-            <Compass className="h-6 w-6" />
+        <div className="rounded-md border border-stone bg-white p-8 sm:p-10">
+          <span className="grid h-12 w-12 place-items-center rounded-sm bg-navy text-gold">
+            <Compass className="h-6 w-6" strokeWidth={1.5} />
           </span>
-          <h2 className="mt-6 text-xs font-semibold uppercase tracking-[0.3em] text-gold-deep">
-            Misi
-          </h2>
+          <h2 className="label-mono mt-6 text-gold-ink">04 — Misi</h2>
           <ul className="mt-5 space-y-3.5">
             {MISSION.map((m) => (
-              <li key={m} className="flex gap-3 text-sm leading-relaxed text-navy/70">
-                <Check className="mt-0.5 h-4 w-4 shrink-0 text-gold-deep" />
+              <li key={m} className="flex gap-3 text-base leading-relaxed text-navy-700">
+                <Check className="mt-1 h-4 w-4 shrink-0 text-gold-ink" />
                 <span>{m}</span>
               </li>
             ))}
@@ -408,22 +325,19 @@ function VisionMission() {
 function Promo() {
   return (
     <Section id="promo">
-      <div className="relative overflow-hidden rounded-[2rem] bg-navy px-6 py-14 sm:px-12 sm:py-20">
-        <div className="absolute -right-20 -top-24 h-72 w-72 rounded-full bg-gold/15 blur-3xl" />
+      <div className="relative overflow-hidden rounded-lg bg-navy px-6 py-14 sm:px-12 sm:py-20">
         <div className="relative mx-auto max-w-3xl text-center">
-          <Eyebrow>Penawaran Khusus</Eyebrow>
-          <h2 className="mt-6 text-3xl font-extrabold leading-tight tracking-tight text-white sm:text-[2.6rem]">
-            Niat Mau Hemat Bangun Rumah, Tapi Biaya{" "}
-            <Italic>Malah Membengkak?</Italic>
+          <Eyebrow tone="dark">Penawaran Khusus</Eyebrow>
+          <h2 className="mt-6 text-3xl font-extrabold leading-tight tracking-tight text-paper sm:text-[2.6rem]">
+            Niat Mau Hemat Bangun Rumah, Tapi Biaya <Italic tone="dark">Malah Membengkak?</Italic>
           </h2>
-          <p className="mx-auto mt-6 max-w-2xl text-sm leading-relaxed text-white/70 sm:text-base">
-            Jangan mau tergiur borongan murah jika tanpa SPK dan RAB jelas. Di
-            Nandara Build, sebelum bayar DP sepeser pun, Anda sudah memegang RAB
-            terperinci dan draf SPK resmi.
+          <p className="mx-auto mt-6 max-w-2xl text-base leading-relaxed text-paper/80">
+            Jangan mau tergiur borongan murah jika tanpa SPK dan RAB jelas. Di Nandara Build,
+            sebelum bayar DP sepeser pun, Anda sudah memegang RAB terperinci dan draf SPK resmi.
           </p>
-          <GoldButton href={WA_LINK} className="mt-9">
+          <GoldButton href={waLink("minta RAB & draf SPK")} className="mt-9">
             <MessageCircle className="h-4 w-4" />
-            Hubungi WA {WA_NUMBER} Sekarang
+            Hubungi WA {CONTACT.whatsappDisplay}
           </GoldButton>
         </div>
       </div>
@@ -432,47 +346,25 @@ function Promo() {
 }
 
 function Footer() {
+  const year = new Date().getFullYear();
   return (
-    <footer id="kontak" className="scroll-mt-24 border-t border-navy/8 bg-white px-5 py-16 sm:px-8">
-      <div className="mx-auto w-full max-w-6xl">
+    <footer id="kontak" className="scroll-mt-20 border-t border-stone bg-white px-4 py-16 sm:px-8">
+      <div className="mx-auto w-full max-w-[1200px]">
         <div className="grid gap-10 md:grid-cols-[1.4fr_1fr_1fr]">
           <div>
-            <div className="flex items-center gap-3">
-              <img
-                src={logo.url}
-                alt="Logo Nandara Build"
-                className="h-12 w-12 object-contain"
-                loading="lazy"
-                width={48}
-                height={48}
-              />
-              <span>
-                <span className="block text-sm font-extrabold uppercase tracking-[0.22em] text-navy">
-                  Nandara
-                </span>
-                <span className="block text-[0.6rem] font-semibold uppercase tracking-[0.42em] text-gold-deep">
-                  Build
-                </span>
-              </span>
-            </div>
-            <p className="mt-5 max-w-sm font-serif text-xl italic text-navy">
-              Solusi Konstruksi & Renovasi Tanpa Repot
-            </p>
-            <p className="mt-3 text-sm text-navy/60">
-              Melayani area Jawa Timur & sekitarnya.
-            </p>
+            <Wordmark size="lg" />
+            <p className="mt-5 max-w-sm font-serif text-2xl italic text-navy">{SITE.headline}</p>
+            <p className="mt-3 text-sm text-concrete">Melayani area {SITE.area}.</p>
           </div>
 
           <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.24em] text-navy/40">
-              Navigasi
-            </p>
+            <p className="label-mono text-concrete">Navigasi</p>
             <ul className="mt-5 space-y-3">
               {NAV.map((item) => (
                 <li key={item.href}>
                   <a
                     href={item.href}
-                    className="text-sm text-navy/70 transition-colors hover:text-gold-deep"
+                    className="text-sm text-navy-700 transition-colors hover:text-gold-ink"
                   >
                     {item.label}
                   </a>
@@ -482,52 +374,36 @@ function Footer() {
           </div>
 
           <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.24em] text-navy/40">
-              Hubungi Kami
-            </p>
+            <p className="label-mono text-concrete">Hubungi Kami</p>
             <ul className="mt-5 space-y-3 text-sm">
               <li>
                 <a
-                  href={WA_LINK}
+                  href={waLink()}
                   target="_blank"
                   rel="noreferrer"
-                  className="inline-flex items-center gap-2 text-navy/70 transition-colors hover:text-gold-deep"
+                  className="inline-flex items-center gap-2 text-navy-700 transition-colors hover:text-gold-ink"
                 >
                   <MessageCircle className="h-4 w-4" />
-                  WhatsApp {WA_NUMBER}
+                  WhatsApp <span className="tabular">{CONTACT.whatsappDisplay}</span>
                 </a>
               </li>
               <li>
                 <a
-                  href="https://instagram.com/nandara_build"
+                  href={CONTACT.instagram.url}
                   target="_blank"
                   rel="noreferrer"
-                  className="inline-flex items-center gap-2 text-navy/70 transition-colors hover:text-gold-deep"
+                  className="inline-flex items-center gap-2 text-navy-700 transition-colors hover:text-gold-ink"
                 >
                   <Instagram className="h-4 w-4" />
-                  @nandara_build
-                </a>
-              </li>
-              <li>
-                <a
-                  href="https://facebook.com/"
-                  target="_blank"
-                  rel="noreferrer"
-                  className="inline-flex items-center gap-2 text-navy/70 transition-colors hover:text-gold-deep"
-                >
-                  <Facebook className="h-4 w-4" />
-                  Facebook
+                  {CONTACT.instagram.handle}
                 </a>
               </li>
             </ul>
-            <GoldButton href={WA_LINK} className="mt-6 px-5 py-3">
-              Konsultasi Gratis
-            </GoldButton>
           </div>
         </div>
 
-        <p className="mt-14 border-t border-navy/8 pt-6 text-xs text-navy/50">
-          Copyright © 2026 Nandara Build. All rights reserved.
+        <p className="mt-14 border-t border-stone pt-6 text-xs text-concrete">
+          © {year} {SITE.name}. All rights reserved.
         </p>
       </div>
     </footer>
@@ -536,14 +412,22 @@ function Footer() {
 
 function Index() {
   return (
-    <main className="min-h-screen bg-white font-sans antialiased">
+    <>
+      <a
+        href="#konten"
+        className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:rounded-md focus:bg-navy focus:px-4 focus:py-3 focus:text-paper"
+      >
+        Langsung ke konten
+      </a>
       <Header />
-      <Hero />
-      <Services />
-      <WhyUs />
-      <VisionMission />
-      <Promo />
+      <main id="konten" className="min-h-screen">
+        <Hero />
+        <Services />
+        <WhyUs />
+        <VisionMission />
+        <Promo />
+      </main>
       <Footer />
-    </main>
+    </>
   );
 }

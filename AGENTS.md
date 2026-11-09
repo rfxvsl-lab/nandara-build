@@ -1,10 +1,8 @@
-<!-- LOVABLE:BEGIN -->
-> [!IMPORTANT]
-> This project is connected to [Lovable](https://lovable.dev). Avoid rewriting
-> published git history — force pushing, or rebasing/amending/squashing commits
-> that are already pushed — as it rewrites history on Lovable's side and the
-> user will likely lose their project history.
->
-> Commits you push to the connected branch sync back to Lovable and show up in
-> the editor, so keep the branch in a working state.
-<!-- LOVABLE:END -->
+# Panduan untuk Agen AI & Kontributor
+
+- **Sistem desain wajib**: baca [`design.md`](./design.md) sebelum mengubah UI. Keputusan desain baru ditulis dulu di sana.
+- **Konten** (teks, nomor WA, layanan, dll.) ada di `src/content/` — jangan hardcode di komponen.
+- **Routing**: file-based TanStack Start di `src/routes/` (lihat `src/routes/README.md`). `routeTree.gen.ts` dibuat otomatis.
+- **Warna**: pakai token (`text-gold-ink`, `bg-paper`, …). Jangan pakai `text-gold` di latar terang (kontras gagal).
+- **Sebelum commit**: `npm run check` (lint + typecheck + build) harus lolos.
+- **Hosting**: Appwrite Sites (Node SSR, output `./.output`). Tidak memakai Lovable.
