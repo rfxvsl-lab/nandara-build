@@ -3,7 +3,7 @@
 > Dokumen ini adalah **acuan wajib** untuk semua pekerjaan UI Nandara Build.
 > Kalau ada keputusan desain yang tidak tercantum di sini, tambahkan dulu ke dokumen ini, baru diterapkan di kode.
 
-_Versi 1.2 · 9 November 2026 — palet "Material Tropis", bahasa visual "Dokumen Proyek"_
+_Versi 1.1 · 9 November 2026 — palet "Material Tropis"_
 
 ---
 
@@ -37,7 +37,7 @@ Acuan desain **tidak** diambil dari selera atau tren semata. Ada tiga sumber, de
 | [Andra Matin — Tropicality (Wallpaper*)](https://wallpaper.com/architecture/andra-matin-new-book-tropicality), [Dezeen — Indonesian houses](https://www.dezeen.com/tag/indonesian-houses/) | Palet material jujur: **beton, kayu, bata, kapur**; tropis modern (atap lebar, teritis, bayangan). → **Sumber langsung palet v1.1** (arang, beton, kapur, pasir, batu, bata), foto dengan cahaya alami & bayangan nyata. |
 | [Docomomo — Tropical Architecture in Indonesian Modernism](https://docomomojournal.com/index.php/journal/article/view/33) | Identitas arsitektur lokal, bukan villa Eropa/pantai → foto harus rumah yang relevan dengan Jawa Timur. |
 | [TheeDigital — Web Design Trends 2026](https://www.theedigital.com/?p=34345), [PaperStreet — 2026 trends](https://www.paperstreet.com/blog/2026-law-firm-website-design-trends/) | Tipografi editorial (judul besar + keterangan kecil), grid tegas, margin lega, hierarki jelas. Animasi teks **secukupnya** demi aksesibilitas. |
-| Dokumen kerja kontraktor (RAB, SPK, jadwal, gambar kerja) | Bahasa visual **"Dokumen Proyek"** (v1.2): kop dokumen, tabel bergaris, nomor bagian `01 / Layanan`. Ciri khas Nandara: *"arsitektural, tapi mudah dipahami"*. |
+| Gambar kerja arsitek (denah, potongan, notasi ukuran) | Motif **"blueprint"**: garis grid tipis, nomor bagian `01 / 02`, label teknis kecil, garis ukur. Menjadi ciri khas Nandara: *"arsitektural, tapi mudah dipahami"*. |
 
 ---
 
@@ -111,7 +111,8 @@ _Versi 1.1 (November 2026): navy diganti **arang/beton**. Palet sekarang diambil
 | Peran | Font | Alasan |
 | --- | --- | --- |
 | **Sans (utama)** | **Plus Jakarta Sans** (400, 500, 600, 700, 800) | Dibuat oleh studio Indonesia (Tokotype) untuk identitas kota Jakarta. Lokal, modern, sangat terbaca. Dipertahankan dari versi sebelumnya. |
-| **Mono** | **JetBrains Mono** (500) | Cadangan untuk data teknis. Saat ini tidak dipakai di UI; angka memakai `tabular-nums` Plus Jakarta Sans. |
+| **Serif (aksen judul)** | **Instrument Serif** (regular & italic) | Menggemakan huruf serif kapital di logo. Lebih tebal & tajam dari Cormorant sehingga tetap terbaca di HP. Dipakai **hanya** untuk 1–3 kata penekanan per judul. |
+| **Mono (label teknis)** | **JetBrains Mono** (500), huruf kapital | Untuk label gaya gambar kerja: `01 — LAYANAN`, `LUAS 120 M²`, `DURASI 98 HARI`. |
 
 Semua font di-**self-host** (subset Latin, `font-display: swap`). Tidak memakai Google Fonts CDN.
 
@@ -131,8 +132,7 @@ Semua font di-**self-host** (subset Latin, `font-display: swap`). Tidak memakai 
 - Angka harga, luas, durasi: `font-variant-numeric: tabular-nums`.
 - Format angka Indonesia: `Rp 4.500.000`, `120 m²`, `98 hari`. Tidak memakai "4.5jt" di UI formal.
 - Maksimal lebar paragraf **65 karakter**.
-- **Tidak ada aksen serif-italic di judul** (lihat §12).
-- Judul tanpa titik di akhir.
+- Italic serif hanya di judul, bukan di paragraf.
 - Judul pakai `text-wrap: balance`.
 
 ---
@@ -145,13 +145,12 @@ Semua font di-**self-host** (subset Latin, `font-display: swap`). Tidak memakai 
 - Jarak antar section: **96–128 px** desktop, **64–80 px** HP.
 - Breakpoint: `sm 640` · `md 768` · `lg 1024` · `xl 1280`.
 
-### 4.1 Bahasa visual "Dokumen Proyek" (ciri khas, v1.2)
-Pengganti motif blueprint di v1.1. Situs dibaca seperti **berkas proyek**: lembar RAB, pasal SPK, jadwal kerja.
-- **Kop section**: garis atas `arang` 1 px, kolom kiri 220 px berisi `01 / Nama bagian`, judul di kolom kanan. Konten selaras dengan kolom kanan.
-- **Lembar dokumen** (`RabSheet`, `SpkSheet`): border `arang` 1 px, kop dengan nama dokumen, tabel bergaris `batu`, total bergaris tebal, kolom tanda tangan. Inilah visual utama di hero, **bukan foto stok**.
-- **Tabel & daftar bergaris** menggantikan kartu ikon.
-- **Sudut hampir siku**: radius 2–4 px.
-- **Tanpa** grid latar, bayangan, gradien, animasi muncul, atau ikon dekoratif.
+### 4.1 Motif "Blueprint" (ciri khas)
+- **Garis grid tipis** `1px` emas/arang transparan di latar hero dan section tertentu (opacity rendah), seperti kertas gambar kerja.
+- **Penomoran section**: label mono `01 — LAYANAN`, `02 — PROSES`, … di atas setiap judul section.
+- **Garis ukur**: garis horizontal dengan ujung bertanda `|——|` dan label angka (mis. `98 HARI`), dipakai di kartu proyek dan timeline.
+- **Sudut tegas**: radius kecil (lihat 5.1). Lebih arsitektural dibanding kartu yang sangat membulat.
+- Motif dipakai **hemat**: maksimal 1 elemen blueprint per layar agar tidak jadi gimmick.
 
 ---
 
@@ -160,13 +159,13 @@ Pengganti motif blueprint di v1.1. Situs dibaca seperti **berkas proyek**: lemba
 ### 5.1 Token bentuk & bayangan
 | Token | Nilai |
 | --- | --- |
-| `--radius-sm` | 2 px (tombol, input) |
-| `--radius-md` | 4 px |
-| `--radius-lg` | 6 px (foto) |
+| `--radius-sm` | 4 px (input, badge) |
+| `--radius-md` | 8 px (tombol, kartu) |
+| `--radius-lg` | 16 px (gambar besar, callout) |
 | `--shadow-card` | `0 1px 2px rgb(28 26 23 / .06), 0 10px 28px -14px rgb(28 26 23 / .22)` |
 | Border default | `1px solid var(--color-batu)` |
 
-> Catatan: v1.0 memakai radius 24–32 px, v1.1 8–16 px. v1.2 memakai sudut hampir siku seperti kertas dokumen. Bayangan tidak dipakai; pemisah memakai garis.
+> Catatan: versi lama memakai radius 24–32 px (sangat membulat). Versi baru memakai sudut lebih tegas agar terasa **arsitektural**.
 
 ### 5.2 Tombol
 | Varian | Tampilan | Pemakaian |
@@ -212,7 +211,7 @@ Pengganti motif blueprint di v1.1. Situs dibaca seperti **berkas proyek**: lemba
 
 ### 5.7 Navigasi
 - Header tinggi 64 px, latar `kapur/90` + blur, logo kiri, menu tengah/kanan, **satu** tombol primary.
-- Di HP: logo + teks "NANDARA BUILD" tetap tampil, tombol menu 48 px, menu layar penuh (latar `kapur`, daftar bergaris) dengan tautan besar, nomor WA, dan tombol tutup. Wajib ada `aria-expanded` dan bisa ditutup dengan `Esc`.
+- Di HP: logo + teks "NANDARA BUILD" tetap tampil, tombol menu 48 px, menu layar penuh (`arang` + grid blueprint) dengan tautan besar, nomor WA, dan tombol tutup. Wajib ada `aria-expanded` dan bisa ditutup dengan `Esc`.
 - Footer `arang`: logo, ringkasan, navigasi, area layanan, kontak, legalitas (NIB), sosial media, `© {tahun berjalan}`.
 
 ---
@@ -243,7 +242,8 @@ Pengganti motif blueprint di v1.1. Situs dibaca seperti **berkas proyek**: lemba
 
 - Durasi: 150 ms (hover), 250 ms (UI), 600 ms (reveal section).
 - Easing: `cubic-bezier(0.22, 1, 0.36, 1)`.
-- Tidak ada animasi muncul saat scroll (v1.2).
+- Reveal saat scroll: fade + naik 12 px, **sekali saja**, tidak berulang.
+- Garis blueprint boleh "tergambar" (stroke animasi) sekali di hero.
 - **Wajib** menghormati `prefers-reduced-motion: reduce`: semua animasi dimatikan.
 - Tidak ada carousel otomatis, parallax berat, atau video autoplay dengan suara.
 
@@ -293,6 +293,7 @@ Token di atas ditulis di `src/styles.css` sebagai berikut (ringkas):
 ```css
 @theme {
   --font-sans: "Plus Jakarta Sans Variable", "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: "Instrument Serif", ui-serif, Georgia, serif;
   --font-mono: "JetBrains Mono", ui-monospace, monospace;
 
   --color-arang: #1c1a17;
@@ -314,25 +315,4 @@ Token di atas ditulis di `src/styles.css` sebagai berikut (ringkas):
 
 Variabel semantik shadcn (`--primary`, `--background`, dll.) dipetakan ke token ini: `--background: kapur`, `--foreground: arang`, `--primary: arang`, `--accent: emas`, `--ring: emas-ink`.
 
-Utility tambahan: `tabular` (angka tabular), `label-mono`.
-
----
-
-## 12. Aturan Anti-Template ("AI slop") — v1.2
-
-Versi 1.1 dinilai pemilik **masih terlihat seperti template AI**. Pola berikut **dilarang** karena menjadi ciri khas halaman buatan AI generik:
-
-| ❌ Jangan | ✅ Gantinya |
-| --- | --- |
-| Satu kata serif-italic berwarna di setiap judul ("…*tanpa kejutan*") | Judul sans polos, kalimat lengkap dan spesifik |
-| Label kecil huruf kapital/mono di atas setiap judul ("01 — LAYANAN") | Kop section di kolom kiri (`01 / Layanan`), sekali per section |
-| Kartu: ikon dalam kotak + judul + paragraf, diulang 3–6 kali | Tabel, daftar bergaris, atau baris berkolom |
-| Grid "blueprint", gradien, glow, bayangan besar, kartu melayang di atas foto | Garis tipis dan bidang warna rata |
-| Foto stok/AI yang tidak berkaitan (villa pantai, sunset) | Dokumen asli sebagai visual; foto **hanya** proyek asli Nandara |
-| Hero template: teks kiri + foto kanan + kartu melayang | Hero menampilkan produk (lembar RAB) |
-| Centang ✓ di setiap baris | Tanda hubung atau nomor |
-| Animasi muncul saat scroll | Tidak ada; konten langsung tampil |
-| Copy berbunga, banyak tanda pisah (—), klaim umum | Kalimat pendek, fakta yang bisa dicek, titik dua atau koma |
-| Tombol pill dengan bayangan dan efek naik saat hover | Tombol siku, warna rata, hover hanya ganti warna |
-
-**Uji cepat sebelum menambah elemen**: *Apakah elemen ini menyampaikan informasi yang bisa diperiksa klien?* Kalau hanya hiasan, jangan ditambahkan.
+Utility tambahan: `bg-blueprint` (grid tipis di latar gelap), `bg-blueprint-light` (grid di latar terang), `label-mono`, `tabular`.

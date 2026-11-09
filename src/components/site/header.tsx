@@ -38,7 +38,7 @@ export function Wordmark({
         </span>
         <span
           className={cn(
-            "mt-1 block text-[0.625rem] font-semibold uppercase tracking-[0.42em]",
+            "label-mono mt-1 block text-[0.625rem] tracking-[0.42em]",
             tone === "dark" ? "text-emas" : "text-emas-ink",
           )}
         >
@@ -64,7 +64,7 @@ export function Header() {
   }, [open]);
 
   return (
-    <header className="sticky top-0 z-50 border-b border-batu bg-kapur">
+    <header className="sticky top-0 z-50 border-b border-batu/80 bg-kapur/90 backdrop-blur-md">
       <div className="mx-auto flex h-16 w-full max-w-[1200px] items-center justify-between gap-4 px-4 sm:px-8">
         <Link to="/" aria-label={`${SITE.name} — beranda`} onClick={() => setOpen(false)}>
           <Wordmark />
@@ -76,11 +76,8 @@ export function Header() {
               <Link
                 key={item.to}
                 to={item.to}
-                className="text-[0.9375rem] font-medium text-beton transition-colors hover:text-arang"
-                activeProps={{
-                  className:
-                    "!text-arang font-semibold underline decoration-emas-ink underline-offset-[6px]",
-                }}
+                className="text-sm font-medium text-beton transition-colors hover:text-emas-ink"
+                activeProps={{ className: "text-emas-ink underline underline-offset-8" }}
               >
                 {item.label}
               </Link>
@@ -95,7 +92,7 @@ export function Header() {
             aria-expanded={open}
             aria-controls="menu-mobile"
             onClick={() => setOpen((v) => !v)}
-            className="grid h-12 w-12 shrink-0 place-items-center rounded-sm border border-arang text-arang lg:hidden"
+            className="grid h-12 w-12 shrink-0 place-items-center rounded-md border border-batu text-arang lg:hidden"
           >
             {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
           </button>
@@ -106,7 +103,7 @@ export function Header() {
         <nav
           id="menu-mobile"
           aria-label="Navigasi utama"
-          className="fixed inset-x-0 bottom-0 top-16 overflow-y-auto bg-kapur px-4 pb-8 pt-2 lg:hidden"
+          className="fixed inset-x-0 bottom-0 top-16 overflow-y-auto bg-arang bg-blueprint px-4 pb-8 pt-4 lg:hidden"
         >
           <ul className="flex flex-col">
             {NAV.map((item, i) => (
@@ -114,12 +111,10 @@ export function Header() {
                 <Link
                   to={item.to}
                   onClick={() => setOpen(false)}
-                  className="flex items-baseline justify-between border-b border-batu py-4 text-2xl font-bold tracking-[-0.02em] text-arang"
+                  className="flex items-baseline gap-4 border-b border-white/10 py-5 text-2xl font-bold text-kapur"
                 >
+                  <span className="label-mono text-emas">{String(i + 1).padStart(2, "0")}</span>
                   {item.label}
-                  <span className="tabular text-sm font-normal text-abu">
-                    {String(i + 1).padStart(2, "0")}
-                  </span>
                 </Link>
               </li>
             ))}
@@ -128,12 +123,12 @@ export function Header() {
             href={waLink()}
             target="_blank"
             rel="noreferrer"
-            className="mt-8 inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-sm bg-emas px-5 text-[0.9375rem] font-semibold text-arang"
+            className="mt-8 inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-md bg-emas px-6 py-3 text-sm font-semibold text-arang"
           >
             <WhatsAppIcon className="h-5 w-5" />
             Konsultasi Gratis via WhatsApp
           </a>
-          <p className="tabular mt-4 text-center text-sm text-abu">
+          <p className="tabular mt-4 text-center text-sm text-kapur/60">
             atau hubungi {CONTACT.whatsappDisplay}
           </p>
         </nav>

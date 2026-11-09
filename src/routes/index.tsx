@@ -1,16 +1,29 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { ArrowRight, MapPin } from "lucide-react";
 
+import { BeforeAfter } from "@/components/site/before-after";
 import { Estimator } from "@/components/site/estimator";
 import { FaqList } from "@/components/site/faq";
 import { LeadForm } from "@/components/site/lead-form";
-import { GoldButton, Section, SectionHead, TextLink } from "@/components/site/nandara";
-import { ProcessTable } from "@/components/site/process-timeline";
-import { RabSheet } from "@/components/site/rab-preview";
-import { SpkSheet } from "@/components/site/spk-card";
-import { COMPARISON, CONTACT, SERVICES, SITE, STATS, TESTIMONIALS, waLink } from "@/content/site";
+import {
+  Eyebrow,
+  GhostButton,
+  GoldButton,
+  Italic,
+  MeasureLine,
+  OutlineButton,
+  SampleBadge,
+  Section,
+  SectionHeading,
+} from "@/components/site/nandara";
+import { ProcessTimeline } from "@/components/site/process-timeline";
+import { RabPreview } from "@/components/site/rab-preview";
+import { SpkCard } from "@/components/site/spk-card";
+import { CONTACT, SERVICES, SITE, STATS, TESTIMONIALS, TRUST_STRIP, waLink } from "@/content/site";
+import { IMAGES } from "@/content/images";
 import { faqJsonLd } from "@/lib/seo";
 
-const TITLE = `${SITE.name}: Kontraktor Bangun & Renovasi Rumah Jawa Timur`;
+const TITLE = `${SITE.name} — Kontraktor Bangun & Renovasi Rumah Jawa Timur`;
 
 const businessJsonLd = {
   "@context": "https://schema.org",
@@ -31,7 +44,8 @@ export const Route = createFileRoute("/")({
       { property: "og:title", content: TITLE },
       {
         property: "og:description",
-        content: "RAB rinci dan SPK resmi sudah Anda pegang sebelum membayar DP. Survei gratis.",
+        content:
+          "RAB rinci & SPK resmi di tangan Anda sebelum membayar DP. Gratis survei & konsultasi.",
       },
     ],
     scripts: [
@@ -42,98 +56,136 @@ export const Route = createFileRoute("/")({
   component: Index,
 });
 
-/* Hero: produknya sendiri (lembar RAB) sebagai visual utama, bukan foto stok. */
+/* ───────────── 02 Hero ───────────── */
 function Hero() {
   return (
-    <section id="home" className="border-b border-batu px-4 pb-14 pt-10 sm:px-8 md:pb-20 md:pt-16">
-      <div className="mx-auto grid w-full max-w-[1200px] gap-12 lg:grid-cols-[1.05fr_1fr] lg:gap-16">
-        <div className="flex flex-col">
-          <p className="text-sm font-semibold text-abu">
-            Arsitek, RAB &amp; kontraktor rumah tinggal · {SITE.area}
-          </p>
-          <h1 className="mt-5 text-[2.5rem] font-bold leading-[1.04] tracking-[-0.03em] text-arang sm:text-[3.5rem] lg:text-[4rem]">
-            Bangun dan renovasi rumah dengan RAB yang bisa Anda periksa
+    <section id="home" className="relative overflow-hidden bg-arang bg-blueprint text-kapur">
+      <div className="mx-auto grid w-full max-w-[1200px] gap-12 px-4 pb-14 pt-12 sm:px-8 lg:grid-cols-[1.1fr_0.9fr] lg:items-center lg:gap-16 lg:pb-24 lg:pt-20">
+        <div className="animate-rise">
+          <Eyebrow tone="dark">Kontraktor · {SITE.area}</Eyebrow>
+          <h1 className="mt-6 text-[2.5rem] font-extrabold leading-[1.02] tracking-tight sm:text-[3.5rem] lg:text-[4.25rem]">
+            Bangun & Renovasi Rumah dengan RAB yang <Italic tone="dark">Bisa Anda Periksa</Italic>
           </h1>
-          <p className="mt-6 max-w-[34rem] text-[1.0625rem] leading-relaxed text-beton sm:text-lg">
-            Sebelum membayar DP, Anda sudah memegang gambar rancangan, rincian biaya per item
-            pekerjaan, dan draf SPK resmi. Survei dan konsultasinya gratis.
+          <p className="mt-6 max-w-xl text-base leading-relaxed text-kapur/75 sm:text-lg">
+            Desain, RAB rinci, dan SPK resmi sudah di tangan Anda{" "}
+            <strong className="font-semibold text-kapur">sebelum membayar DP sepeser pun</strong>.{" "}
+            {SITE.tagline}
           </p>
-          <div className="mt-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:gap-6">
+          <div className="mt-9 flex flex-col gap-3 sm:flex-row">
             <GoldButton href={waLink("konsultasi & survei gratis")}>
-              Jadwalkan survei gratis
+              Konsultasi via WhatsApp
+              <ArrowRight className="h-4 w-4" />
             </GoldButton>
-            <TextLink href="#estimasi">Hitung perkiraan biaya</TextLink>
+            <GhostButton href="#estimasi">Hitung Estimasi Biaya</GhostButton>
           </div>
 
-          <dl className="mt-auto grid grid-cols-3 border-t border-batu pt-5 text-sm lg:mt-14">
-            {[
-              ["Survei", "Gratis"],
-              ["Harga", "Dikunci di SPK"],
-              ["Garansi", "Tertulis"],
-            ].map(([k, v]) => (
-              <div
-                key={k}
-                className="border-r border-batu pr-3 last:border-0 [&:not(:first-child)]:pl-3"
-              >
-                <dt className="text-abu">{k}</dt>
-                <dd className="mt-0.5 font-bold text-arang">{v}</dd>
-              </div>
-            ))}
-          </dl>
+          {STATS.length > 0 && (
+            <dl className="mt-12 grid grid-cols-2 gap-6 border-t border-white/10 pt-8 sm:grid-cols-4">
+              {STATS.map((s) => (
+                <div key={s.label}>
+                  <dt className="label-mono text-[0.6875rem] text-emas-muda/80">{s.label}</dt>
+                  <dd className="tabular mt-2 text-3xl font-extrabold text-kapur">{s.value}</dd>
+                </div>
+              ))}
+            </dl>
+          )}
         </div>
 
-        <div className="lg:pt-2">
-          <RabSheet compact />
-          <p className="mt-3 text-sm text-abu">
-            Format RAB yang Anda terima: setiap angka bisa ditelusuri ke volume dan harga satuannya.
-          </p>
-        </div>
+        <figure className="animate-rise relative" style={{ animationDelay: "0.15s" }}>
+          <div className="overflow-hidden rounded-lg border border-white/10">
+            <img
+              src={IMAGES.heroVilla.src}
+              srcSet={IMAGES.heroVilla.srcSet}
+              sizes="(min-width: 1024px) 520px, 100vw"
+              alt="Fasad rumah modern dua lantai dengan pencahayaan sore"
+              width={IMAGES.heroVilla.width}
+              height={IMAGES.heroVilla.height}
+              fetchPriority="high"
+              className="aspect-[4/5] w-full object-cover sm:aspect-[4/3] lg:aspect-[4/5]"
+            />
+          </div>
+          <MeasureLine label="We Design · We Build · You Enjoy" tone="dark" className="mt-4" />
+          <figcaption className="absolute -bottom-2 left-4 right-4 translate-y-[-3.5rem] rounded-md bg-kapur p-4 text-arang shadow-card sm:left-auto sm:w-72">
+            <p className="label-mono text-[0.6875rem] text-emas-ink">Sebelum DP, Anda pegang</p>
+            <ul className="mt-2 space-y-1 text-sm font-semibold">
+              <li>✓ Gambar rancangan</li>
+              <li>✓ RAB rinci per item</li>
+              <li>✓ Draf SPK resmi</li>
+            </ul>
+          </figcaption>
+        </figure>
       </div>
-
-      {STATS.length > 0 && (
-        <dl className="mx-auto mt-14 grid w-full max-w-[1200px] grid-cols-2 gap-6 border-t border-batu pt-6 sm:grid-cols-4">
-          {STATS.map((s) => (
-            <div key={s.label}>
-              <dt className="text-sm text-abu">{s.label}</dt>
-              <dd className="tabular mt-1 text-3xl font-bold text-arang">{s.value}</dd>
-            </div>
-          ))}
-        </dl>
-      )}
     </section>
   );
 }
 
+/* ───────────── 03 Strip kepercayaan ───────────── */
+function TrustStrip() {
+  return (
+    <div className="border-b border-batu bg-pasir">
+      <ul className="mx-auto grid w-full max-w-[1200px] grid-cols-2 gap-x-4 gap-y-5 px-4 py-7 sm:px-8 lg:grid-cols-4">
+        {TRUST_STRIP.map((t) => (
+          <li key={t.label} className="flex items-center gap-3 text-sm font-semibold text-arang">
+            <t.icon className="h-5 w-5 shrink-0 text-emas-ink" strokeWidth={1.5} aria-hidden />
+            {t.label}
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+/* ───────────── 04 Layanan ───────────── */
 function Services() {
   return (
     <Section id="layanan">
-      <SectionHead
-        number="01"
-        label="Layanan"
-        title="Tiga layanan, bisa dipakai terpisah atau sekaligus"
-        intro="Desain dan perencanaan gratis untuk klien yang melanjutkan pembangunan bersama kami."
-        aside={<TextLink href="/layanan">Detail layanan</TextLink>}
-      />
-      <div className="mt-10 grid gap-10 md:ml-[calc(220px+2rem)] md:grid-cols-3 md:gap-8">
+      <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+        <SectionHeading
+          index="01"
+          label="Layanan"
+          title={
+            <>
+              Dari gambar pertama hingga <Italic>kunci diserahkan</Italic>
+            </>
+          }
+        />
+        <OutlineButton href="/layanan" className="self-start md:self-auto">
+          Lihat detail layanan <ArrowRight className="h-4 w-4" />
+        </OutlineButton>
+      </div>
+
+      <div className="mt-12 grid gap-6 md:grid-cols-3">
         {SERVICES.map((s, i) => (
-          <article key={s.name} className="border-t border-batu pt-5">
-            <p className="tabular text-sm text-abu">{String(i + 1).padStart(2, "0")}</p>
-            <h3 className="mt-2 text-xl font-bold leading-snug text-arang">{s.name}</h3>
-            <p className="mt-3 text-[0.9375rem] leading-relaxed text-abu">{s.body}</p>
-            <ul className="mt-5 space-y-1.5 text-[0.9375rem] text-beton">
-              {s.includes.map((item) => (
-                <li key={item} className="flex gap-2">
-                  <span className="text-emas-ink" aria-hidden>
-                    –
-                  </span>
-                  {item}
-                </li>
-              ))}
-            </ul>
-            <p className="mt-5 border-t border-batu pt-3 text-sm">
-              <span className="text-abu">Anda menerima: </span>
-              <span className="font-semibold text-arang">{s.deliverable}</span>
-            </p>
+          <article
+            key={s.name}
+            className="group flex flex-col overflow-hidden rounded-md border border-batu bg-white transition-shadow duration-150 hover:shadow-card"
+          >
+            <div className="aspect-[4/3] overflow-hidden">
+              <img
+                src={s.image.src}
+                srcSet={s.image.srcSet}
+                sizes="(min-width: 768px) 380px, 100vw"
+                alt=""
+                loading="lazy"
+                className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.03]"
+              />
+            </div>
+            <div className="flex flex-1 flex-col p-6">
+              <p className="label-mono text-abu">Layanan {String(i + 1).padStart(2, "0")}</p>
+              <h3 className="mt-3 flex items-center gap-2 text-xl font-bold text-arang">
+                <s.icon className="h-5 w-5 shrink-0 text-emas-ink" strokeWidth={1.5} aria-hidden />
+                {s.name}
+              </h3>
+              <p className="mt-2 flex-1 text-base leading-relaxed text-abu">{s.body}</p>
+              <a
+                href={waLink(s.waTopic)}
+                target="_blank"
+                rel="noreferrer"
+                className="mt-5 inline-flex items-center gap-1.5 text-sm font-semibold text-emas-ink hover:underline"
+              >
+                Tanya layanan ini <ArrowRight className="h-4 w-4" />
+              </a>
+            </div>
           </article>
         ))}
       </div>
@@ -141,125 +193,127 @@ function Services() {
   );
 }
 
-function Transparency() {
+/* ───────────── 05 Hasil kerja ───────────── */
+function Showcase() {
   return (
-    <Section id="transparansi" className="bg-pasir">
-      <SectionHead
-        number="02"
-        label="Transparansi"
-        title="Bedanya borongan murah dengan kontrak yang jelas"
-        intro="Banyak biaya membengkak bermula dari kesepakatan yang tidak tertulis. Ini yang kami tulis sebelum pekerjaan dimulai."
-      />
-      <div className="mt-10 grid gap-10 md:ml-[calc(220px+2rem)] xl:grid-cols-[1.5fr_1fr]">
+    <Section id="portofolio" className="bg-pasir">
+      <div className="grid gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:items-center lg:gap-16">
         <div>
-          {/* HP: daftar per aspek */}
-          <dl className="border border-arang bg-white sm:hidden">
-            {COMPARISON.map((row) => (
-              <div key={row.aspect} className="border-b border-batu px-4 py-3.5 last:border-0">
-                <dt className="text-sm font-bold text-arang">{row.aspect}</dt>
-                <dd className="mt-1.5 text-sm text-abu">
-                  <span className="font-semibold">Borongan: </span>
-                  {row.them}
-                </dd>
-                <dd className="mt-1 text-sm font-semibold text-arang">
-                  <span className="text-emas-ink">{SITE.name}: </span>
-                  {row.us}
-                </dd>
-              </div>
-            ))}
-          </dl>
-
-          {/* Tablet & desktop: tabel */}
-          <table className="hidden w-full border border-arang bg-white text-left text-[0.9375rem] sm:table">
-            <caption className="sr-only">
-              Perbandingan borongan tanpa dokumen dengan cara kerja Nandara Build
-            </caption>
-            <thead>
-              <tr className="border-b border-arang text-sm">
-                <th scope="col" className="w-32 px-4 py-3 font-semibold text-abu">
-                  Aspek
-                </th>
-                <th scope="col" className="px-4 py-3 font-semibold text-abu">
-                  Borongan tanpa dokumen
-                </th>
-                <th scope="col" className="bg-arang px-4 py-3 font-semibold text-kapur">
-                  {SITE.name}
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {COMPARISON.map((row) => (
-                <tr key={row.aspect} className="border-b border-batu align-top last:border-0">
-                  <th scope="row" className="px-4 py-3.5 font-semibold text-arang">
-                    {row.aspect}
-                  </th>
-                  <td className="px-4 py-3.5 text-abu">{row.them}</td>
-                  <td className="bg-kapur px-4 py-3.5 font-semibold text-arang">{row.us}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+          <SectionHeading
+            index="02"
+            label="Hasil kerja"
+            title={
+              <>
+                Dari lahan proyek menjadi <Italic>rumah yang dinikmati</Italic>
+              </>
+            }
+            intro="Setiap proyek kami dokumentasikan sejak tahap awal. Geser untuk melihat perbedaan sebelum dan sesudah."
+          />
+          <div className="mt-6">
+            <SampleBadge>Ilustrasi — portofolio asli segera hadir</SampleBadge>
+          </div>
         </div>
-        <SpkSheet />
+        <BeforeAfter
+          before={IMAGES.processSite.src}
+          after={IMAGES.heroVilla.src}
+          beforeLabel="Proses"
+          afterLabel="Hasil"
+          beforeAlt="Rangka bangunan saat tahap konstruksi"
+          afterAlt="Rumah modern dua lantai setelah selesai dibangun"
+        />
       </div>
     </Section>
   );
 }
 
+/* ───────────── 06 Transparansi ───────────── */
+function Transparency() {
+  return (
+    <Section id="transparansi" className="bg-blueprint-light">
+      <SectionHeading
+        index="03"
+        label="Transparansi"
+        title={
+          <>
+            Ini yang Anda terima <Italic>sebelum membayar DP</Italic>
+          </>
+        }
+        intro="Borongan murah tanpa RAB dan SPK yang jelas sering berujung biaya membengkak. Di Nandara Build, semua angka dan kesepakatan tertulis dulu — Anda periksa, baru putuskan."
+      />
+      <div className="mt-12 grid gap-6 lg:grid-cols-[1.35fr_1fr] lg:items-start">
+        <RabPreview />
+        <SpkCard />
+      </div>
+      <a
+        href="/proses"
+        className="mt-8 inline-flex items-center gap-1.5 text-sm font-semibold text-emas-ink hover:underline"
+      >
+        Pelajari proses kerja lengkap <ArrowRight className="h-4 w-4" />
+      </a>
+    </Section>
+  );
+}
+
+/* ───────────── 07 Proses ───────────── */
 function Process() {
   return (
-    <section id="proses" className="scroll-mt-20 bg-arang px-4 py-16 sm:px-8 md:py-24">
+    <section id="proses" className="scroll-mt-20 bg-arang bg-blueprint px-4 py-16 sm:px-8 md:py-28">
       <div className="mx-auto w-full max-w-[1200px]">
-        <SectionHead
-          number="03"
-          label="Proses"
+        <SectionHeading
+          index="04"
+          label="Proses kerja"
           tone="dark"
-          title="Enam tahap, masing-masing dengan dokumennya"
-          aside={
-            <TextLink href="/proses" tone="dark">
-              Proses lengkap
-            </TextLink>
+          title={
+            <>
+              Enam langkah, <Italic tone="dark">tanpa kejutan</Italic>
+            </>
           }
+          intro="Setiap tahap punya dokumen yang jelas, jadi Anda selalu tahu posisi proyek dan biayanya."
         />
-        <div className="mt-10 md:ml-[calc(220px+2rem)]">
-          <ProcessTable />
+        <div className="mt-14">
+          <ProcessTimeline />
         </div>
       </div>
     </section>
   );
 }
 
+/* ───────────── 08 Estimasi ───────────── */
 function Estimate() {
   return (
     <Section id="estimasi">
-      <SectionHead
-        number="04"
-        label="Perkiraan biaya"
-        title="Hitung kisaran biayanya dulu"
-        intro="Angka di bawah adalah kisaran umum pasar. Angka pasti untuk rumah Anda keluar dari RAB setelah survei."
+      <SectionHeading
+        index="05"
+        label="Estimasi biaya"
+        title={
+          <>
+            Kira-kira butuh <Italic>berapa biaya?</Italic>
+          </>
+        }
+        intro="Hitung rentang biaya kasar dalam 10 detik. Untuk angka pasti, kami buatkan RAB rinci setelah survei — gratis."
       />
-      <div className="mt-10 md:ml-[calc(220px+2rem)]">
+      <div className="mt-12">
         <Estimator />
       </div>
     </Section>
   );
 }
 
+/* ───────────── 09 Testimoni (tampil jika ada data asli) ───────────── */
 function Testimonials() {
   if (TESTIMONIALS.length === 0) return null;
   return (
-    <Section id="testimoni">
-      <SectionHead number="05" label="Klien" title="Kata klien kami" />
-      <div className="mt-10 grid gap-8 md:ml-[calc(220px+2rem)] md:grid-cols-3">
+    <Section id="testimoni" className="bg-pasir">
+      <SectionHeading index="06" label="Kata klien" title="Mereka sudah membuktikan" />
+      <div className="mt-12 grid gap-6 md:grid-cols-3">
         {TESTIMONIALS.map((t) => (
-          <figure key={t.name} className="border-t border-batu pt-5">
+          <figure key={t.name} className="rounded-md border border-batu bg-white p-6">
             <blockquote className="text-base leading-relaxed text-beton">“{t.quote}”</blockquote>
-            <figcaption className="mt-4 text-sm">
-              <span className="font-bold text-arang">{t.name}</span>
-              <span className="text-abu">
-                {" "}
-                · {t.city} · {t.project}
-              </span>
+            <figcaption className="mt-5 border-t border-batu pt-4">
+              <p className="font-bold text-arang">{t.name}</p>
+              <p className="label-mono mt-1 text-[0.6875rem] text-abu">
+                {t.city} · {t.project}
+              </p>
             </figcaption>
           </figure>
         ))}
@@ -268,50 +322,74 @@ function Testimonials() {
   );
 }
 
-function Faq() {
+/* ───────────── 10 Area + 11 FAQ ───────────── */
+function AreaAndFaq() {
   return (
     <Section id="faq" className="bg-pasir">
-      <SectionHead number="05" label="Tanya jawab" title="Pertanyaan yang sering masuk" />
-      <div className="mt-10 grid gap-10 md:ml-[calc(220px+2rem)] lg:grid-cols-[1.6fr_1fr]">
+      <div className="grid gap-12 lg:grid-cols-[0.85fr_1.15fr] lg:gap-16">
+        <div>
+          <SectionHeading
+            index="06"
+            label="Pertanyaan umum"
+            title={
+              <>
+                Yang sering <Italic>ditanyakan</Italic>
+              </>
+            }
+          />
+          <div className="mt-10 rounded-md border border-batu bg-kapur p-6">
+            <p className="flex items-center gap-2 font-bold text-arang">
+              <MapPin className="h-5 w-5 text-emas-ink" aria-hidden />
+              Area layanan
+            </p>
+            <p className="mt-2 text-[0.9375rem] leading-relaxed text-abu">
+              Kami melayani {SITE.area}. Kirim titik lokasi Anda untuk memastikan jadwal survei.
+            </p>
+            <a
+              href={waLink("cek area layanan")}
+              target="_blank"
+              rel="noreferrer"
+              className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-emas-ink hover:underline"
+            >
+              Cek lokasi saya <ArrowRight className="h-4 w-4" />
+            </a>
+          </div>
+        </div>
         <FaqList />
-        <aside className="border-t border-arang pt-4 text-[0.9375rem]">
-          <p className="font-bold text-arang">Area layanan</p>
-          <p className="mt-2 leading-relaxed text-abu">
-            {SITE.area}. Kirim titik lokasi Anda lewat WhatsApp untuk memastikan jadwal survei.
-          </p>
-          <TextLink href={waLink("cek area layanan")} className="mt-4">
-            Cek lokasi saya
-          </TextLink>
-        </aside>
       </div>
     </Section>
   );
 }
 
+/* ───────────── 12 CTA penutup ───────────── */
 function ClosingCta() {
   return (
-    <section id="survei" className="scroll-mt-20 bg-arang px-4 py-16 sm:px-8 md:py-24">
-      <div className="mx-auto grid w-full max-w-[1200px] gap-10 lg:grid-cols-[1fr_1.3fr] lg:gap-16">
-        <div>
-          <h2 className="text-[1.875rem] font-bold leading-[1.12] tracking-[-0.02em] text-kapur sm:text-[2.5rem]">
-            Jadwalkan survei gratis
-          </h2>
-          <p className="mt-4 max-w-[28rem] text-base leading-relaxed text-kapur/70">
-            Isi data singkat dan kami hubungi Anda untuk menentukan jadwal. Atau chat langsung ke{" "}
-            <a
-              href={waLink()}
-              target="_blank"
-              rel="noreferrer"
-              className="tabular font-semibold text-kapur underline decoration-emas underline-offset-4"
-            >
-              {CONTACT.whatsappDisplay}
-            </a>
-            .
-          </p>
+    <Section id="survei">
+      <div className="relative overflow-hidden rounded-lg bg-arang bg-blueprint px-6 py-12 sm:px-12 sm:py-16">
+        <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:gap-14">
+          <div>
+            <Eyebrow tone="dark">Survei gratis</Eyebrow>
+            <h2 className="mt-6 text-[2rem] font-extrabold leading-[1.1] tracking-tight text-kapur sm:text-[2.5rem]">
+              Niat hemat bangun rumah, jangan sampai biaya{" "}
+              <Italic tone="dark">malah membengkak.</Italic>
+            </h2>
+            <p className="mt-5 text-base leading-relaxed text-kapur/75">
+              Isi data singkat, kami hubungi Anda untuk jadwal survei. Atau chat langsung di{" "}
+              <a
+                href={waLink()}
+                target="_blank"
+                rel="noreferrer"
+                className="tabular font-semibold text-emas underline-offset-4 hover:underline"
+              >
+                {CONTACT.whatsappDisplay}
+              </a>
+              .
+            </p>
+          </div>
+          <LeadForm />
         </div>
-        <LeadForm />
       </div>
-    </section>
+    </Section>
   );
 }
 
@@ -319,12 +397,14 @@ function Index() {
   return (
     <>
       <Hero />
+      <TrustStrip />
       <Services />
+      <Showcase />
       <Transparency />
       <Process />
       <Estimate />
       <Testimonials />
-      <Faq />
+      <AreaAndFaq />
       <ClosingCta />
     </>
   );

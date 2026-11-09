@@ -29,7 +29,7 @@ function NotFoundComponent() {
         <div className="mt-6">
           <Link
             to="/"
-            className="inline-flex items-center justify-center rounded-sm bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
+            className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
           >
             Kembali ke beranda
           </Link>
@@ -58,13 +58,13 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
               router.invalidate();
               reset();
             }}
-            className="inline-flex items-center justify-center rounded-sm bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
+            className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
           >
             Coba lagi
           </button>
           <a
             href="/"
-            className="inline-flex items-center justify-center rounded-sm border border-input bg-background px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-accent"
+            className="inline-flex items-center justify-center rounded-md border border-input bg-background px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-accent"
           >
             Kembali ke beranda
           </a>
@@ -79,7 +79,7 @@ export const Route = createRootRoute({
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Nandara Build: Solusi Konstruksi & Renovasi Tanpa Repot" },
+      { title: "Nandara Build — Solusi Konstruksi & Renovasi Tanpa Repot" },
       {
         name: "description",
         content:
@@ -87,7 +87,7 @@ export const Route = createRootRoute({
       },
       { name: "author", content: "Nandara Build" },
       { name: "theme-color", content: "#1c1a17" },
-      { property: "og:title", content: "Nandara Build: Solusi Konstruksi & Renovasi Tanpa Repot" },
+      { property: "og:title", content: "Nandara Build — Solusi Konstruksi & Renovasi Tanpa Repot" },
       {
         property: "og:description",
         content:
@@ -138,7 +138,7 @@ function RootComponent() {
     <>
       <a
         href="#konten"
-        className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:rounded-sm focus:bg-arang focus:px-4 focus:py-3 focus:text-kapur"
+        className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:rounded-md focus:bg-arang focus:px-4 focus:py-3 focus:text-kapur"
       >
         Langsung ke konten
       </a>

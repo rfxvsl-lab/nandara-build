@@ -1,3 +1,4 @@
+import { ArrowRight, Info } from "lucide-react";
 import { useId, useState } from "react";
 
 import { CONTACT, PRICING, type JobKey, type TierKey } from "@/content/site";
@@ -33,10 +34,10 @@ export function Estimator() {
   const clamp = (n: number) => Math.min(MAX_AREA, Math.max(MIN_AREA, Math.round(n) || MIN_AREA));
 
   return (
-    <div className="grid border border-arang bg-white lg:grid-cols-[1.2fr_1fr]">
+    <div className="grid overflow-hidden rounded-lg border border-batu bg-white shadow-card lg:grid-cols-[1.2fr_1fr]">
       <div className="space-y-8 p-6 sm:p-8">
         <fieldset>
-          <legend className="text-sm font-semibold text-arang">Jenis pekerjaan</legend>
+          <legend className="label-mono text-abu">1 · Jenis pekerjaan</legend>
           <div className="mt-3 grid grid-cols-2 gap-3">
             {JOBS.map((key) => (
               <OptionCard
@@ -52,8 +53,8 @@ export function Estimator() {
 
         <div>
           <div className="flex items-end justify-between gap-4">
-            <label htmlFor={areaId} className="text-sm font-semibold text-arang">
-              Luas bangunan
+            <label htmlFor={areaId} className="label-mono text-abu">
+              2 · Luas bangunan
             </label>
             <div className="flex items-center gap-2">
               <input
@@ -73,7 +74,7 @@ export function Estimator() {
                   setAreaText(String(n));
                 }}
                 aria-label="Luas dalam meter persegi"
-                className="tabular h-11 w-24 rounded-sm border border-arang bg-white px-3 text-right text-base font-semibold text-arang"
+                className="tabular h-11 w-24 rounded-sm border border-batu bg-kapur px-3 text-right text-base font-semibold text-arang"
               />
               <span className="text-sm text-abu">m²</span>
             </div>
@@ -92,14 +93,14 @@ export function Estimator() {
             aria-valuetext={`${area} meter persegi`}
             className="mt-4 h-2 w-full cursor-pointer accent-[var(--color-emas-ink)]"
           />
-          <div className="tabular mt-1 flex justify-between text-xs text-abu">
+          <div className="label-mono mt-1 flex justify-between text-[0.625rem] text-abu">
             <span>{MIN_AREA} m²</span>
             <span>{MAX_AREA} m²</span>
           </div>
         </div>
 
         <fieldset>
-          <legend className="text-sm font-semibold text-arang">Kualitas material</legend>
+          <legend className="label-mono text-abu">3 · Kualitas material</legend>
           <div className="mt-3 grid grid-cols-3 gap-3">
             {TIERS.map((key) => (
               <OptionCard
@@ -115,20 +116,21 @@ export function Estimator() {
         </fieldset>
       </div>
 
-      <div className="relative flex flex-col justify-between gap-8 bg-arang p-6 text-kapur sm:p-8">
+      <div className="relative flex flex-col justify-between gap-8 bg-arang bg-blueprint p-6 text-kapur sm:p-8">
         <div aria-live="polite">
-          <p className="text-sm font-semibold text-kapur/70">Perkiraan biaya</p>
-          <p className="tabular mt-4 text-[2rem] font-bold leading-tight tracking-[-0.02em] sm:text-[2.5rem]">
+          <p className="label-mono text-emas-muda">Estimasi kasar</p>
+          <p className="tabular mt-4 text-[2rem] font-extrabold leading-tight sm:text-[2.5rem]">
             {formatRupiahShort(min)}
-            <span className="text-kapur/40"> – </span>
+            <span className="text-emas"> – </span>
             {formatRupiahShort(max)}
           </p>
           <p className="tabular mt-2 text-sm text-kapur/70">
             {formatRupiah(min)} – {formatRupiah(max)}
           </p>
-          <p className="mt-6 border-t border-kapur/20 pt-4 text-sm leading-relaxed text-kapur/60">
-            Kisaran umum pasar, diperbarui {PRICING.updated}. Bukan penawaran. Biaya pasti
-            ditentukan lewat survei dan RAB rinci.
+          <p className="mt-6 flex gap-2 text-xs leading-relaxed text-kapur/60">
+            <Info className="mt-0.5 h-4 w-4 shrink-0" aria-hidden />
+            Acuan harga umum pasar, diperbarui {PRICING.updated}. Bukan penawaran — biaya pasti
+            ditentukan lewat survei & RAB rinci (gratis).
           </p>
         </div>
         <a
@@ -137,9 +139,10 @@ export function Estimator() {
           rel="noreferrer"
           data-track="kalkulator"
           onClick={() => track("use_calculator", { pekerjaan: job, kualitas: tier, luas: area })}
-          className="inline-flex min-h-12 items-center justify-center gap-2 rounded-sm bg-emas px-5 text-[0.9375rem] font-semibold text-arang transition-colors hover:bg-emas-muda"
+          className="inline-flex min-h-12 items-center justify-center gap-2 rounded-md bg-emas px-6 py-3 text-sm font-semibold text-arang transition-colors hover:bg-emas-muda"
         >
-          Minta RAB rinci (gratis)
+          Dapatkan RAB detail gratis
+          <ArrowRight className="h-4 w-4" />
         </a>
       </div>
     </div>
@@ -167,7 +170,7 @@ function OptionCard({
   return (
     <label
       className={cn(
-        "flex min-h-12 cursor-pointer flex-col justify-center rounded-sm border px-3 py-3 transition-colors has-[:focus-visible]:outline has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-emas-ink",
+        "flex min-h-12 cursor-pointer flex-col justify-center rounded-md border px-3 py-3 transition-colors has-[:focus-visible]:outline has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-emas-ink",
         checked
           ? "border-arang bg-arang text-kapur"
           : "border-batu bg-kapur text-arang hover:border-abu",
