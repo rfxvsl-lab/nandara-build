@@ -2,6 +2,7 @@ import { ArrowRight, Info } from "lucide-react";
 import { useId, useState } from "react";
 
 import { CONTACT, PRICING, type JobKey, type TierKey } from "@/content/site";
+import { track } from "@/lib/analytics";
 import { cn, formatRupiah, formatRupiahShort } from "@/lib/utils";
 
 const JOBS = Object.keys(PRICING.jobs) as JobKey[];
@@ -136,6 +137,8 @@ export function Estimator() {
           href={href}
           target="_blank"
           rel="noreferrer"
+          data-track="kalkulator"
+          onClick={() => track("use_calculator", { pekerjaan: job, kualitas: tier, luas: area })}
           className="inline-flex min-h-12 items-center justify-center gap-2 rounded-md bg-emas px-6 py-3 text-sm font-semibold text-arang transition-colors hover:bg-emas-muda"
         >
           Dapatkan RAB detail gratis

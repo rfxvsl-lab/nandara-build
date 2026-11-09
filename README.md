@@ -43,6 +43,31 @@ npm run check        # lint + typecheck + build
 
 Ubah `CONTACT.whatsappDisplay` dan `CONTACT.whatsappIntl` di `src/content/site.ts`.
 
+## Halaman
+
+| URL                           | Isi                                         |
+| ----------------------------- | ------------------------------------------- |
+| `/`                           | Beranda                                     |
+| `/layanan`                    | Detail 3 layanan                            |
+| `/proses`                     | 6 langkah kerja, contoh RAB & SPK, FAQ      |
+| `/estimasi-biaya`             | Kalkulator + tabel harga acuan per m²       |
+| `/tentang`                    | Visi, misi, nilai                           |
+| `/kontak`                     | Form survei gratis (dikirim lewat WhatsApp) |
+| `/sitemap.xml`, `/robots.txt` | Dibuat otomatis                             |
+
+## Data yang perlu diisi (`src/content/site.ts`)
+
+- `STATS` — angka nyata (jumlah proyek, kota, dll.). Kosong = tidak ditampilkan.
+- `TESTIMONIALS` — testimoni asli. Kosong = section disembunyikan.
+- `PRICING` — harga acuan per m² untuk kalkulator.
+- `RAB_SAMPLE` — ganti dengan cuplikan RAB asli (boleh disamarkan).
+- `CONTACT.facebook` — URL halaman Facebook.
+- Foto di `src/assets/` + `src/content/images.ts` — ganti dengan foto proyek asli.
+
+## Analytics
+
+Event `click_whatsapp`, `submit_form`, dan `use_calculator` otomatis dikirim ke Google Analytics 4 (`gtag`), Google Tag Manager (`dataLayer`), atau Plausible — cukup pasang salah satu script-nya di `src/routes/__root.tsx`. Lihat `src/lib/analytics.ts`.
+
 ## Deploy ke Appwrite Sites
 
 1. Appwrite Console → **Sites** → **Create site** → hubungkan repo GitHub ini.
@@ -51,6 +76,8 @@ Ubah `CONTACT.whatsappDisplay` dan `CONTACT.whatsappIntl` di `src/content/site.t
    - Install command: `npm install`
    - Build command: `npm run build`
    - Output directory: `./.output`
-4. Deploy. SSR aktif otomatis.
+4. Environment variable (Settings → Environment variables):
+   - `SITE_URL` = domain final, mis. `https://nandarabuild.com` (dipakai di `sitemap.xml` & `robots.txt`)
+5. Deploy. SSR aktif otomatis.
 
 Referensi: [Appwrite — TanStack Start quick start](https://appwrite.io/docs/products/sites/quick-start/tanstack-start).

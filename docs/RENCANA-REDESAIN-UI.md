@@ -1,5 +1,9 @@
 # Rencana Rombak Ulang Desain UI — Nandara Build
 
+> **Status (9 Nov 2026)**: Tahap A ✅ · Tahap B ✅ · Tahap C ✅ · Tahap D ✅ (tanpa `/portofolio` & `/area/$kota` — menunggu data proyek & daftar kota) · Tahap E ✅ sebagian (event analytics terpasang; form masih via WhatsApp, belum ada backend) · Palet diganti ke "Material Tropis" (design.md v1.1).
+>
+> Lighthouse mobile: beranda Performance 89 · Accessibility 100 · Best Practices 100 · SEO 100; `/estimasi-biaya` Performance 97.
+
 _Acuan wajib: [`/design.md`](../design.md) · Dokumen terkait: [`ANALISIS-DAN-RENCANA.md`](./ANALISIS-DAN-RENCANA.md)_
 
 ---

@@ -2,6 +2,7 @@ import { Send } from "lucide-react";
 import { useId, useState, type FormEvent } from "react";
 
 import { CONTACT } from "@/content/site";
+import { track } from "@/lib/analytics";
 import { cn } from "@/lib/utils";
 
 const JOB_OPTIONS = [
@@ -43,6 +44,7 @@ export function LeadForm({ tone = "dark" }: { tone?: "light" | "dark" }) {
       `Halo Nandara Build, saya ingin minta survei gratis.\n` +
       `• Nama: ${nama}\n• No. WA: ${wa}\n• Lokasi: ${kota}\n• Pekerjaan: ${jenis}` +
       (catatan ? `\n• Catatan: ${catatan}` : "");
+    track("submit_form", { jenis });
     window.open(
       `https://wa.me/${CONTACT.whatsappIntl}?text=${encodeURIComponent(text)}`,
       "_blank",

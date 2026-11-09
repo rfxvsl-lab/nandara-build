@@ -6,11 +6,12 @@ import {
   HeadContent,
   Scripts,
 } from "@tanstack/react-router";
-import type { ReactNode } from "react";
+import { useEffect, type ReactNode } from "react";
 
 import { Footer } from "@/components/site/footer";
 import { Header } from "@/components/site/header";
 import { WhatsAppFloat } from "@/components/site/whatsapp-float";
+import { installWhatsAppTracking } from "@/lib/analytics";
 
 import jakartaFont from "@fontsource-variable/plus-jakarta-sans/files/plus-jakarta-sans-latin-wght-normal.woff2?url";
 
@@ -131,6 +132,8 @@ function RootShell({ children }: { children: ReactNode }) {
 }
 
 function RootComponent() {
+  useEffect(() => installWhatsAppTracking(), []);
+
   return (
     <>
       <a
