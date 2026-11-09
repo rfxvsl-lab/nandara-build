@@ -1,3 +1,4 @@
+import { Link } from "@tanstack/react-router";
 import { Menu, X } from "lucide-react";
 import { useEffect, useState } from "react";
 
@@ -65,20 +66,21 @@ export function Header() {
   return (
     <header className="sticky top-0 z-50 border-b border-batu/80 bg-kapur/90 backdrop-blur-md">
       <div className="mx-auto flex h-16 w-full max-w-[1200px] items-center justify-between gap-4 px-4 sm:px-8">
-        <a href="#home" aria-label={`${SITE.name} — ke atas`}>
+        <Link to="/" aria-label={`${SITE.name} — beranda`} onClick={() => setOpen(false)}>
           <Wordmark />
-        </a>
+        </Link>
 
         <div className="flex items-center gap-2">
           <nav aria-label="Navigasi utama" className="hidden items-center gap-7 lg:flex">
             {NAV.map((item) => (
-              <a
-                key={item.href}
-                href={item.href}
+              <Link
+                key={item.to}
+                to={item.to}
                 className="text-sm font-medium text-beton transition-colors hover:text-emas-ink"
+                activeProps={{ className: "text-emas-ink underline underline-offset-8" }}
               >
                 {item.label}
-              </a>
+              </Link>
             ))}
           </nav>
           <GoldButton href={waLink()} className="ml-4 hidden sm:inline-flex">
@@ -105,15 +107,15 @@ export function Header() {
         >
           <ul className="flex flex-col">
             {NAV.map((item, i) => (
-              <li key={item.href}>
-                <a
-                  href={item.href}
+              <li key={item.to}>
+                <Link
+                  to={item.to}
                   onClick={() => setOpen(false)}
                   className="flex items-baseline gap-4 border-b border-white/10 py-5 text-2xl font-bold text-kapur"
                 >
                   <span className="label-mono text-emas">{String(i + 1).padStart(2, "0")}</span>
                   {item.label}
-                </a>
+                </Link>
               </li>
             ))}
           </ul>

@@ -16,9 +16,7 @@ import {
   type LucideIcon,
 } from "lucide-react";
 
-import detailMaterial from "@/assets/detail-material.jpg";
-import interiorSpace from "@/assets/interior-space.jpg";
-import processSite from "@/assets/process-site.jpg";
+import { IMAGES, type ResponsiveImage } from "./images";
 
 export const SITE = {
   name: "Nandara Build",
@@ -49,11 +47,11 @@ export function waLink(topik = "konsultasi gratis"): string {
 }
 
 export const NAV = [
-  { label: "Layanan", href: "#layanan" },
-  { label: "Transparansi", href: "#transparansi" },
-  { label: "Proses", href: "#proses" },
-  { label: "Estimasi Biaya", href: "#estimasi" },
-  { label: "FAQ", href: "#faq" },
+  { label: "Layanan", to: "/layanan" },
+  { label: "Proses", to: "/proses" },
+  { label: "Estimasi Biaya", to: "/estimasi-biaya" },
+  { label: "Tentang", to: "/tentang" },
+  { label: "Kontak", to: "/kontak" },
 ] as const;
 
 type IconItem = { icon: LucideIcon; title: string; body: string };
@@ -69,9 +67,12 @@ export type Service = {
   icon: LucideIcon;
   name: string;
   body: string;
-  image: string;
+  image: ResponsiveImage;
   /** Topik untuk pesan template WhatsApp */
   waTopic: string;
+  /** Rincian untuk halaman /layanan */
+  includes: readonly string[];
+  deliverable: string;
 };
 
 export const SERVICES: Service[] = [
@@ -79,22 +80,43 @@ export const SERVICES: Service[] = [
     icon: PencilRuler,
     name: "Jasa Arsitektur & Desain",
     body: "Konsep rancangan gambar, visual 3D, dan penataan tata ruang yang matang sebelum dibangun.",
-    image: detailMaterial,
+    image: IMAGES.detailMaterial,
     waTopic: "jasa arsitektur & desain",
+    includes: [
+      "Diskusi kebutuhan, gaya hidup, dan budget",
+      "Konsep rancangan & penataan tata ruang",
+      "Gambar kerja untuk pelaksanaan",
+      "Visual 3D eksterior / interior",
+    ],
+    deliverable: "Gambar rancangan + visual 3D",
   },
   {
     icon: FileSpreadsheet,
     name: "Jasa Perencanaan & RAB",
     body: "Estimasi biaya terperinci, akurat, dan transparan yang disesuaikan dengan budget Anda.",
-    image: interiorSpace,
+    image: IMAGES.interiorSpace,
     waTopic: "jasa perencanaan & RAB",
+    includes: [
+      "Survei & pengukuran lokasi",
+      "Perhitungan volume tiap item pekerjaan",
+      "Harga satuan dari standar harga material terbaru",
+      "Penyesuaian spesifikasi dengan budget Anda",
+    ],
+    deliverable: "RAB rinci per item pekerjaan",
   },
   {
     icon: HardHat,
     name: "Kontraktor Bangunan & Renovasi",
     body: "Pelaksanaan konstruksi rumah baru, renovasi fasad, hingga pengerjaan interior.",
-    image: processSite,
+    image: IMAGES.processSite,
     waTopic: "kontraktor bangun / renovasi rumah",
+    includes: [
+      "Pembangunan rumah baru",
+      "Renovasi fasad, ruang, dan atap",
+      "Pengerjaan interior",
+      "Laporan progres & jadwal kerja tertulis",
+    ],
+    deliverable: "SPK resmi + garansi tertulis",
   },
 ];
 

@@ -1,3 +1,4 @@
+import { Link } from "@tanstack/react-router";
 import { Instagram } from "lucide-react";
 
 import { CONTACT, NAV, SITE, waLink } from "@/content/site";
@@ -26,13 +27,13 @@ export function Footer() {
             <p className="label-mono text-emas">Navigasi</p>
             <ul className="mt-5 space-y-3">
               {NAV.map((item) => (
-                <li key={item.href}>
-                  <a
-                    href={item.href}
+                <li key={item.to}>
+                  <Link
+                    to={item.to}
                     className="text-sm text-kapur/75 transition-colors hover:text-emas"
                   >
                     {item.label}
-                  </a>
+                  </Link>
                 </li>
               ))}
             </ul>

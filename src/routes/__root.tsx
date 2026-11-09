@@ -1,13 +1,18 @@
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import {
   Outlet,
   Link,
-  createRootRouteWithContext,
+  createRootRoute,
   useRouter,
   HeadContent,
   Scripts,
 } from "@tanstack/react-router";
 import type { ReactNode } from "react";
+
+import { Footer } from "@/components/site/footer";
+import { Header } from "@/components/site/header";
+import { WhatsAppFloat } from "@/components/site/whatsapp-float";
+
+import jakartaFont from "@fontsource-variable/plus-jakarta-sans/files/plus-jakarta-sans-latin-wght-normal.woff2?url";
 
 import appCss from "../styles.css?url";
 
@@ -68,7 +73,7 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
   );
 }
 
-export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
+export const Route = createRootRoute({
   head: () => ({
     meta: [
       { charSet: "utf-8" },
@@ -95,6 +100,13 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         rel: "stylesheet",
         href: appCss,
       },
+      {
+        rel: "preload",
+        href: jakartaFont,
+        as: "font",
+        type: "font/woff2",
+        crossOrigin: "anonymous",
+      },
       { rel: "icon", type: "image/png", href: "/favicon.png" },
     ],
   }),
@@ -119,12 +131,21 @@ function RootShell({ children }: { children: ReactNode }) {
 }
 
 function RootComponent() {
-  const { queryClient } = Route.useRouteContext();
-
   return (
-    <QueryClientProvider client={queryClient}>
-      {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-      <Outlet />
-    </QueryClientProvider>
+    <>
+      <a
+        href="#konten"
+        className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:rounded-md focus:bg-arang focus:px-4 focus:py-3 focus:text-kapur"
+      >
+        Langsung ke konten
+      </a>
+      <Header />
+      <main id="konten">
+        {/* Halaman anak dirender di sini. Jangan hapus <Outlet />. */}
+        <Outlet />
+      </main>
+      <Footer />
+      <WhatsAppFloat />
+    </>
   );
 }

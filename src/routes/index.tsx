@@ -1,13 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { ArrowRight, MapPin } from "lucide-react";
 
-import heroVilla from "@/assets/hero-villa.jpg";
-import processSite from "@/assets/process-site.jpg";
 import { BeforeAfter } from "@/components/site/before-after";
 import { Estimator } from "@/components/site/estimator";
 import { FaqList } from "@/components/site/faq";
-import { Footer } from "@/components/site/footer";
-import { Header } from "@/components/site/header";
 import { LeadForm } from "@/components/site/lead-form";
 import {
   Eyebrow,
@@ -23,8 +19,8 @@ import {
 import { ProcessTimeline } from "@/components/site/process-timeline";
 import { RabPreview } from "@/components/site/rab-preview";
 import { SpkCard } from "@/components/site/spk-card";
-import { WhatsAppFloat } from "@/components/site/whatsapp-float";
 import { CONTACT, SERVICES, SITE, STATS, TESTIMONIALS, TRUST_STRIP, waLink } from "@/content/site";
+import { IMAGES } from "@/content/images";
 import { faqJsonLd } from "@/lib/seo";
 
 const TITLE = `${SITE.name} — Kontraktor Bangun & Renovasi Rumah Jawa Timur`;
@@ -98,10 +94,12 @@ function Hero() {
         <figure className="animate-rise relative" style={{ animationDelay: "0.15s" }}>
           <div className="overflow-hidden rounded-lg border border-white/10">
             <img
-              src={heroVilla}
+              src={IMAGES.heroVilla.src}
+              srcSet={IMAGES.heroVilla.srcSet}
+              sizes="(min-width: 1024px) 520px, 100vw"
               alt="Fasad rumah modern dua lantai dengan pencahayaan sore"
-              width={1920}
-              height={1200}
+              width={IMAGES.heroVilla.width}
+              height={IMAGES.heroVilla.height}
               fetchPriority="high"
               className="aspect-[4/5] w-full object-cover sm:aspect-[4/3] lg:aspect-[4/5]"
             />
@@ -151,8 +149,8 @@ function Services() {
             </>
           }
         />
-        <OutlineButton href={waLink("layanan Nandara Build")} className="self-start md:self-auto">
-          Diskusikan kebutuhan Anda
+        <OutlineButton href="/layanan" className="self-start md:self-auto">
+          Lihat detail layanan <ArrowRight className="h-4 w-4" />
         </OutlineButton>
       </div>
 
@@ -164,7 +162,9 @@ function Services() {
           >
             <div className="aspect-[4/3] overflow-hidden">
               <img
-                src={s.image}
+                src={s.image.src}
+                srcSet={s.image.srcSet}
+                sizes="(min-width: 768px) 380px, 100vw"
                 alt=""
                 loading="lazy"
                 className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.03]"
@@ -214,8 +214,8 @@ function Showcase() {
           </div>
         </div>
         <BeforeAfter
-          before={processSite}
-          after={heroVilla}
+          before={IMAGES.processSite.src}
+          after={IMAGES.heroVilla.src}
           beforeLabel="Proses"
           afterLabel="Hasil"
           beforeAlt="Rangka bangunan saat tahap konstruksi"
@@ -244,6 +244,12 @@ function Transparency() {
         <RabPreview />
         <SpkCard />
       </div>
+      <a
+        href="/proses"
+        className="mt-8 inline-flex items-center gap-1.5 text-sm font-semibold text-emas-ink hover:underline"
+      >
+        Pelajari proses kerja lengkap <ArrowRight className="h-4 w-4" />
+      </a>
     </Section>
   );
 }
@@ -390,27 +396,16 @@ function ClosingCta() {
 function Index() {
   return (
     <>
-      <a
-        href="#konten"
-        className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:rounded-md focus:bg-arang focus:px-4 focus:py-3 focus:text-kapur"
-      >
-        Langsung ke konten
-      </a>
-      <Header />
-      <main id="konten">
-        <Hero />
-        <TrustStrip />
-        <Services />
-        <Showcase />
-        <Transparency />
-        <Process />
-        <Estimate />
-        <Testimonials />
-        <AreaAndFaq />
-        <ClosingCta />
-      </main>
-      <Footer />
-      <WhatsAppFloat />
+      <Hero />
+      <TrustStrip />
+      <Services />
+      <Showcase />
+      <Transparency />
+      <Process />
+      <Estimate />
+      <Testimonials />
+      <AreaAndFaq />
+      <ClosingCta />
     </>
   );
 }

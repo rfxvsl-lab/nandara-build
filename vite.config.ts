@@ -10,7 +10,7 @@ import tsConfigPaths from "vite-tsconfig-paths";
 export default defineConfig(({ command }) => ({
   server: { port: 8080 },
   resolve: {
-    dedupe: ["react", "react-dom", "@tanstack/react-query", "@tanstack/query-core"],
+    dedupe: ["react", "react-dom"],
   },
   plugins: [
     tailwindcss(),
@@ -19,7 +19,7 @@ export default defineConfig(({ command }) => ({
       // Entry server kustom: src/server.ts (pembungkus error SSR).
       server: { entry: "server" },
     }),
-    ...(command === "build" ? [nitro({ preset: "node-server" })] : []),
+    ...(command === "build" ? [nitro({ preset: "node-server", compressPublicAssets: true })] : []),
     viteReact(),
   ],
 }));
