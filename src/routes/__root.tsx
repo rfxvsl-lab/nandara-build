@@ -80,7 +80,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
           "Nandara Build: jasa arsitektur, perencanaan RAB, dan kontraktor renovasi. We Design. We Build. You Enjoy.",
       },
       { name: "author", content: "Nandara Build" },
-      { name: "theme-color", content: "#1e293b" },
+      { name: "theme-color", content: "#1c1a17" },
       { property: "og:title", content: "Nandara Build — Solusi Konstruksi & Renovasi Tanpa Repot" },
       {
         property: "og:description",

@@ -3,7 +3,7 @@
 > Dokumen ini adalah **acuan wajib** untuk semua pekerjaan UI Nandara Build.
 > Kalau ada keputusan desain yang tidak tercantum di sini, tambahkan dulu ke dokumen ini, baru diterapkan di kode.
 
-_Versi 1.0 · 9 November 2026_
+_Versi 1.1 · 9 November 2026 — palet "Material Tropis"_
 
 ---
 
@@ -18,7 +18,7 @@ Acuan desain **tidak** diambil dari selera atau tren semata. Ada tiga sumber, de
 | **Tagline** "We Design. We Build. You Enjoy." | Struktur 3 tahap → alur visual Desain → Bangun → Nikmati |
 | **Janji bisnis**: RAB 100% transparan, SPK resmi, tepat waktu, gratis survei | Desain harus **memperlihatkan bukti**: tabel RAB, dokumen SPK, jadwal, angka |
 | **Pasar**: rumah tinggal di Jawa Timur, calon klien membuka web dari **HP** lalu chat **WhatsApp** | Mobile-first, WhatsApp sebagai CTA utama, ringan untuk 4G |
-| **roadmap.md** awal (navy `#1E293B`, gold `#D4AF37`, Plus Jakarta Sans + serif italic) | Dipertahankan sebagai fondasi agar brand tidak berubah total |
+| **roadmap.md** awal (navy `#1E293B`, gold `#D4AF37`, Plus Jakarta Sans + serif italic) | Emas & Plus Jakarta Sans dipertahankan; navy diganti arang/beton di v1.1 atas permintaan pemilik |
 
 ### 0.2 Riset kompetitor & pola web kontraktor
 | Referensi | Pelajaran yang dipakai |
@@ -34,7 +34,7 @@ Acuan desain **tidak** diambil dari selera atau tren semata. Ada tiga sumber, de
 ### 0.3 Bahasa visual arsitektur (Indonesia & editorial)
 | Referensi | Pelajaran yang dipakai |
 | --- | --- |
-| [Andra Matin — Tropicality (Wallpaper*)](https://wallpaper.com/architecture/andra-matin-new-book-tropicality), [Dezeen — Indonesian houses](https://www.dezeen.com/tag/indonesian-houses/) | Palet material jujur: **beton, kayu, bata, kapur**; tropis modern (atap lebar, teritis, bayangan). → Warna netral hangat, foto dengan cahaya alami & bayangan nyata. |
+| [Andra Matin — Tropicality (Wallpaper*)](https://wallpaper.com/architecture/andra-matin-new-book-tropicality), [Dezeen — Indonesian houses](https://www.dezeen.com/tag/indonesian-houses/) | Palet material jujur: **beton, kayu, bata, kapur**; tropis modern (atap lebar, teritis, bayangan). → **Sumber langsung palet v1.1** (arang, beton, kapur, pasir, batu, bata), foto dengan cahaya alami & bayangan nyata. |
 | [Docomomo — Tropical Architecture in Indonesian Modernism](https://docomomojournal.com/index.php/journal/article/view/33) | Identitas arsitektur lokal, bukan villa Eropa/pantai → foto harus rumah yang relevan dengan Jawa Timur. |
 | [TheeDigital — Web Design Trends 2026](https://www.theedigital.com/?p=34345), [PaperStreet — 2026 trends](https://www.paperstreet.com/blog/2026-law-firm-website-design-trends/) | Tipografi editorial (judul besar + keterangan kecil), grid tegas, margin lega, hierarki jelas. Animasi teks **secukupnya** demi aksesibilitas. |
 | Gambar kerja arsitek (denah, potongan, notasi ukuran) | Motif **"blueprint"**: garis grid tipis, nomor bagian `01 / 02`, label teknis kecil, garis ukur. Menjadi ciri khas Nandara: *"arsitektural, tapi mudah dipahami"*. |
@@ -64,43 +64,44 @@ Pengunjung harus merasa: *"Kontraktor ini teliti, dan semuanya bisa saya periksa
 
 ---
 
-## 2. Warna
+## 2. Warna — Palet "Material Tropis"
 
-Palet dibangun dari **emas logo** + **navy** (warna brand sebelumnya) + **netral material** (kapur, batu, beton).
+_Versi 1.1 (November 2026): navy diganti **arang/beton**. Palet sekarang diambil langsung dari material arsitektur tropis Indonesia (beton ekspos, kapur, bata) yang dipadukan dengan **emas logo** sebagai aksen. Hasilnya lebih hangat, membumi, dan lebih khas dibanding kombinasi navy–emas yang umum dipakai kontraktor._
 
 ### 2.1 Token
-| Token | Hex | Peran |
-| --- | --- | --- |
-| `--ink` | `#14213D` | Teks utama, latar section gelap paling pekat |
-| `--navy` | `#1E293B` | Latar gelap (hero, footer, callout), teks judul |
-| `--navy-700` | `#334155` | Teks sekunder di latar terang |
-| `--gold` | `#C9A35A` | Aksen brand: tombol utama, garis, ikon **di latar gelap** |
-| `--gold-300` | `#EAD8A0` | Highlight lembut, latar badge di section gelap |
-| `--gold-ink` | `#8A6A2B` | Emas untuk **teks/ikon di latar terang** (kontras ≥ 4,5:1) |
-| `--paper` | `#FAF7F0` | Latar halaman utama (kapur hangat, bukan putih dingin) |
-| `--white` | `#FFFFFF` | Kartu, tabel, form |
-| `--sand` | `#F2EBDD` | Latar section selang-seling |
-| `--stone` | `#E9E4D8` | Garis/border, garis grid blueprint |
-| `--concrete` | `#6B6A65` | Teks keterangan, label, metadata |
-| `--success` | `#2F7D4F` | Status selesai, centang |
-| `--danger` | `#B3261E` | Error form |
-| `--whatsapp` | `#25D366` | **Hanya** untuk ikon WhatsApp kecil, bukan tombol penuh |
+| Token | Hex | Material | Peran |
+| --- | --- | --- | --- |
+| `arang` | `#1C1A17` | Arang / beton gelap | Teks utama, latar section gelap (hero, proses, footer) |
+| `beton` | `#3D3A35` | Beton ekspos | Teks sekunder, isi tabel |
+| `abu` | `#5F584E` | Semen | Keterangan, label, metadata |
+| `kapur` | `#F6F2EA` | Dinding kapur | Latar halaman utama |
+| `pasir` | `#ECE4D6` | Pasir / plester | Latar section selang-seling |
+| `batu` | `#D9CFBE` | Batu alam | Garis, border, garis grid |
+| `emas` | `#C9A35A` | Emas logo | Tombol utama, aksen, teks **di latar arang** |
+| `emas-muda` | `#E8D6A6` | Emas logo (terang) | Hover tombol, label di latar gelap |
+| `emas-ink` | `#7A5B26` | Kuningan tua | Emas untuk **teks/ikon di latar terang** |
+| `bata` | `#A9472B` | Bata merah | Aksen kedua, **hemat**: stempel SPK, badge "contoh", penanda penting |
+| `success` | `#2F7D4F` | — | Centang / status selesai |
+| `danger` | `#B3261E` | — | Error form |
+| `whatsapp` | `#25D366` | — | Hanya ikon WhatsApp |
 
 ### 2.2 Aturan kontras (sudah diuji, WCAG 2.2)
 | Kombinasi | Rasio | Boleh untuk |
 | --- | --- | --- |
-| `ink` di `paper` | 14,9 : 1 | Semua teks |
-| `navy` di `paper` | 13,7 : 1 | Semua teks |
-| `gold-ink` di `paper` | 4,7 : 1 | Teks ≥ 14 px, ikon, link |
-| `concrete` di `paper` | 5,1 : 1 | Keterangan kecil |
-| `gold` di `navy` | 6,2 : 1 | Teks & ikon di section gelap |
-| `navy` di `gold` | 6,2 : 1 | Label tombol utama |
-| ❌ `gold` di `paper`/putih | 2,2 : 1 | **Dilarang** untuk teks. Hanya untuk garis dekoratif |
+| `arang` di `kapur` | 15,6 : 1 | Semua teks |
+| `beton` di `kapur` | 10,1 : 1 | Semua teks |
+| `abu` di `kapur` / `pasir` | 6,3 / 5,6 : 1 | Keterangan kecil |
+| `emas-ink` di `kapur` / `pasir` / putih | 5,6 / 5,0 / 6,3 : 1 | Teks, ikon, link |
+| `emas` di `arang` | 7,3 : 1 | Teks & ikon di section gelap |
+| `arang` di `emas` | 7,3 : 1 | Label tombol utama |
+| `bata` di `kapur` | 5,2 : 1 | Teks badge kecil |
+| ❌ `emas` di `kapur`/putih | ± 2,2 : 1 | **Dilarang** untuk teks. Hanya garis dekoratif |
 
 ### 2.3 Proporsi
-- **70%** netral terang (`paper`, `white`, `sand`)
-- **20%** navy/ink
-- **10%** emas, dan hanya untuk hal yang penting: CTA, angka kunci, garis aksen
+- **65%** netral terang (`kapur`, `pasir`, putih)
+- **25%** gelap (`arang`, `beton`)
+- **8%** emas, hanya untuk hal penting: CTA, angka kunci, garis aksen
+- **2%** bata, hanya untuk penanda kecil
 - Satu layar HP **maksimal satu tombol emas**.
 
 ---
@@ -145,7 +146,7 @@ Semua font di-**self-host** (subset Latin, `font-display: swap`). Tidak memakai 
 - Breakpoint: `sm 640` · `md 768` · `lg 1024` · `xl 1280`.
 
 ### 4.1 Motif "Blueprint" (ciri khas)
-- **Garis grid tipis** `1px var(--stone)` di latar hero dan section tertentu (opacity rendah), seperti kertas gambar kerja.
+- **Garis grid tipis** `1px` emas/arang transparan di latar hero dan section tertentu (opacity rendah), seperti kertas gambar kerja.
 - **Penomoran section**: label mono `01 — LAYANAN`, `02 — PROSES`, … di atas setiap judul section.
 - **Garis ukur**: garis horizontal dengan ujung bertanda `|——|` dan label angka (mis. `98 HARI`), dipakai di kartu proyek dan timeline.
 - **Sudut tegas**: radius kecil (lihat 5.1). Lebih arsitektural dibanding kartu yang sangat membulat.
@@ -161,25 +162,25 @@ Semua font di-**self-host** (subset Latin, `font-display: swap`). Tidak memakai 
 | `--radius-sm` | 4 px (input, badge) |
 | `--radius-md` | 8 px (tombol, kartu) |
 | `--radius-lg` | 16 px (gambar besar, callout) |
-| `--shadow-card` | `0 1px 2px rgb(20 33 61 / .06), 0 8px 24px -12px rgb(20 33 61 / .18)` |
-| Border default | `1px solid var(--stone)` |
+| `--shadow-card` | `0 1px 2px rgb(28 26 23 / .06), 0 10px 28px -14px rgb(28 26 23 / .22)` |
+| Border default | `1px solid var(--color-batu)` |
 
 > Catatan: versi lama memakai radius 24–32 px (sangat membulat). Versi baru memakai sudut lebih tegas agar terasa **arsitektural**.
 
 ### 5.2 Tombol
 | Varian | Tampilan | Pemakaian |
 | --- | --- | --- |
-| **Primary** | Latar `gold`, teks `navy` 600, tinggi **48 px**, radius `md` | CTA utama: "Konsultasi via WhatsApp" |
-| **Secondary** | Garis `navy` 1.5 px, teks `navy` | "Lihat Portofolio", "Hitung Estimasi" |
-| **Ghost (gelap)** | Garis `gold/50`, teks `paper` | CTA sekunder di section navy |
-| **Text link** | Teks `gold-ink`, garis bawah saat hover, ikon panah → | Tautan dalam paragraf |
+| **Primary** | Latar `emas`, teks `arang` 600, tinggi **48 px**, radius `md` | CTA utama: "Konsultasi via WhatsApp" |
+| **Secondary** | Garis `arang` 1.5 px, teks `arang` | "Lihat Portofolio", "Hitung Estimasi" |
+| **Ghost (gelap)** | Garis `emas/50`, teks `kapur` | CTA sekunder di section arang |
+| **Text link** | Teks `emas-ink`, garis bawah saat hover, ikon panah → | Tautan dalam paragraf |
 
 - Area sentuh minimum **48 × 48 px**.
-- Fokus keyboard: `outline 2px var(--gold-ink)`, offset 2 px. **Tidak boleh dihilangkan.**
+- Fokus keyboard: `outline 2px var(--emas-ink)`, offset 2 px. **Tidak boleh dihilangkan.**
 - Label tombol berupa kata kerja + hasil: "Minta Survei Gratis", bukan "Klik di sini".
 
 ### 5.3 WhatsApp
-- **Floating button** di kanan bawah (HP & desktop), ukuran 56 px, latar `navy`, ikon WhatsApp `#25D366` + label "Chat" di desktop.
+- **Floating button** di kanan bawah (HP & desktop), ukuran 56 px, latar `arang`, ikon WhatsApp `#25D366` + label "Chat" di desktop.
 - Muncul setelah pengunjung scroll melewati hero, dan tidak menutupi tombol lain.
 - Setiap tombol WA memakai **pesan template** sesuai konteks, contoh:
   `Halo Nandara Build, saya tertarik [Renovasi Rumah]. Lokasi saya di [kota].`
@@ -203,15 +204,15 @@ Semua font di-**self-host** (subset Latin, `font-display: swap`). Tidak memakai 
 
 ### 5.6 Form
 - Label selalu tampil di atas input (bukan placeholder saja).
-- Tinggi input 48 px, `radius-sm`, border `stone`, fokus `gold-ink`.
+- Tinggi input 48 px, `radius-sm`, border `batu`, fokus `emas-ink`.
 - Field minimum: **Nama, No. WhatsApp, Kota, Jenis pekerjaan**. Field lain opsional.
 - Pesan error spesifik dalam bahasa Indonesia: "Nomor WhatsApp minimal 10 digit".
 - Setelah kirim: halaman/status terima kasih + "Tim kami membalas maks. 1 jam pada jam kerja".
 
 ### 5.7 Navigasi
-- Header tinggi 64 px, latar `paper/90` + blur, logo kiri, menu tengah/kanan, **satu** tombol primary.
-- Di HP: logo + teks "NANDARA BUILD" tetap tampil, tombol menu 48 px, menu layar penuh (`navy`) dengan tautan besar, nomor WA, dan tombol tutup. Wajib ada `aria-expanded` dan bisa ditutup dengan `Esc`.
-- Footer `ink`: logo, ringkasan, navigasi, area layanan, kontak, legalitas (NIB), sosial media, `© {tahun berjalan}`.
+- Header tinggi 64 px, latar `kapur/90` + blur, logo kiri, menu tengah/kanan, **satu** tombol primary.
+- Di HP: logo + teks "NANDARA BUILD" tetap tampil, tombol menu 48 px, menu layar penuh (`arang` + grid blueprint) dengan tautan besar, nomor WA, dan tombol tutup. Wajib ada `aria-expanded` dan bisa ditutup dengan `Esc`.
+- Footer `arang`: logo, ringkasan, navigasi, area layanan, kontak, legalitas (NIB), sosial media, `© {tahun berjalan}`.
 
 ---
 
@@ -232,7 +233,7 @@ Semua font di-**self-host** (subset Latin, `font-display: swap`). Tidak memakai 
 - Semua foto punya `alt` deskriptif: "Fasad rumah dua lantai setelah renovasi di Sidoarjo".
 
 ### 6.3 Ikon
-- **Lucide** dengan stroke 1.5 px, ukuran 20/24 px, warna `gold-ink` (terang) atau `gold` (gelap).
+- **Lucide** dengan stroke 1.5 px, ukuran 20/24 px, warna `emas-ink` (terang) atau `emas` (gelap).
 - Tidak memakai emoji di UI.
 
 ---
@@ -273,7 +274,7 @@ Semua font di-**self-host** (subset Latin, `font-display: swap`). Tidak memakai 
 
 ## 10. Larangan (Anti-pattern)
 
-- ❌ Teks emas di latar putih/kapur.
+- ❌ Teks `emas` di latar putih/kapur (pakai `emas-ink`).
 - ❌ Lebih dari satu tombol emas dalam satu layar HP.
 - ❌ Foto stok/AI yang tidak relevan (villa pantai, rumah luar negeri).
 - ❌ Angka statistik atau testimoni karangan.
@@ -291,22 +292,20 @@ Token di atas ditulis di `src/styles.css` sebagai berikut (ringkas):
 
 ```css
 @theme {
-  --font-sans: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Plus Jakarta Sans Variable", "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
   --font-serif: "Instrument Serif", ui-serif, Georgia, serif;
   --font-mono: "JetBrains Mono", ui-monospace, monospace;
 
-  --color-ink: #14213d;
-  --color-navy: #1e293b;
-  --color-navy-700: #334155;
-  --color-gold: #c9a35a;
-  --color-gold-300: #ead8a0;
-  --color-gold-ink: #8a6a2b;
-  --color-paper: #faf7f0;
-  --color-sand: #f2ebdd;
-  --color-stone: #e9e4d8;
-  --color-concrete: #6b6a65;
-  --color-success: #2f7d4f;
-  --color-danger: #b3261e;
+  --color-arang: #1c1a17;
+  --color-beton: #3d3a35;
+  --color-abu: #5f584e;
+  --color-kapur: #f6f2ea;
+  --color-pasir: #ece4d6;
+  --color-batu: #d9cfbe;
+  --color-emas: #c9a35a;
+  --color-emas-muda: #e8d6a6;
+  --color-emas-ink: #7a5b26;
+  --color-bata: #a9472b;
 
   --radius-sm: 4px;
   --radius-md: 8px;
@@ -314,4 +313,6 @@ Token di atas ditulis di `src/styles.css` sebagai berikut (ringkas):
 }
 ```
 
-Variabel semantik shadcn (`--primary`, `--background`, dll.) dipetakan ke token ini: `--background: paper`, `--foreground: ink`, `--primary: navy`, `--accent: gold`, `--ring: gold-ink`.
+Variabel semantik shadcn (`--primary`, `--background`, dll.) dipetakan ke token ini: `--background: kapur`, `--foreground: arang`, `--primary: arang`, `--accent: emas`, `--ring: emas-ink`.
+
+Utility tambahan: `bg-blueprint` (grid tipis di latar gelap), `bg-blueprint-light` (grid di latar terang), `label-mono`, `tabular`.

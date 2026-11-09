@@ -1,246 +1,187 @@
 import { createFileRoute } from "@tanstack/react-router";
-import {
-  ArrowRight,
-  Check,
-  Compass,
-  Instagram,
-  Menu,
-  MessageCircle,
-  Target,
-  X,
-} from "lucide-react";
-import { useEffect, useState } from "react";
+import { ArrowRight, MapPin } from "lucide-react";
 
 import heroVilla from "@/assets/hero-villa.jpg";
-import logo from "@/assets/nandara-logo.png";
+import processSite from "@/assets/process-site.jpg";
+import { BeforeAfter } from "@/components/site/before-after";
+import { Estimator } from "@/components/site/estimator";
+import { FaqList } from "@/components/site/faq";
+import { Footer } from "@/components/site/footer";
+import { Header } from "@/components/site/header";
+import { LeadForm } from "@/components/site/lead-form";
 import {
   Eyebrow,
   GhostButton,
   GoldButton,
   Italic,
+  MeasureLine,
   OutlineButton,
+  SampleBadge,
   Section,
+  SectionHeading,
 } from "@/components/site/nandara";
-import {
-  CONTACT,
-  HERO_POINTS,
-  MISSION,
-  NAV,
-  REASONS,
-  SERVICES,
-  SITE,
-  VISION,
-  waLink,
-} from "@/content/site";
+import { ProcessTimeline } from "@/components/site/process-timeline";
+import { RabPreview } from "@/components/site/rab-preview";
+import { SpkCard } from "@/components/site/spk-card";
+import { WhatsAppFloat } from "@/components/site/whatsapp-float";
+import { CONTACT, SERVICES, SITE, STATS, TESTIMONIALS, TRUST_STRIP, waLink } from "@/content/site";
+import { faqJsonLd } from "@/lib/seo";
+
+const TITLE = `${SITE.name} — Kontraktor Bangun & Renovasi Rumah Jawa Timur`;
+
+const businessJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "GeneralContractor",
+  name: SITE.name,
+  slogan: SITE.tagline,
+  description: SITE.description,
+  telephone: `+${CONTACT.whatsappIntl}`,
+  areaServed: { "@type": "AdministrativeArea", name: "Jawa Timur" },
+  sameAs: [CONTACT.instagram.url],
+};
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: `${SITE.name} — ${SITE.headline}` },
+      { title: TITLE },
       { name: "description", content: SITE.description },
-      { property: "og:title", content: `${SITE.name} — ${SITE.tagline}` },
+      { property: "og:title", content: TITLE },
       {
         property: "og:description",
         content:
-          "Perencanaan matang, RAB 100% transparan, dan garansi ketepatan waktu untuk rumah impian Anda.",
+          "RAB rinci & SPK resmi di tangan Anda sebelum membayar DP. Gratis survei & konsultasi.",
       },
+    ],
+    scripts: [
+      { type: "application/ld+json", children: JSON.stringify(businessJsonLd) },
+      { type: "application/ld+json", children: JSON.stringify(faqJsonLd()) },
     ],
   }),
   component: Index,
 });
 
-function Wordmark({ size = "md" }: { size?: "md" | "lg" }) {
-  return (
-    <span className="flex min-w-0 items-center gap-3">
-      <img
-        src={logo}
-        alt=""
-        className={size === "lg" ? "h-12 w-12 shrink-0" : "h-10 w-10 shrink-0"}
-        width={size === "lg" ? 48 : 40}
-        height={size === "lg" ? 48 : 40}
-      />
-      <span className="min-w-0 leading-none">
-        <span className="block text-sm font-extrabold uppercase tracking-[0.22em] text-navy">
-          Nandara
-        </span>
-        <span className="label-mono mt-1 block text-[0.625rem] tracking-[0.42em] text-gold-ink">
-          Build
-        </span>
-      </span>
-    </span>
-  );
-}
-
-function Header() {
-  const [open, setOpen] = useState(false);
-
-  useEffect(() => {
-    if (!open) return;
-    const onKey = (e: KeyboardEvent) => e.key === "Escape" && setOpen(false);
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, [open]);
-
-  return (
-    <header className="sticky top-0 z-50 border-b border-stone bg-paper/90 backdrop-blur-md">
-      <div className="mx-auto flex h-16 w-full max-w-[1200px] items-center justify-between gap-4 px-4 sm:px-8">
-        <a href="#home" aria-label={`${SITE.name} — ke atas`}>
-          <Wordmark />
-        </a>
-
-        <div className="flex items-center gap-2">
-          <nav aria-label="Navigasi utama" className="hidden items-center gap-7 lg:flex">
-            {NAV.map((item) => (
-              <a
-                key={item.href}
-                href={item.href}
-                className="text-sm font-medium text-navy-700 transition-colors hover:text-gold-ink"
-              >
-                {item.label}
-              </a>
-            ))}
-          </nav>
-          <GoldButton href={waLink()} className="ml-4 hidden sm:inline-flex">
-            Konsultasi Gratis
-          </GoldButton>
-          <button
-            type="button"
-            aria-label={open ? "Tutup menu" : "Buka menu"}
-            aria-expanded={open}
-            aria-controls="menu-mobile"
-            onClick={() => setOpen((v) => !v)}
-            className="grid h-12 w-12 shrink-0 place-items-center rounded-md border border-stone text-navy lg:hidden"
-          >
-            {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-          </button>
-        </div>
-      </div>
-
-      {open && (
-        <nav
-          id="menu-mobile"
-          aria-label="Navigasi utama"
-          className="border-t border-stone bg-paper px-4 pb-6 pt-2 lg:hidden"
-        >
-          <ul className="flex flex-col">
-            {NAV.map((item) => (
-              <li key={item.href}>
-                <a
-                  href={item.href}
-                  onClick={() => setOpen(false)}
-                  className="block border-b border-stone py-4 text-base font-medium text-navy"
-                >
-                  {item.label}
-                </a>
-              </li>
-            ))}
-          </ul>
-          <GoldButton href={waLink()} className="mt-6 w-full">
-            <MessageCircle className="h-4 w-4" />
-            Konsultasi Gratis via WhatsApp
-          </GoldButton>
-        </nav>
-      )}
-    </header>
-  );
-}
-
+/* ───────────── 02 Hero ───────────── */
 function Hero() {
   return (
-    <section id="home" className="px-4 pb-8 pt-6 sm:px-8 sm:pt-10">
-      <div className="mx-auto w-full max-w-[1200px]">
-        <div className="relative overflow-hidden rounded-lg bg-navy">
-          <img
-            src={heroVilla}
-            alt="Fasad rumah modern dua lantai"
-            width={1920}
-            height={1200}
-            fetchPriority="high"
-            className="absolute inset-0 h-full w-full object-cover opacity-60"
-          />
-          <div className="absolute inset-0 bg-[linear-gradient(105deg,rgb(20_33_61/0.95)_0%,rgb(20_33_61/0.75)_50%,rgb(20_33_61/0.3)_100%)]" />
-
-          <div className="relative grid gap-10 px-6 py-14 sm:px-10 sm:py-20 lg:grid-cols-[1.05fr_0.95fr] lg:items-center lg:py-24">
-            <div className="animate-rise">
-              <Eyebrow tone="dark">{SITE.area}</Eyebrow>
-              <h1 className="mt-6 text-[2.5rem] font-extrabold leading-[1.04] tracking-tight text-paper sm:text-5xl lg:text-[4rem]">
-                Solusi Konstruksi & Renovasi <Italic tone="dark">Tanpa Repot</Italic>
-              </h1>
-              <p className="mt-6 max-w-xl text-base leading-relaxed text-paper/80 sm:text-lg">
-                <span className="font-semibold text-paper">{SITE.tagline}</span> Perencanaan matang,
-                RAB transparan, dan garansi ketepatan waktu untuk rumah impian Anda.
-              </p>
-              <div className="mt-9 flex flex-col gap-3 sm:flex-row">
-                <GoldButton href={waLink("konsultasi & survei gratis")}>
-                  Konsultasi & Gratis Survei
-                  <ArrowRight className="h-4 w-4" />
-                </GoldButton>
-                <GhostButton href="#layanan">Lihat Layanan Kami</GhostButton>
-              </div>
-            </div>
-
-            <ul className="grid gap-3 sm:grid-cols-3 lg:grid-cols-1 lg:justify-self-end">
-              {HERO_POINTS.map((point, i) => (
-                <li
-                  key={point.title}
-                  className="animate-rise rounded-md border border-white/10 bg-paper p-5 shadow-card lg:w-80"
-                  style={{ animationDelay: `${0.15 + i * 0.1}s` }}
-                >
-                  <div className="flex items-start gap-3">
-                    <span className="grid h-10 w-10 shrink-0 place-items-center rounded-sm bg-sand text-gold-ink">
-                      <point.icon className="h-5 w-5" strokeWidth={1.5} />
-                    </span>
-                    <div className="min-w-0">
-                      <p className="text-sm font-bold text-navy">{point.title}</p>
-                      <p className="mt-1 text-sm leading-snug text-concrete">{point.body}</p>
-                    </div>
-                  </div>
-                </li>
-              ))}
-            </ul>
+    <section id="home" className="relative overflow-hidden bg-arang bg-blueprint text-kapur">
+      <div className="mx-auto grid w-full max-w-[1200px] gap-12 px-4 pb-14 pt-12 sm:px-8 lg:grid-cols-[1.1fr_0.9fr] lg:items-center lg:gap-16 lg:pb-24 lg:pt-20">
+        <div className="animate-rise">
+          <Eyebrow tone="dark">Kontraktor · {SITE.area}</Eyebrow>
+          <h1 className="mt-6 text-[2.5rem] font-extrabold leading-[1.02] tracking-tight sm:text-[3.5rem] lg:text-[4.25rem]">
+            Bangun & Renovasi Rumah dengan RAB yang <Italic tone="dark">Bisa Anda Periksa</Italic>
+          </h1>
+          <p className="mt-6 max-w-xl text-base leading-relaxed text-kapur/75 sm:text-lg">
+            Desain, RAB rinci, dan SPK resmi sudah di tangan Anda{" "}
+            <strong className="font-semibold text-kapur">sebelum membayar DP sepeser pun</strong>.{" "}
+            {SITE.tagline}
+          </p>
+          <div className="mt-9 flex flex-col gap-3 sm:flex-row">
+            <GoldButton href={waLink("konsultasi & survei gratis")}>
+              Konsultasi via WhatsApp
+              <ArrowRight className="h-4 w-4" />
+            </GoldButton>
+            <GhostButton href="#estimasi">Hitung Estimasi Biaya</GhostButton>
           </div>
+
+          {STATS.length > 0 && (
+            <dl className="mt-12 grid grid-cols-2 gap-6 border-t border-white/10 pt-8 sm:grid-cols-4">
+              {STATS.map((s) => (
+                <div key={s.label}>
+                  <dt className="label-mono text-[0.6875rem] text-emas-muda/80">{s.label}</dt>
+                  <dd className="tabular mt-2 text-3xl font-extrabold text-kapur">{s.value}</dd>
+                </div>
+              ))}
+            </dl>
+          )}
         </div>
+
+        <figure className="animate-rise relative" style={{ animationDelay: "0.15s" }}>
+          <div className="overflow-hidden rounded-lg border border-white/10">
+            <img
+              src={heroVilla}
+              alt="Fasad rumah modern dua lantai dengan pencahayaan sore"
+              width={1920}
+              height={1200}
+              fetchPriority="high"
+              className="aspect-[4/5] w-full object-cover sm:aspect-[4/3] lg:aspect-[4/5]"
+            />
+          </div>
+          <MeasureLine label="We Design · We Build · You Enjoy" tone="dark" className="mt-4" />
+          <figcaption className="absolute -bottom-2 left-4 right-4 translate-y-[-3.5rem] rounded-md bg-kapur p-4 text-arang shadow-card sm:left-auto sm:w-72">
+            <p className="label-mono text-[0.6875rem] text-emas-ink">Sebelum DP, Anda pegang</p>
+            <ul className="mt-2 space-y-1 text-sm font-semibold">
+              <li>✓ Gambar rancangan</li>
+              <li>✓ RAB rinci per item</li>
+              <li>✓ Draf SPK resmi</li>
+            </ul>
+          </figcaption>
+        </figure>
       </div>
     </section>
   );
 }
 
+/* ───────────── 03 Strip kepercayaan ───────────── */
+function TrustStrip() {
+  return (
+    <div className="border-b border-batu bg-pasir">
+      <ul className="mx-auto grid w-full max-w-[1200px] grid-cols-2 gap-x-4 gap-y-5 px-4 py-7 sm:px-8 lg:grid-cols-4">
+        {TRUST_STRIP.map((t) => (
+          <li key={t.label} className="flex items-center gap-3 text-sm font-semibold text-arang">
+            <t.icon className="h-5 w-5 shrink-0 text-emas-ink" strokeWidth={1.5} aria-hidden />
+            {t.label}
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+/* ───────────── 04 Layanan ───────────── */
 function Services() {
   return (
     <Section id="layanan">
-      <div className="max-w-2xl">
-        <Eyebrow index="01">Layanan Kami</Eyebrow>
-        <h2 className="mt-5 text-3xl font-extrabold tracking-tight text-navy sm:text-[2.5rem] sm:leading-tight">
-          Dari gambar pertama hingga <Italic>kunci diserahkan</Italic>
-        </h2>
+      <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+        <SectionHeading
+          index="01"
+          label="Layanan"
+          title={
+            <>
+              Dari gambar pertama hingga <Italic>kunci diserahkan</Italic>
+            </>
+          }
+        />
+        <OutlineButton href={waLink("layanan Nandara Build")} className="self-start md:self-auto">
+          Diskusikan kebutuhan Anda
+        </OutlineButton>
       </div>
 
       <div className="mt-12 grid gap-6 md:grid-cols-3">
         {SERVICES.map((s, i) => (
           <article
             key={s.name}
-            className="group overflow-hidden rounded-md border border-stone bg-white transition-shadow duration-150 hover:shadow-card"
+            className="group flex flex-col overflow-hidden rounded-md border border-batu bg-white transition-shadow duration-150 hover:shadow-card"
           >
             <div className="aspect-[4/3] overflow-hidden">
               <img
                 src={s.image}
-                alt={s.name}
+                alt=""
                 loading="lazy"
-                className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+                className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.03]"
               />
             </div>
-            <div className="p-6">
-              <p className="label-mono text-concrete">Layanan {String(i + 1).padStart(2, "0")}</p>
-              <h3 className="mt-3 flex items-center gap-2 text-xl font-bold text-navy">
-                <s.icon className="h-5 w-5 shrink-0 text-gold-ink" strokeWidth={1.5} />
+            <div className="flex flex-1 flex-col p-6">
+              <p className="label-mono text-abu">Layanan {String(i + 1).padStart(2, "0")}</p>
+              <h3 className="mt-3 flex items-center gap-2 text-xl font-bold text-arang">
+                <s.icon className="h-5 w-5 shrink-0 text-emas-ink" strokeWidth={1.5} aria-hidden />
                 {s.name}
               </h3>
-              <p className="mt-2 text-base leading-relaxed text-concrete">{s.body}</p>
+              <p className="mt-2 flex-1 text-base leading-relaxed text-abu">{s.body}</p>
               <a
                 href={waLink(s.waTopic)}
                 target="_blank"
                 rel="noreferrer"
-                className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-gold-ink hover:underline"
+                className="mt-5 inline-flex items-center gap-1.5 text-sm font-semibold text-emas-ink hover:underline"
               >
                 Tanya layanan ini <ArrowRight className="h-4 w-4" />
               </a>
@@ -252,161 +193,197 @@ function Services() {
   );
 }
 
-function WhyUs() {
+/* ───────────── 05 Hasil kerja ───────────── */
+function Showcase() {
   return (
-    <Section id="mengapa-kami" className="bg-sand">
-      <div className="grid gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
+    <Section id="portofolio" className="bg-pasir">
+      <div className="grid gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:items-center lg:gap-16">
         <div>
-          <Eyebrow index="02">Value Kami</Eyebrow>
-          <h2 className="mt-5 text-3xl font-extrabold leading-tight tracking-tight text-navy sm:text-[2.5rem]">
-            Mengapa Memilih <Italic>Nandara Build?</Italic>
-          </h2>
-          <p className="mt-5 max-w-md text-base leading-relaxed text-concrete">
-            Kami bekerja dengan angka yang bisa Anda periksa dan jadwal yang bisa Anda pantau —
-            arsitektural, tapi mudah dipahami.
-          </p>
-          <OutlineButton href={waLink()} className="mt-8">
-            <MessageCircle className="h-4 w-4" />
-            Tanya Kami di WhatsApp
-          </OutlineButton>
+          <SectionHeading
+            index="02"
+            label="Hasil kerja"
+            title={
+              <>
+                Dari lahan proyek menjadi <Italic>rumah yang dinikmati</Italic>
+              </>
+            }
+            intro="Setiap proyek kami dokumentasikan sejak tahap awal. Geser untuk melihat perbedaan sebelum dan sesudah."
+          />
+          <div className="mt-6">
+            <SampleBadge>Ilustrasi — portofolio asli segera hadir</SampleBadge>
+          </div>
         </div>
-
-        <ul className="grid gap-4 sm:grid-cols-2">
-          {REASONS.map((r) => (
-            <li key={r.title} className="rounded-md border border-stone bg-white p-5">
-              <div className="flex items-start gap-3">
-                <span className="grid h-8 w-8 shrink-0 place-items-center rounded-sm bg-navy text-gold">
-                  <Check className="h-4 w-4" />
-                </span>
-                <div className="min-w-0">
-                  <p className="text-base font-bold text-navy">{r.title}</p>
-                  <p className="mt-1.5 text-sm leading-relaxed text-concrete">{r.body}</p>
-                </div>
-              </div>
-            </li>
-          ))}
-        </ul>
+        <BeforeAfter
+          before={processSite}
+          after={heroVilla}
+          beforeLabel="Proses"
+          afterLabel="Hasil"
+          beforeAlt="Rangka bangunan saat tahap konstruksi"
+          afterAlt="Rumah modern dua lantai setelah selesai dibangun"
+        />
       </div>
     </Section>
   );
 }
 
-function VisionMission() {
+/* ───────────── 06 Transparansi ───────────── */
+function Transparency() {
   return (
-    <Section id="visi-misi">
-      <div className="grid gap-6 lg:grid-cols-2">
-        <div className="rounded-md border border-stone bg-white p-8 sm:p-10">
-          <span className="grid h-12 w-12 place-items-center rounded-sm bg-sand text-gold-ink">
-            <Target className="h-6 w-6" strokeWidth={1.5} />
-          </span>
-          <h2 className="label-mono mt-6 text-gold-ink">03 — Visi</h2>
-          <p className="mt-4 text-xl font-semibold leading-snug text-navy sm:text-2xl">{VISION}</p>
-        </div>
-
-        <div className="rounded-md border border-stone bg-white p-8 sm:p-10">
-          <span className="grid h-12 w-12 place-items-center rounded-sm bg-navy text-gold">
-            <Compass className="h-6 w-6" strokeWidth={1.5} />
-          </span>
-          <h2 className="label-mono mt-6 text-gold-ink">04 — Misi</h2>
-          <ul className="mt-5 space-y-3.5">
-            {MISSION.map((m) => (
-              <li key={m} className="flex gap-3 text-base leading-relaxed text-navy-700">
-                <Check className="mt-1 h-4 w-4 shrink-0 text-gold-ink" />
-                <span>{m}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
+    <Section id="transparansi" className="bg-blueprint-light">
+      <SectionHeading
+        index="03"
+        label="Transparansi"
+        title={
+          <>
+            Ini yang Anda terima <Italic>sebelum membayar DP</Italic>
+          </>
+        }
+        intro="Borongan murah tanpa RAB dan SPK yang jelas sering berujung biaya membengkak. Di Nandara Build, semua angka dan kesepakatan tertulis dulu — Anda periksa, baru putuskan."
+      />
+      <div className="mt-12 grid gap-6 lg:grid-cols-[1.35fr_1fr] lg:items-start">
+        <RabPreview />
+        <SpkCard />
       </div>
     </Section>
   );
 }
 
-function Promo() {
+/* ───────────── 07 Proses ───────────── */
+function Process() {
   return (
-    <Section id="promo">
-      <div className="relative overflow-hidden rounded-lg bg-navy px-6 py-14 sm:px-12 sm:py-20">
-        <div className="relative mx-auto max-w-3xl text-center">
-          <Eyebrow tone="dark">Penawaran Khusus</Eyebrow>
-          <h2 className="mt-6 text-3xl font-extrabold leading-tight tracking-tight text-paper sm:text-[2.6rem]">
-            Niat Mau Hemat Bangun Rumah, Tapi Biaya <Italic tone="dark">Malah Membengkak?</Italic>
-          </h2>
-          <p className="mx-auto mt-6 max-w-2xl text-base leading-relaxed text-paper/80">
-            Jangan mau tergiur borongan murah jika tanpa SPK dan RAB jelas. Di Nandara Build,
-            sebelum bayar DP sepeser pun, Anda sudah memegang RAB terperinci dan draf SPK resmi.
-          </p>
-          <GoldButton href={waLink("minta RAB & draf SPK")} className="mt-9">
-            <MessageCircle className="h-4 w-4" />
-            Hubungi WA {CONTACT.whatsappDisplay}
-          </GoldButton>
-        </div>
-      </div>
-    </Section>
-  );
-}
-
-function Footer() {
-  const year = new Date().getFullYear();
-  return (
-    <footer id="kontak" className="scroll-mt-20 border-t border-stone bg-white px-4 py-16 sm:px-8">
+    <section id="proses" className="scroll-mt-20 bg-arang bg-blueprint px-4 py-16 sm:px-8 md:py-28">
       <div className="mx-auto w-full max-w-[1200px]">
-        <div className="grid gap-10 md:grid-cols-[1.4fr_1fr_1fr]">
-          <div>
-            <Wordmark size="lg" />
-            <p className="mt-5 max-w-sm font-serif text-2xl italic text-navy">{SITE.headline}</p>
-            <p className="mt-3 text-sm text-concrete">Melayani area {SITE.area}.</p>
-          </div>
+        <SectionHeading
+          index="04"
+          label="Proses kerja"
+          tone="dark"
+          title={
+            <>
+              Enam langkah, <Italic tone="dark">tanpa kejutan</Italic>
+            </>
+          }
+          intro="Setiap tahap punya dokumen yang jelas, jadi Anda selalu tahu posisi proyek dan biayanya."
+        />
+        <div className="mt-14">
+          <ProcessTimeline />
+        </div>
+      </div>
+    </section>
+  );
+}
 
-          <div>
-            <p className="label-mono text-concrete">Navigasi</p>
-            <ul className="mt-5 space-y-3">
-              {NAV.map((item) => (
-                <li key={item.href}>
-                  <a
-                    href={item.href}
-                    className="text-sm text-navy-700 transition-colors hover:text-gold-ink"
-                  >
-                    {item.label}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
+/* ───────────── 08 Estimasi ───────────── */
+function Estimate() {
+  return (
+    <Section id="estimasi">
+      <SectionHeading
+        index="05"
+        label="Estimasi biaya"
+        title={
+          <>
+            Kira-kira butuh <Italic>berapa biaya?</Italic>
+          </>
+        }
+        intro="Hitung rentang biaya kasar dalam 10 detik. Untuk angka pasti, kami buatkan RAB rinci setelah survei — gratis."
+      />
+      <div className="mt-12">
+        <Estimator />
+      </div>
+    </Section>
+  );
+}
 
-          <div>
-            <p className="label-mono text-concrete">Hubungi Kami</p>
-            <ul className="mt-5 space-y-3 text-sm">
-              <li>
-                <a
-                  href={waLink()}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="inline-flex items-center gap-2 text-navy-700 transition-colors hover:text-gold-ink"
-                >
-                  <MessageCircle className="h-4 w-4" />
-                  WhatsApp <span className="tabular">{CONTACT.whatsappDisplay}</span>
-                </a>
-              </li>
-              <li>
-                <a
-                  href={CONTACT.instagram.url}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="inline-flex items-center gap-2 text-navy-700 transition-colors hover:text-gold-ink"
-                >
-                  <Instagram className="h-4 w-4" />
-                  {CONTACT.instagram.handle}
-                </a>
-              </li>
-            </ul>
+/* ───────────── 09 Testimoni (tampil jika ada data asli) ───────────── */
+function Testimonials() {
+  if (TESTIMONIALS.length === 0) return null;
+  return (
+    <Section id="testimoni" className="bg-pasir">
+      <SectionHeading index="06" label="Kata klien" title="Mereka sudah membuktikan" />
+      <div className="mt-12 grid gap-6 md:grid-cols-3">
+        {TESTIMONIALS.map((t) => (
+          <figure key={t.name} className="rounded-md border border-batu bg-white p-6">
+            <blockquote className="text-base leading-relaxed text-beton">“{t.quote}”</blockquote>
+            <figcaption className="mt-5 border-t border-batu pt-4">
+              <p className="font-bold text-arang">{t.name}</p>
+              <p className="label-mono mt-1 text-[0.6875rem] text-abu">
+                {t.city} · {t.project}
+              </p>
+            </figcaption>
+          </figure>
+        ))}
+      </div>
+    </Section>
+  );
+}
+
+/* ───────────── 10 Area + 11 FAQ ───────────── */
+function AreaAndFaq() {
+  return (
+    <Section id="faq" className="bg-pasir">
+      <div className="grid gap-12 lg:grid-cols-[0.85fr_1.15fr] lg:gap-16">
+        <div>
+          <SectionHeading
+            index="06"
+            label="Pertanyaan umum"
+            title={
+              <>
+                Yang sering <Italic>ditanyakan</Italic>
+              </>
+            }
+          />
+          <div className="mt-10 rounded-md border border-batu bg-kapur p-6">
+            <p className="flex items-center gap-2 font-bold text-arang">
+              <MapPin className="h-5 w-5 text-emas-ink" aria-hidden />
+              Area layanan
+            </p>
+            <p className="mt-2 text-[0.9375rem] leading-relaxed text-abu">
+              Kami melayani {SITE.area}. Kirim titik lokasi Anda untuk memastikan jadwal survei.
+            </p>
+            <a
+              href={waLink("cek area layanan")}
+              target="_blank"
+              rel="noreferrer"
+              className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-emas-ink hover:underline"
+            >
+              Cek lokasi saya <ArrowRight className="h-4 w-4" />
+            </a>
           </div>
         </div>
-
-        <p className="mt-14 border-t border-stone pt-6 text-xs text-concrete">
-          © {year} {SITE.name}. All rights reserved.
-        </p>
+        <FaqList />
       </div>
-    </footer>
+    </Section>
+  );
+}
+
+/* ───────────── 12 CTA penutup ───────────── */
+function ClosingCta() {
+  return (
+    <Section id="survei">
+      <div className="relative overflow-hidden rounded-lg bg-arang bg-blueprint px-6 py-12 sm:px-12 sm:py-16">
+        <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:gap-14">
+          <div>
+            <Eyebrow tone="dark">Survei gratis</Eyebrow>
+            <h2 className="mt-6 text-[2rem] font-extrabold leading-[1.1] tracking-tight text-kapur sm:text-[2.5rem]">
+              Niat hemat bangun rumah, jangan sampai biaya{" "}
+              <Italic tone="dark">malah membengkak.</Italic>
+            </h2>
+            <p className="mt-5 text-base leading-relaxed text-kapur/75">
+              Isi data singkat, kami hubungi Anda untuk jadwal survei. Atau chat langsung di{" "}
+              <a
+                href={waLink()}
+                target="_blank"
+                rel="noreferrer"
+                className="tabular font-semibold text-emas underline-offset-4 hover:underline"
+              >
+                {CONTACT.whatsappDisplay}
+              </a>
+              .
+            </p>
+          </div>
+          <LeadForm />
+        </div>
+      </div>
+    </Section>
   );
 }
 
@@ -415,19 +392,25 @@ function Index() {
     <>
       <a
         href="#konten"
-        className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:rounded-md focus:bg-navy focus:px-4 focus:py-3 focus:text-paper"
+        className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:rounded-md focus:bg-arang focus:px-4 focus:py-3 focus:text-kapur"
       >
         Langsung ke konten
       </a>
       <Header />
-      <main id="konten" className="min-h-screen">
+      <main id="konten">
         <Hero />
+        <TrustStrip />
         <Services />
-        <WhyUs />
-        <VisionMission />
-        <Promo />
+        <Showcase />
+        <Transparency />
+        <Process />
+        <Estimate />
+        <Testimonials />
+        <AreaAndFaq />
+        <ClosingCta />
       </main>
       <Footer />
+      <WhatsAppFloat />
     </>
   );
 }

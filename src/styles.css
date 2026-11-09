@@ -12,12 +12,12 @@
  * Sistem desain Nandara Build — sumber kebenaran: /design.md
  *
  * 1. @theme          → token brand (warna, font, radius) menjadi utility Tailwind
- *                      contoh: bg-paper, text-gold-ink, font-mono, rounded-md
+ *                      contoh: bg-kapur, text-emas-ink, font-mono, rounded-md
  * 2. :root           → variabel semantik shadcn/ui dipetakan ke token brand
  * 3. @theme inline   → variabel semantik menjadi utility (bg-background, text-primary, …)
  *
- * Aturan kontras: emas murni (gold) TIDAK boleh untuk teks di latar terang.
- * Pakai text-gold-ink. Emas murni hanya untuk latar tombol, garis, dan teks di latar navy.
+ * Aturan kontras: emas murni (emas) TIDAK boleh untuk teks di latar terang.
+ * Pakai text-emas-ink. Emas murni hanya untuk latar tombol, garis, dan teks di latar arang.
  */
 
 @theme {
@@ -26,17 +26,17 @@
   --font-serif: "Instrument Serif", ui-serif, Georgia, serif;
   --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
 
-  /* Warna brand (design.md §2.1) */
-  --color-ink: #14213d;
-  --color-navy: #1e293b;
-  --color-navy-700: #334155;
-  --color-gold: #c9a35a;
-  --color-gold-300: #ead8a0;
-  --color-gold-ink: #8a6a2b;
-  --color-paper: #faf7f0;
-  --color-sand: #f2ebdd;
-  --color-stone: #e9e4d8;
-  --color-concrete: #6b6a65;
+  /* Palet "Material Tropis" (design.md §2.1) — beton, kapur, bata + emas logo */
+  --color-arang: #1c1a17;
+  --color-beton: #3d3a35;
+  --color-abu: #5f584e;
+  --color-kapur: #f6f2ea;
+  --color-pasir: #ece4d6;
+  --color-batu: #d9cfbe;
+  --color-emas: #c9a35a;
+  --color-emas-muda: #e8d6a6;
+  --color-emas-ink: #7a5b26;
+  --color-bata: #a9472b;
   --color-success: #2f7d4f;
   --color-danger: #b3261e;
   --color-whatsapp: #25d366;
@@ -46,32 +46,32 @@
   --radius-md: 8px;
   --radius-lg: 16px;
 
-  --shadow-card: 0 1px 2px rgb(20 33 61 / 0.06), 0 8px 24px -12px rgb(20 33 61 / 0.18);
+  --shadow-card: 0 1px 2px rgb(28 26 23 / 0.06), 0 10px 28px -14px rgb(28 26 23 / 0.22);
 
   --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 :root {
   --radius: 8px;
-  --background: var(--color-paper);
-  --foreground: var(--color-ink);
+  --background: var(--color-kapur);
+  --foreground: var(--color-arang);
   --card: #ffffff;
-  --card-foreground: var(--color-ink);
+  --card-foreground: var(--color-arang);
   --popover: #ffffff;
-  --popover-foreground: var(--color-ink);
-  --primary: var(--color-navy);
-  --primary-foreground: var(--color-paper);
-  --secondary: var(--color-sand);
-  --secondary-foreground: var(--color-navy);
-  --muted: var(--color-sand);
-  --muted-foreground: var(--color-concrete);
-  --accent: var(--color-gold);
-  --accent-foreground: var(--color-navy);
+  --popover-foreground: var(--color-arang);
+  --primary: var(--color-arang);
+  --primary-foreground: var(--color-kapur);
+  --secondary: var(--color-pasir);
+  --secondary-foreground: var(--color-arang);
+  --muted: var(--color-pasir);
+  --muted-foreground: var(--color-abu);
+  --accent: var(--color-emas);
+  --accent-foreground: var(--color-arang);
   --destructive: var(--color-danger);
   --destructive-foreground: #ffffff;
-  --border: var(--color-stone);
-  --input: var(--color-stone);
-  --ring: var(--color-gold-ink);
+  --border: var(--color-batu);
+  --input: var(--color-batu);
+  --ring: var(--color-emas-ink);
 }
 
 @theme inline {
@@ -119,7 +119,7 @@
   }
 
   :focus-visible {
-    outline: 2px solid var(--color-gold-ink);
+    outline: 2px solid var(--color-emas-ink);
     outline-offset: 2px;
   }
 }
@@ -136,6 +136,21 @@
   line-height: 1.3;
   letter-spacing: 0.12em;
   text-transform: uppercase;
+}
+
+/* Motif kertas gambar kerja (design.md §4.1) */
+@utility bg-blueprint {
+  background-image:
+    linear-gradient(to right, rgb(232 214 166 / 0.08) 1px, transparent 1px),
+    linear-gradient(to bottom, rgb(232 214 166 / 0.08) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+
+@utility bg-blueprint-light {
+  background-image:
+    linear-gradient(to right, rgb(28 26 23 / 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgb(28 26 23 / 0.05) 1px, transparent 1px);
+  background-size: 48px 48px;
 }
 
 @keyframes nb-rise {
