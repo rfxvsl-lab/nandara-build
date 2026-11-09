@@ -1,7 +1,7 @@
 # Dokumentasi Teknis — Website Nandara Build
 
 > Dokumen serah terima untuk developer / agen AI berikutnya.
-> Status per **9 November 2026**, commit `d616715` di `rfxvsl-lab/nandara-build` (branch `main`).
+> Status per **9 November 2026**, commit `5331af2` di `rfxvsl-lab/nandara-build` (branch `main`).
 > Baca juga: [`README.md`](./README.md) (cara pakai singkat), [`design.md`](./design.md) (sistem desain, **§13 berlaku**), [`AGENTS.md`](./AGENTS.md) (aturan kerja).
 
 ---
@@ -176,20 +176,20 @@ Server functions (RPC) ada di `src/lib/*.functions.ts`.
 - Validasi zod di client **dan** server (`lib/leads.ts`). Pilihan jadwal survei (tanggal + pagi/siang/sore).
 - Anti-spam: honeypot `website`, 5 kiriman / 10 menit per IP, 60 kiriman / jam total.
 - Setelah sukses: layar terima kasih + tombol "Lanjutkan chat di WhatsApp" (pesan terisi otomatis).
-- Lead **hanya masuk ke `/admin`** (tidak ada notifikasi eksternal — keputusan pemilik). Tab *Calon klien* menampilkan jumlah lead berstatus *Baru*.
+- Lead **hanya masuk ke `/admin`** (tidak ada notifikasi eksternal — keputusan pemilik). Tab _Calon klien_ menampilkan jumlah lead berstatus _Baru_.
 
 ### 6.2 Dashboard admin (`/admin`)
 
 Tab:
 
-| Tab                 | Isi                                                                                                                                                           |
-| ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Calon klien**     | Daftar lead, filter status (Baru → Sudah dihubungi → Sudah disurvei → RAB dikirim → Deal / Batal), cari, catatan internal, tombol WA ke klien, **Export CSV** |
-| **Proyek berjalan** | Kelola proyek untuk portal klien (lihat 6.6)                                                                                                                  |
-| **Portofolio**      | CRUD proyek + upload foto _sebelum/sesudah/galeri_, urutan, tampil/sembunyikan                                                                                |
-| **Testimoni**       | CRUD testimoni                                                                                                                                                |
-| **Artikel**         | CRUD artikel, pratinjau, jadwal terbit, sampul                                                                                                                |
-| **Harga & termin**  | Harga acuan per m² (per jenis × kualitas), tambah jenis pekerjaan, skema termin (total 100%)                                                                  |
+| Tab                 | Isi                                                                                                                                                                                                          |
+| ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **Calon klien**     | **Badge jumlah lead berstatus _Baru_** di tab, daftar lead, filter status (Baru → Sudah dihubungi → Sudah disurvei → RAB dikirim → Deal / Batal), cari, catatan internal, tombol WA ke klien, **Export CSV** |
+| **Proyek berjalan** | Kelola proyek untuk portal klien (lihat 6.6)                                                                                                                                                                 |
+| **Portofolio**      | CRUD proyek + upload foto _sebelum/sesudah/galeri_, urutan, tampil/sembunyikan                                                                                                                               |
+| **Testimoni**       | CRUD testimoni                                                                                                                                                                                               |
+| **Artikel**         | CRUD artikel, pratinjau, jadwal terbit, sampul                                                                                                                                                               |
+| **Harga & termin**  | Harga acuan per m² (per jenis × kualitas), tambah jenis pekerjaan, skema termin (total 100%)                                                                                                                 |
 
 Foto dikompres **di browser** (WebP, maks 2000 px) sebelum diunggah (`components/admin/upload.ts`).
 
@@ -317,7 +317,7 @@ npm run test:e2e    # butuh build lebih dulu
 
 - **29 skenario Playwright** di `tests/e2e/`:
   - `public` — 7 halaman (200, satu `h1`, tanpa error console, tanpa scroll samping di 360 px), 404, sitemap/robots, og:image, menu HP + Esc, kalkulator + PDF + pesan WA
-  - `leads` — validasi, simpan, status & catatan, export CSV, 401 tanpa login, sandi salah
+  - `leads` — validasi, simpan, badge lead baru (muncul & berkurang), status & catatan, export CSV, 401 tanpa login, sandi salah
   - `content` — proyek + foto + testimoni dari admin tampil di situs; upload tanpa login 401
   - `pricing` — validasi termin 100%, jenis pekerjaan baru dipakai kalkulator
   - `articles` — tulis/pratinjau, terjadwal tersembunyi, **XSS** (`<script>`, `javascript:`) tidak dieksekusi
@@ -405,6 +405,7 @@ Gunakan pengelola proses (systemd/pm2) agar server hidup terus. Jangan pakai mod
 | Kompres foto di browser                                  | Tidak perlu library native (sharp) di server/hosting                                                                                                                                 |
 | Artikel format teks sederhana, bukan HTML/Markdown penuh | Aman dari XSS tanpa sanitizer                                                                                                                                                        |
 | `SESSION_SECRET` wajib                                   | Temuan keamanan (PBKDF2 1 iterasi di h3 v2)                                                                                                                                          |
+| Tanpa notifikasi eksternal (Telegram dihapus)            | Keputusan pemilik: lead cukup masuk `/admin`; diganti badge jumlah lead _Baru_ di tab admin                                                                                          |
 
 ---
 
@@ -461,3 +462,5 @@ Gunakan pengelola proses (systemd/pm2) agar server hidup terus. Jangan pakai mod
 | `34a0d6e`             | Perbaikan hasil review keamanan                                                                             |
 | `9fccc30`             | Artikel/blog dari admin                                                                                     |
 | `d616715`             | og:image, rapikan, AGENTS.md                                                                                |
+| `dc63e20`             | `dokumentasi.md` (dokumen serah terima)                                                                     |
+| `5331af2`             | Hapus notifikasi Telegram (keputusan pemilik); badge jumlah lead _Baru_ di admin                            |
