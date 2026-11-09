@@ -5,6 +5,7 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 
+import { DEFAULT_PRICING, pricingSchema, type PricingSettings } from "./pricing";
 import {
   projectInputSchema,
   slugify,
@@ -111,4 +112,26 @@ export const adminDeleteTestimonial = createServerFn({ method: "POST" })
     await requireAdmin();
     await (await stores()).testimonials.remove(data.id);
     return { ok: true };
+  });
+
+/* ───────────── Harga & termin ───────────── */
+
+export const getPricing = createServerFn({ method: "GET" }).handler(
+  async (): Promise<PricingSettings> => {
+    try {
+      const saved = await (await stores()).settings.get<PricingSettings>("pricing");
+      const parsed = pricingSchema.safeParse(saved);
+      return parsed.success ? (parsed.data as PricingSettings) : DEFAULT_PRICING;
+    } catch {
+      return DEFAULT_PRICING;
+    }
+  },
+);
+
+export const adminSavePricing = createServerFn({ method: "POST" })
+  .inputValidator(pricingSchema)
+  .handler(async ({ data }): Promise<PricingSettings> => {
+    await requireAdmin();
+    await (await stores()).settings.set("pricing", data);
+    return data as PricingSettings;
   });

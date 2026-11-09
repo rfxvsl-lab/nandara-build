@@ -16,7 +16,12 @@ import {
 import { IMAGES, type ResponsiveImage } from "@/content/images";
 import { CONTACT, SERVICES, SITE, waLink } from "@/content/site";
 import type { Project, Testimonial } from "@/lib/content-types";
-import { getPublishedProjects, getPublishedTestimonials } from "@/lib/content.functions";
+import {
+  getPricing,
+  getPublishedProjects,
+  getPublishedTestimonials,
+} from "@/lib/content.functions";
+import type { PricingSettings } from "@/lib/pricing";
 import { faqJsonLd } from "@/lib/seo";
 
 const TITLE = `${SITE.name} | Kontraktor Bangun & Renovasi Rumah Jawa Timur`;
@@ -49,11 +54,12 @@ export const Route = createFileRoute("/")({
     ],
   }),
   loader: async () => {
-    const [projects, testimonials] = await Promise.all([
+    const [projects, testimonials, pricing] = await Promise.all([
       getPublishedProjects(),
       getPublishedTestimonials(),
+      getPricing(),
     ]);
-    return { projects, testimonials };
+    return { projects, testimonials, pricing };
   },
   component: Index,
 });
@@ -358,7 +364,7 @@ function Protection() {
   );
 }
 
-function Estimate() {
+function Estimate({ pricing }: { pricing: PricingSettings }) {
   return (
     <Section id="estimasi">
       <SectionHeading
@@ -366,7 +372,7 @@ function Estimate() {
         intro="Kisaran umum pasar untuk gambaran awal. Angka pasti untuk rumah Anda keluar dari RAB setelah survei gratis."
       />
       <div className="mt-10">
-        <Estimator />
+        <Estimator pricing={pricing} />
       </div>
     </Section>
   );
@@ -478,7 +484,7 @@ function ClosingCta() {
 }
 
 function Index() {
-  const { projects, testimonials } = Route.useLoaderData();
+  const { projects, testimonials, pricing } = Route.useLoaderData();
   return (
     <>
       <Hero />
@@ -488,7 +494,7 @@ function Index() {
       <Proof />
       <Compare />
       <Protection />
-      <Estimate />
+      <Estimate pricing={pricing} />
       <Testimonials items={testimonials} />
       <PhotoCta />
       <Faq />

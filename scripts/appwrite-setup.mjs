@@ -133,6 +133,13 @@ await step("index slug proyek", () =>
   db.createIndex(databaseId, projectsTable, "idx_slug", TablesDBIndexType.Unique, ["slug"]),
 );
 
+/* ── Pengaturan (harga & termin) ── */
+const settingsTable = process.env.APPWRITE_SETTINGS_TABLE_ID ?? "settings";
+await step(`tabel "${settingsTable}"`, () =>
+  db.createTable(databaseId, settingsTable, "Pengaturan", [], false, true),
+);
+await col(settingsTable).text("value");
+
 /* ── Bucket foto (privat; disajikan lewat /media/:id di server) ── */
 await step(`bucket "${bucketId}"`, () =>
   storage.createBucket(bucketId, "Media", [], false, true, 6 * 1024 * 1024, [

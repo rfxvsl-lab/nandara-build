@@ -5,7 +5,9 @@ import { Estimator } from "@/components/site/estimator";
 import { GoldButton, Italic, Section, SectionHeading } from "@/components/site/nandara";
 import { CtaBand, PageHero } from "@/components/site/page-hero";
 import { RabPreview } from "@/components/site/rab-preview";
-import { PRICING, SITE, waLink } from "@/content/site";
+import { SITE, waLink } from "@/content/site";
+import { getPricing } from "@/lib/content.functions";
+import { TIERS, TIER_LABEL } from "@/lib/pricing";
 import { formatRupiah } from "@/lib/utils";
 
 export const Route = createFileRoute("/estimasi-biaya")({
@@ -19,6 +21,7 @@ export const Route = createFileRoute("/estimasi-biaya")({
       },
     ],
   }),
+  loader: () => getPricing(),
   component: EstimasiPage,
 });
 
@@ -41,8 +44,9 @@ const HOW = [
 ];
 
 function EstimasiPage() {
-  const jobs = Object.values(PRICING.jobs);
-  const tiers = Object.entries(PRICING.tierLabels) as [keyof typeof PRICING.tierLabels, string][];
+  const pricing = Route.useLoaderData();
+  const jobs = pricing.jobs;
+  const tiers = TIERS.map((t) => [t, TIER_LABEL[t]] as const);
 
   return (
     <>
@@ -57,7 +61,7 @@ function EstimasiPage() {
       />
 
       <Section inner="pt-10 md:pt-14">
-        <Estimator />
+        <Estimator pricing={pricing} />
       </Section>
 
       <Section className="bg-pasir">
@@ -69,7 +73,7 @@ function EstimasiPage() {
               Harga acuan <Italic>per m²</Italic>
             </>
           }
-          intro={`Kisaran umum pasar untuk Jawa Timur, diperbarui ${PRICING.updated}. Bukan penawaran harga.`}
+          intro={`Kisaran umum pasar untuk Jawa Timur, diperbarui ${pricing.updated}. Bukan penawaran harga.`}
         />
         <div className="mt-10 overflow-x-auto rounded-md border border-batu bg-white">
           <table className="tabular w-full min-w-[560px] text-left text-sm">

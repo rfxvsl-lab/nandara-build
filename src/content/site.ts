@@ -241,42 +241,6 @@ export const PROCESS_STEPS = [
   },
 ] as const;
 
-/**
- * Harga acuan per m² untuk kalkulator estimasi (rentang, Rupiah).
- * Bangun baru mengacu pada kisaran umum pasar 2026
- * (standar ±Rp4–5 jt/m², menengah ±Rp5,5–7 jt/m²).
- * TODO: konfirmasi & sesuaikan dengan harga Nandara sendiri.
- */
-export const PRICING = {
-  updated: "November 2026",
-  jobs: {
-    bangun: {
-      label: "Bangun rumah baru",
-      tiers: {
-        standar: [4_000_000, 5_000_000],
-        menengah: [5_500_000, 7_000_000],
-        premium: [7_500_000, 10_000_000],
-      },
-    },
-    renovasi: {
-      label: "Renovasi total",
-      tiers: {
-        standar: [2_500_000, 3_500_000],
-        menengah: [3_500_000, 5_000_000],
-        premium: [5_000_000, 7_500_000],
-      },
-    },
-  },
-  tierLabels: {
-    standar: "Standar",
-    menengah: "Menengah",
-    premium: "Premium",
-  },
-} as const;
-
-export type JobKey = keyof typeof PRICING.jobs;
-export type TierKey = keyof typeof PRICING.tierLabels;
-
 export const FAQ = [
   {
     q: "Apakah survei dan konsultasi benar-benar gratis?",

@@ -2,6 +2,7 @@ import { createFileRoute, Link, useRouter } from "@tanstack/react-router";
 import { Download, Loader2, LogOut, Search } from "lucide-react";
 import { useEffect, useMemo, useState, type FormEvent } from "react";
 
+import { PricingAdmin } from "@/components/admin/pricing-admin";
 import { ProjectsAdmin } from "@/components/admin/projects-admin";
 import { TestimonialsAdmin } from "@/components/admin/testimonials-admin";
 
@@ -9,7 +10,8 @@ import { Wordmark } from "@/components/site/header";
 import { WhatsAppIcon } from "@/components/site/whatsapp-float";
 import { LEAD_STATUSES, STATUS_LABEL, toIntlPhone, type Lead, type LeadStatus } from "@/lib/leads";
 import type { Project, Testimonial } from "@/lib/content-types";
-import { adminListContent } from "@/lib/content.functions";
+import { adminListContent, getPricing } from "@/lib/content.functions";
+import type { PricingSettings } from "@/lib/pricing";
 import { adminLogin, adminLogout, adminUpdateLead, getAdminState } from "@/lib/leads.functions";
 import { cn } from "@/lib/utils";
 
@@ -42,11 +44,12 @@ function AdminPage() {
   );
 }
 
-type Tab = "leads" | "portofolio" | "testimoni";
+type Tab = "leads" | "portofolio" | "testimoni" | "harga";
 const TABS: { id: Tab; label: string }[] = [
   { id: "leads", label: "Calon klien" },
   { id: "portofolio", label: "Portofolio" },
   { id: "testimoni", label: "Testimoni" },
+  { id: "harga", label: "Harga & termin" },
 ];
 
 function AdminTabs({ leads, storage }: { leads: Lead[]; storage: "appwrite" | "lokal" }) {
@@ -56,9 +59,17 @@ function AdminTabs({ leads, storage }: { leads: Lead[]; storage: "appwrite" | "l
     testimonials: Testimonial[];
   } | null>(null);
   const [loadError, setLoadError] = useState("");
+  const [pricing, setPricing] = useState<PricingSettings | null>(null);
 
   useEffect(() => {
-    if (tab === "leads" || content) return;
+    if (tab !== "harga" || pricing) return;
+    getPricing()
+      .then(setPricing)
+      .catch(() => setLoadError("Gagal memuat harga."));
+  }, [tab, pricing]);
+
+  useEffect(() => {
+    if (tab === "leads" || tab === "harga" || content) return;
     adminListContent()
       .then(setContent)
       .catch(() => setLoadError("Gagal memuat konten."));
@@ -86,7 +97,16 @@ function AdminTabs({ leads, storage }: { leads: Lead[]; storage: "appwrite" | "l
         ))}
       </div>
       {tab === "leads" && <Dashboard leads={leads} storage={storage} />}
+      {tab === "harga" &&
+        (pricing ? (
+          <PricingAdmin initial={pricing} />
+        ) : (
+          <p className="flex items-center gap-2 text-abu">
+            <Loader2 className="h-4 w-4 animate-spin" aria-hidden /> Memuat…
+          </p>
+        ))}
       {tab !== "leads" &&
+        tab !== "harga" &&
         (loadError ? (
           <p className="text-danger">{loadError}</p>
         ) : !content ? (

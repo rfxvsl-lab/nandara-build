@@ -58,7 +58,6 @@ Ubah `CONTACT.whatsappDisplay` dan `CONTACT.whatsappIntl` di `src/content/site.t
 ## Data yang perlu diisi (`src/content/site.ts`)
 
 - **Proyek & testimoni** — diisi lewat `/admin` (tidak perlu ubah kode).
-- `PRICING` — harga acuan per m² untuk kalkulator.
 - `RAB_SAMPLE` — ganti dengan cuplikan RAB asli (boleh disamarkan).
 - `CONTACT.facebook` — URL halaman Facebook.
 - Foto ilustrasi di `src/assets/` + `src/content/images.ts` (hero, cara kerja, layanan) — ganti dengan foto proyek asli.
@@ -77,6 +76,11 @@ Ubah `CONTACT.whatsappDisplay` dan `CONTACT.whatsappIntl` di `src/content/site.t
 - Tab **Testimoni**: tambah/ubah/hapus kutipan klien.
 - Beranda otomatis menampilkan **Proyek pilihan** (3 teratas) dan **Kata klien kami** bila ada yang ditampilkan. Proyek juga masuk `sitemap.xml`.
 - Foto disimpan di Appwrite Storage (bucket `media`) atau `.data/media/` saat uji coba, dan disajikan lewat `/media/:id`.
+
+### Harga & termin (dari admin)
+
+- Tab **Harga & termin**: ubah harga acuan per m² (dalam juta, mis. `4,5`) untuk tiap jenis pekerjaan & kualitas, tambah jenis pekerjaan baru, atur skema termin (total harus 100%) dan tanggal pembaruan.
+- Kalkulator di beranda & `/estimasi-biaya` langsung memakai angka terbaru, termasuk **simulasi termin** dan **unduh PDF estimasi** berkop Nandara Build.
 
 ### Menyiapkan Appwrite (sekali)
 

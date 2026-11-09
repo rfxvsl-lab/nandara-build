@@ -236,9 +236,64 @@ function localMedia(): MediaStore {
   };
 }
 
+/* ───────────── Pengaturan (key → JSON) ───────────── */
+export interface SettingsStore {
+  get<T>(key: string): Promise<T | undefined>;
+  set(key: string, value: unknown): Promise<void>;
+}
+
+function appwriteSettings(): SettingsStore {
+  const db = new TablesDB(appwriteClient());
+  const dbId = env.appwrite.databaseId;
+  const table = contentTables.settings;
+  return {
+    async get<T>(key: string) {
+      try {
+        const row = (await db.getRow(dbId, table, key)) as unknown as Row;
+        return JSON.parse(String(row["value"])) as T;
+      } catch {
+        return undefined;
+      }
+    },
+    async set(key, value) {
+      const data = { value: JSON.stringify(value) };
+      try {
+        await db.updateRow(dbId, table, key, data);
+      } catch {
+        await db.createRow(dbId, table, key, data);
+      }
+    },
+  };
+}
+
+function localSettings(): SettingsStore {
+  const file = path.resolve(env.dataDir, "settings.json");
+  const readAll = async (): Promise<Record<string, unknown>> => {
+    try {
+      return JSON.parse(await readFile(file, "utf8")) as Record<string, unknown>;
+    } catch {
+      return {};
+    }
+  };
+  return {
+    get: async <T>(key: string) => (await readAll())[key] as T | undefined,
+    set: (key, value) =>
+      locked(file, async () => {
+        const all = await readAll();
+        all[key] = value;
+        await writeJson(file, all);
+      }),
+  };
+}
+
 /* ───────────── Ekspor ───────────── */
 let cache:
-  | { projects: Collection<Project>; testimonials: Collection<Testimonial>; media: MediaStore }
+  | {
+      projects: Collection<Project>;
+      testimonials: Collection<Testimonial>;
+      media: MediaStore;
+      settings: SettingsStore;
+    }
   | undefined;
 
 export function getContentStores() {
@@ -255,12 +310,14 @@ export function getContentStores() {
         (t) => ({ ...t }),
       ),
       media: appwriteMedia(),
+      settings: appwriteSettings(),
     };
   } else {
     cache = {
       projects: localCollection<Project>("projects"),
       testimonials: localCollection<Testimonial>("testimonials"),
       media: localMedia(),
+      settings: localSettings(),
     };
   }
   return cache;
