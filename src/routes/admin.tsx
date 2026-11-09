@@ -1,10 +1,15 @@
 import { createFileRoute, Link, useRouter } from "@tanstack/react-router";
 import { Download, Loader2, LogOut, Search } from "lucide-react";
-import { useMemo, useState, type FormEvent } from "react";
+import { useEffect, useMemo, useState, type FormEvent } from "react";
+
+import { ProjectsAdmin } from "@/components/admin/projects-admin";
+import { TestimonialsAdmin } from "@/components/admin/testimonials-admin";
 
 import { Wordmark } from "@/components/site/header";
 import { WhatsAppIcon } from "@/components/site/whatsapp-float";
 import { LEAD_STATUSES, STATUS_LABEL, toIntlPhone, type Lead, type LeadStatus } from "@/lib/leads";
+import type { Project, Testimonial } from "@/lib/content-types";
+import { adminListContent } from "@/lib/content.functions";
 import { adminLogin, adminLogout, adminUpdateLead, getAdminState } from "@/lib/leads.functions";
 import { cn } from "@/lib/utils";
 
@@ -31,8 +36,74 @@ function AdminPage() {
       <main className="mx-auto max-w-[1360px] px-5 py-10 sm:px-8">
         {state.status === "disabled" && <Disabled />}
         {state.status === "login" && <Login />}
-        {state.status === "ok" && <Dashboard leads={state.leads} storage={state.storage} />}
+        {state.status === "ok" && <AdminTabs leads={state.leads} storage={state.storage} />}
       </main>
+    </div>
+  );
+}
+
+type Tab = "leads" | "portofolio" | "testimoni";
+const TABS: { id: Tab; label: string }[] = [
+  { id: "leads", label: "Calon klien" },
+  { id: "portofolio", label: "Portofolio" },
+  { id: "testimoni", label: "Testimoni" },
+];
+
+function AdminTabs({ leads, storage }: { leads: Lead[]; storage: "appwrite" | "lokal" }) {
+  const [tab, setTab] = useState<Tab>("leads");
+  const [content, setContent] = useState<{
+    projects: Project[];
+    testimonials: Testimonial[];
+  } | null>(null);
+  const [loadError, setLoadError] = useState("");
+
+  useEffect(() => {
+    if (tab === "leads" || content) return;
+    adminListContent()
+      .then(setContent)
+      .catch(() => setLoadError("Gagal memuat konten."));
+  }, [tab, content]);
+
+  return (
+    <div>
+      <div role="tablist" aria-label="Menu admin" className="mb-8 flex gap-1 border-b border-garis">
+        {TABS.map((t) => (
+          <button
+            key={t.id}
+            role="tab"
+            type="button"
+            aria-selected={tab === t.id}
+            onClick={() => setTab(t.id)}
+            className={cn(
+              "-mb-px border-b-2 px-4 py-3 text-[0.9375rem] transition-colors",
+              tab === t.id
+                ? "border-emas-ink text-arang"
+                : "border-transparent text-abu hover:text-arang",
+            )}
+          >
+            {t.label}
+          </button>
+        ))}
+      </div>
+      {tab === "leads" && <Dashboard leads={leads} storage={storage} />}
+      {tab !== "leads" &&
+        (loadError ? (
+          <p className="text-danger">{loadError}</p>
+        ) : !content ? (
+          <p className="flex items-center gap-2 text-abu">
+            <Loader2 className="h-4 w-4 animate-spin" aria-hidden /> Memuat…
+          </p>
+        ) : tab === "portofolio" ? (
+          <ProjectsAdmin
+            projects={content.projects}
+            onChange={(projects) => setContent({ ...content, projects })}
+          />
+        ) : (
+          <TestimonialsAdmin
+            items={content.testimonials}
+            onChange={(testimonials) => setContent({ ...content, testimonials })}
+          />
+        ))}
     </div>
   );
 }

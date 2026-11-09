@@ -21,3 +21,9 @@ export function appwriteConfigured(): boolean {
   const a = env.appwrite;
   return Boolean(a.endpoint && a.projectId && a.apiKey);
 }
+
+export const contentTables = {
+  projects: process.env["APPWRITE_PROJECTS_TABLE_ID"] ?? "projects",
+  testimonials: process.env["APPWRITE_TESTIMONIALS_TABLE_ID"] ?? "testimonials",
+  bucket: process.env["APPWRITE_MEDIA_BUCKET_ID"] ?? "media",
+};

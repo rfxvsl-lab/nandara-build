@@ -44,7 +44,7 @@ export function Wordmark({
 }
 
 const navLink =
-  "text-[0.75rem] font-medium uppercase tracking-[0.14em] text-beton transition-colors hover:text-emas-ink";
+  "whitespace-nowrap text-[0.75rem] font-medium uppercase tracking-[0.1em] text-beton transition-colors hover:text-emas-ink xl:tracking-[0.14em]";
 const navActive = { className: "!text-emas-ink" };
 
 /** Header: logo di tengah, menu terbagi kiri–kanan (HDR); tombol aksi (Block). */
@@ -67,19 +67,19 @@ export function Header() {
   return (
     <header className="sticky top-0 z-50 border-b border-garis bg-kapur/95 backdrop-blur">
       {/* Desktop */}
-      <div className="mx-auto hidden h-20 w-full max-w-[1360px] grid-cols-[1fr_auto_1fr] items-center px-8 lg:grid">
-        <nav aria-label="Navigasi utama (kiri)" className="flex items-center gap-8">
+      <div className="mx-auto hidden h-20 w-full max-w-[1360px] grid-cols-[1fr_auto_1fr] items-center px-6 lg:grid xl:px-8">
+        <nav aria-label="Navigasi utama (kiri)" className="flex items-center gap-5 xl:gap-8">
           {left.map((item) => (
             <Link key={item.to} to={item.to} className={navLink} activeProps={navActive}>
               {item.label}
             </Link>
           ))}
         </nav>
-        <Link to="/" aria-label={`${SITE.name}, beranda`} className="px-10">
+        <Link to="/" aria-label={`${SITE.name}, beranda`} className="px-4 xl:px-10">
           <Wordmark stacked />
         </Link>
-        <div className="flex items-center justify-end gap-8">
-          <nav aria-label="Navigasi utama (kanan)" className="flex items-center gap-8">
+        <div className="flex items-center justify-end gap-5 xl:gap-8">
+          <nav aria-label="Navigasi utama (kanan)" className="flex items-center gap-5 xl:gap-8">
             {right.map((item) => (
               <Link key={item.to} to={item.to} className={navLink} activeProps={navActive}>
                 {item.label}
@@ -90,7 +90,7 @@ export function Header() {
             href={waLink()}
             target="_blank"
             rel="noreferrer"
-            className="inline-flex min-h-11 items-center rounded-md bg-emas px-5 text-sm font-medium text-arang transition-colors hover:bg-emas-muda"
+            className="inline-flex min-h-11 items-center whitespace-nowrap rounded-md bg-emas px-4 text-sm font-medium text-arang transition-colors hover:bg-emas-muda xl:px-5"
           >
             Konsultasi Gratis
           </a>

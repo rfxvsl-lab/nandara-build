@@ -48,6 +48,7 @@ export function waLink(topik = "konsultasi gratis"): string {
 
 export const NAV = [
   { label: "Layanan", to: "/layanan" },
+  { label: "Portofolio", to: "/portofolio" },
   { label: "Proses", to: "/proses" },
   { label: "Estimasi Biaya", to: "/estimasi-biaya" },
   { label: "Tentang", to: "/tentang" },
@@ -173,9 +174,6 @@ export const STATS: { value: string; label: string }[] = [
   // { value: "120+", label: "Proyek selesai" },
   // { value: "8", label: "Kota dilayani" },
 ];
-
-/** Testimoni nyata (dengan izin klien). Selama kosong, section testimoni disembunyikan. */
-export const TESTIMONIALS: { quote: string; name: string; city: string; project: string }[] = [];
 
 export const TRUST_STRIP = [
   { icon: Compass, label: "Gratis survei lokasi" },

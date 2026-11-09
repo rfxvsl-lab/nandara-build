@@ -57,12 +57,11 @@ Ubah `CONTACT.whatsappDisplay` dan `CONTACT.whatsappIntl` di `src/content/site.t
 
 ## Data yang perlu diisi (`src/content/site.ts`)
 
-- `STATS` — angka nyata (jumlah proyek, kota, dll.). Kosong = tidak ditampilkan.
-- `TESTIMONIALS` — testimoni asli. Kosong = section disembunyikan.
+- **Proyek & testimoni** — diisi lewat `/admin` (tidak perlu ubah kode).
 - `PRICING` — harga acuan per m² untuk kalkulator.
 - `RAB_SAMPLE` — ganti dengan cuplikan RAB asli (boleh disamarkan).
 - `CONTACT.facebook` — URL halaman Facebook.
-- Foto di `src/assets/` + `src/content/images.ts` — ganti dengan foto proyek asli.
+- Foto ilustrasi di `src/assets/` + `src/content/images.ts` (hero, cara kerja, layanan) — ganti dengan foto proyek asli.
 
 ## Form survei & dashboard admin
 
@@ -72,9 +71,16 @@ Ubah `CONTACT.whatsappDisplay` dan `CONTACT.whatsappIntl` di `src/content/site.t
 - Notifikasi lead baru ke Telegram bila `TELEGRAM_BOT_TOKEN` & `TELEGRAM_CHAT_ID` diisi.
 - Anti-spam: honeypot + batas 5 kiriman / 10 menit per IP.
 
+### Portofolio & testimoni (dari admin)
+
+- Tab **Portofolio**: tambah/ubah/hapus proyek, unggah foto _sebelum_, _sesudah_, dan _galeri_ (dikompres otomatis di browser ke WebP maks. 2000 px), keterangan foto, urutan, dan tombol _Tampilkan di website_.
+- Tab **Testimoni**: tambah/ubah/hapus kutipan klien.
+- Beranda otomatis menampilkan **Proyek pilihan** (3 teratas) dan **Kata klien kami** bila ada yang ditampilkan. Proyek juga masuk `sitemap.xml`.
+- Foto disimpan di Appwrite Storage (bucket `media`) atau `.data/media/` saat uji coba, dan disajikan lewat `/media/:id`.
+
 ### Menyiapkan Appwrite (sekali)
 
-1. Appwrite Console → buat project → **API Keys** → buat key dengan scope `databases`, `tables`, `columns`, `indexes`, `rows` (read & write).
+1. Appwrite Console → buat project → **API Keys** → buat key dengan scope `databases`, `tables`, `columns`, `indexes`, `rows`, `buckets`, `files` (read & write).
 2. Jalankan:
    ```sh
    APPWRITE_ENDPOINT=... APPWRITE_PROJECT_ID=... APPWRITE_API_KEY=... npm run appwrite:setup

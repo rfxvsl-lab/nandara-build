@@ -19,6 +19,10 @@ import { Route as RobotsDottxtRouteImport } from './routes/robots[.]txt'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as TentangRouteImport } from './routes/tentang'
 import { Route as ApiLeadsDotcsvRouteImport } from './routes/api.leads[.]csv'
+import { Route as MediaIdRouteImport } from './routes/media.$id'
+import { Route as PortofolioIndexRouteImport } from './routes/portofolio.index'
+import { Route as PortofolioSlugRouteImport } from './routes/portofolio.$slug'
+import { Route as ApiAdminUploadRouteImport } from './routes/api.admin.upload'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -70,6 +74,26 @@ const ApiLeadsDotcsvRoute = ApiLeadsDotcsvRouteImport.update({
   path: '/api/leads.csv',
   getParentRoute: () => rootRouteImport,
 } as any)
+const MediaIdRoute = MediaIdRouteImport.update({
+  id: '/media/$id',
+  path: '/media/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PortofolioIndexRoute = PortofolioIndexRouteImport.update({
+  id: '/portofolio/',
+  path: '/portofolio/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PortofolioSlugRoute = PortofolioSlugRouteImport.update({
+  id: '/portofolio/$slug',
+  path: '/portofolio/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiAdminUploadRoute = ApiAdminUploadRouteImport.update({
+  id: '/api/admin/upload',
+  path: '/api/admin/upload',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -82,6 +106,10 @@ export interface FileRoutesByFullPath {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/tentang': typeof TentangRoute
   '/api/leads.csv': typeof ApiLeadsDotcsvRoute
+  '/media/$id': typeof MediaIdRoute
+  '/portofolio/$slug': typeof PortofolioSlugRoute
+  '/portofolio/': typeof PortofolioIndexRoute
+  '/api/admin/upload': typeof ApiAdminUploadRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -94,6 +122,10 @@ export interface FileRoutesByTo {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/tentang': typeof TentangRoute
   '/api/leads.csv': typeof ApiLeadsDotcsvRoute
+  '/media/$id': typeof MediaIdRoute
+  '/portofolio/$slug': typeof PortofolioSlugRoute
+  '/portofolio': typeof PortofolioIndexRoute
+  '/api/admin/upload': typeof ApiAdminUploadRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -107,6 +139,10 @@ export interface FileRoutesById {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/tentang': typeof TentangRoute
   '/api/leads.csv': typeof ApiLeadsDotcsvRoute
+  '/media/$id': typeof MediaIdRoute
+  '/portofolio/$slug': typeof PortofolioSlugRoute
+  '/portofolio/': typeof PortofolioIndexRoute
+  '/api/admin/upload': typeof ApiAdminUploadRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -121,6 +157,10 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/tentang'
     | '/api/leads.csv'
+    | '/media/$id'
+    | '/portofolio/$slug'
+    | '/portofolio/'
+    | '/api/admin/upload'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -133,6 +173,10 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/tentang'
     | '/api/leads.csv'
+    | '/media/$id'
+    | '/portofolio/$slug'
+    | '/portofolio'
+    | '/api/admin/upload'
   id:
     | '__root__'
     | '/'
@@ -145,6 +189,10 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/tentang'
     | '/api/leads.csv'
+    | '/media/$id'
+    | '/portofolio/$slug'
+    | '/portofolio/'
+    | '/api/admin/upload'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -158,6 +206,10 @@ export interface RootRouteChildren {
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   TentangRoute: typeof TentangRoute
   ApiLeadsDotcsvRoute: typeof ApiLeadsDotcsvRoute
+  MediaIdRoute: typeof MediaIdRoute
+  PortofolioSlugRoute: typeof PortofolioSlugRoute
+  PortofolioIndexRoute: typeof PortofolioIndexRoute
+  ApiAdminUploadRoute: typeof ApiAdminUploadRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -232,6 +284,34 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiLeadsDotcsvRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/media/$id': {
+      id: '/media/$id'
+      path: '/media/$id'
+      fullPath: '/media/$id'
+      preLoaderRoute: typeof MediaIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/portofolio/': {
+      id: '/portofolio/'
+      path: '/portofolio'
+      fullPath: '/portofolio/'
+      preLoaderRoute: typeof PortofolioIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/portofolio/$slug': {
+      id: '/portofolio/$slug'
+      path: '/portofolio/$slug'
+      fullPath: '/portofolio/$slug'
+      preLoaderRoute: typeof PortofolioSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/admin/upload': {
+      id: '/api/admin/upload'
+      path: '/api/admin/upload'
+      fullPath: '/api/admin/upload'
+      preLoaderRoute: typeof ApiAdminUploadRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -246,6 +326,10 @@ const rootRouteChildren: RootRouteChildren = {
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   TentangRoute: TentangRoute,
   ApiLeadsDotcsvRoute: ApiLeadsDotcsvRoute,
+  MediaIdRoute: MediaIdRoute,
+  PortofolioSlugRoute: PortofolioSlugRoute,
+  PortofolioIndexRoute: PortofolioIndexRoute,
+  ApiAdminUploadRoute: ApiAdminUploadRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

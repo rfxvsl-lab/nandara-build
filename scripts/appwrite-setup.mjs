@@ -7,10 +7,11 @@
  *   node scripts/appwrite-setup.mjs
  *
  * API key butuh scope: databases.read, databases.write, tables.read, tables.write,
- * columns.read, columns.write, indexes.read, indexes.write, rows.read, rows.write.
+ * columns.read, columns.write, indexes.read, indexes.write, rows.read, rows.write,
+ * buckets.read, buckets.write, files.read, files.write.
  * Aman dijalankan ulang: bagian yang sudah ada dilewati.
  */
-import { Client, TablesDB, TablesDBIndexType, OrderBy } from "node-appwrite";
+import { Client, OrderBy, Storage, TablesDB, TablesDBIndexType } from "node-appwrite";
 
 const endpoint = process.env.APPWRITE_ENDPOINT;
 const projectId = process.env.APPWRITE_PROJECT_ID;
@@ -23,7 +24,12 @@ if (!endpoint || !projectId || !apiKey) {
   process.exit(1);
 }
 
-const db = new TablesDB(new Client().setEndpoint(endpoint).setProject(projectId).setKey(apiKey));
+const client = new Client().setEndpoint(endpoint).setProject(projectId).setKey(apiKey);
+const db = new TablesDB(client);
+const storage = new Storage(client);
+const projectsTable = process.env.APPWRITE_PROJECTS_TABLE_ID ?? "projects";
+const testimonialsTable = process.env.APPWRITE_TESTIMONIALS_TABLE_ID ?? "testimonials";
+const bucketId = process.env.APPWRITE_MEDIA_BUCKET_ID ?? "media";
 
 async function step(label, fn) {
   try {
@@ -77,5 +83,68 @@ await step("index status", () =>
   ),
 );
 
+/* ── Portofolio ── */
+const col = (table) => ({
+  str: (key, size, required = false) =>
+    step(`${table}.${key}`, () => db.createStringColumn(databaseId, table, key, size, required)),
+  text: (key) => step(`${table}.${key}`, () => db.createTextColumn(databaseId, table, key, false)),
+  bool: (key) =>
+    step(`${table}.${key}`, () => db.createBooleanColumn(databaseId, table, key, false, false)),
+  int: (key) =>
+    step(`${table}.${key}`, () =>
+      db.createIntegerColumn(databaseId, table, key, false, 0, 9999, 0),
+    ),
+});
+
+await step(`tabel "${projectsTable}"`, () =>
+  db.createTable(databaseId, projectsTable, "Portofolio", [], false, true),
+);
+{
+  const c = col(projectsTable);
+  await c.str("slug", 80, true);
+  await c.str("title", 200, true);
+  await c.str("kota", 100);
+  await c.str("jenis", 60);
+  await c.str("luas", 20);
+  await c.str("durasi", 40);
+  await c.str("tahun", 10);
+  await c.str("ringkasan", 500);
+  await c.text("deskripsi");
+  await c.text("images");
+  await c.bool("published");
+  await c.int("urutan");
+}
+
+await step(`tabel "${testimonialsTable}"`, () =>
+  db.createTable(databaseId, testimonialsTable, "Testimoni", [], false, true),
+);
+{
+  const c = col(testimonialsTable);
+  await c.str("nama", 100, true);
+  await c.str("kota", 100);
+  await c.str("proyek", 120);
+  await c.str("kutipan", 1000, true);
+  await c.bool("published");
+  await c.int("urutan");
+}
+
+await new Promise((r) => setTimeout(r, 3000));
+await step("index slug proyek", () =>
+  db.createIndex(databaseId, projectsTable, "idx_slug", TablesDBIndexType.Unique, ["slug"]),
+);
+
+/* ── Bucket foto (privat; disajikan lewat /media/:id di server) ── */
+await step(`bucket "${bucketId}"`, () =>
+  storage.createBucket(bucketId, "Media", [], false, true, 6 * 1024 * 1024, [
+    "jpg",
+    "jpeg",
+    "png",
+    "webp",
+  ]),
+);
+
 console.log("\nSelesai. Isi env berikut di Appwrite Sites:");
 console.log(`  APPWRITE_DATABASE_ID=${databaseId}\n  APPWRITE_LEADS_TABLE_ID=${tableId}`);
+console.log(
+  `  APPWRITE_PROJECTS_TABLE_ID=${projectsTable}\n  APPWRITE_TESTIMONIALS_TABLE_ID=${testimonialsTable}\n  APPWRITE_MEDIA_BUCKET_ID=${bucketId}`,
+);

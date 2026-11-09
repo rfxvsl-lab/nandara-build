@@ -5,11 +5,21 @@ import { PUBLIC_PATHS, siteUrl } from "@/lib/site-url";
 export const Route = createFileRoute("/sitemap.xml")({
   server: {
     handlers: {
-      GET: ({ request }) => {
+      GET: async ({ request }) => {
         const base = siteUrl(request);
-        const urls = PUBLIC_PATHS.map(
-          (p) => `  <url><loc>${base}${p.path}</loc><priority>${p.priority}</priority></url>`,
-        ).join("\n");
+        const { getContentStores } = await import("@/server/content-store");
+        const projects = await getContentStores()
+          .projects.list()
+          .catch(() => []);
+        const paths = [
+          ...PUBLIC_PATHS,
+          ...projects
+            .filter((p) => p.published)
+            .map((p) => ({ path: `/portofolio/${p.slug}`, priority: "0.7" })),
+        ];
+        const urls = paths
+          .map((p) => `  <url><loc>${base}${p.path}</loc><priority>${p.priority}</priority></url>`)
+          .join("\n");
         const xml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls}\n</urlset>\n`;
         return new Response(xml, {
           headers: {

@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { Check, X } from "lucide-react";
 
 import { Estimator } from "@/components/site/estimator";
+import { ProjectCard } from "@/components/site/project-card";
 import { FaqList } from "@/components/site/faq";
 import {
   CenteredTitle,
@@ -13,7 +14,9 @@ import {
   TextLink,
 } from "@/components/site/nandara";
 import { IMAGES, type ResponsiveImage } from "@/content/images";
-import { CONTACT, SERVICES, SITE, TESTIMONIALS, waLink } from "@/content/site";
+import { CONTACT, SERVICES, SITE, waLink } from "@/content/site";
+import type { Project, Testimonial } from "@/lib/content-types";
+import { getPublishedProjects, getPublishedTestimonials } from "@/lib/content.functions";
 import { faqJsonLd } from "@/lib/seo";
 
 const TITLE = `${SITE.name} | Kontraktor Bangun & Renovasi Rumah Jawa Timur`;
@@ -45,6 +48,13 @@ export const Route = createFileRoute("/")({
       { type: "application/ld+json", children: JSON.stringify(faqJsonLd()) },
     ],
   }),
+  loader: async () => {
+    const [projects, testimonials] = await Promise.all([
+      getPublishedProjects(),
+      getPublishedTestimonials(),
+    ]);
+    return { projects, testimonials };
+  },
   component: Index,
 });
 
@@ -362,19 +372,41 @@ function Estimate() {
   );
 }
 
-function Testimonials() {
-  if (TESTIMONIALS.length === 0) return null;
+/* ── Proyek pilihan (tampil bila ada proyek di admin) ── */
+function FeaturedProjects({ projects }: { projects: Project[] }) {
+  if (projects.length === 0) return null;
+  return (
+    <Section id="portofolio">
+      <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+        <SectionHeading title="Proyek pilihan" />
+        <OutlineButton href="/portofolio" className="self-start md:self-auto">
+          Lihat semua proyek
+        </OutlineButton>
+      </div>
+      <div className="mt-10 grid gap-x-6 gap-y-12 sm:grid-cols-2 lg:grid-cols-3">
+        {projects.slice(0, 3).map((p) => (
+          <ProjectCard key={p.id} project={p} />
+        ))}
+      </div>
+    </Section>
+  );
+}
+
+/* ── Testimoni (HDR "A premier experience"), dari admin ── */
+function Testimonials({ items }: { items: Testimonial[] }) {
+  if (items.length === 0) return null;
   return (
     <Section id="testimoni" className="bg-white">
       <CenteredTitle>Kata klien kami</CenteredTitle>
-      <div className="mx-auto mt-12 grid max-w-[1120px] gap-8 md:grid-cols-3">
-        {TESTIMONIALS.map((t) => (
-          <figure key={t.name}>
+      <div className="mx-auto mt-12 grid max-w-[1120px] gap-10 md:grid-cols-3">
+        {items.slice(0, 6).map((t) => (
+          <figure key={t.id}>
             <blockquote className="text-[0.9375rem] leading-relaxed text-beton">
-              “{t.quote}”
+              “{t.kutipan}”
             </blockquote>
             <figcaption className="mt-3 text-sm text-abu">
-              {t.name}, {t.city}
+              — {[t.nama, t.kota].filter(Boolean).join(", ")}
+              {t.proyek ? ` · ${t.proyek}` : ""}
             </figcaption>
           </figure>
         ))}
@@ -446,16 +478,18 @@ function ClosingCta() {
 }
 
 function Index() {
+  const { projects, testimonials } = Route.useLoaderData();
   return (
     <>
       <Hero />
       <HowItWorks />
       <Services />
+      <FeaturedProjects projects={projects} />
       <Proof />
       <Compare />
       <Protection />
       <Estimate />
-      <Testimonials />
+      <Testimonials items={testimonials} />
       <PhotoCta />
       <Faq />
       <ClosingCta />
