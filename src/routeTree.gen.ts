@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AdminRouteImport } from './routes/admin'
 import { Route as EstimasiBiayaRouteImport } from './routes/estimasi-biaya'
 import { Route as KontakRouteImport } from './routes/kontak'
 import { Route as LayananRouteImport } from './routes/layanan'
@@ -17,10 +18,16 @@ import { Route as ProsesRouteImport } from './routes/proses'
 import { Route as RobotsDottxtRouteImport } from './routes/robots[.]txt'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as TentangRouteImport } from './routes/tentang'
+import { Route as ApiLeadsDotcsvRouteImport } from './routes/api.leads[.]csv'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminRoute = AdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
   getParentRoute: () => rootRouteImport,
 } as any)
 const EstimasiBiayaRoute = EstimasiBiayaRouteImport.update({
@@ -58,9 +65,15 @@ const TentangRoute = TentangRouteImport.update({
   path: '/tentang',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiLeadsDotcsvRoute = ApiLeadsDotcsvRouteImport.update({
+  id: '/api/leads.csv',
+  path: '/api/leads.csv',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/admin': typeof AdminRoute
   '/estimasi-biaya': typeof EstimasiBiayaRoute
   '/kontak': typeof KontakRoute
   '/layanan': typeof LayananRoute
@@ -68,9 +81,11 @@ export interface FileRoutesByFullPath {
   '/robots.txt': typeof RobotsDottxtRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/tentang': typeof TentangRoute
+  '/api/leads.csv': typeof ApiLeadsDotcsvRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/admin': typeof AdminRoute
   '/estimasi-biaya': typeof EstimasiBiayaRoute
   '/kontak': typeof KontakRoute
   '/layanan': typeof LayananRoute
@@ -78,10 +93,12 @@ export interface FileRoutesByTo {
   '/robots.txt': typeof RobotsDottxtRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/tentang': typeof TentangRoute
+  '/api/leads.csv': typeof ApiLeadsDotcsvRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/admin': typeof AdminRoute
   '/estimasi-biaya': typeof EstimasiBiayaRoute
   '/kontak': typeof KontakRoute
   '/layanan': typeof LayananRoute
@@ -89,11 +106,13 @@ export interface FileRoutesById {
   '/robots.txt': typeof RobotsDottxtRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/tentang': typeof TentangRoute
+  '/api/leads.csv': typeof ApiLeadsDotcsvRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/admin'
     | '/estimasi-biaya'
     | '/kontak'
     | '/layanan'
@@ -101,9 +120,11 @@ export interface FileRouteTypes {
     | '/robots.txt'
     | '/sitemap.xml'
     | '/tentang'
+    | '/api/leads.csv'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/admin'
     | '/estimasi-biaya'
     | '/kontak'
     | '/layanan'
@@ -111,9 +132,11 @@ export interface FileRouteTypes {
     | '/robots.txt'
     | '/sitemap.xml'
     | '/tentang'
+    | '/api/leads.csv'
   id:
     | '__root__'
     | '/'
+    | '/admin'
     | '/estimasi-biaya'
     | '/kontak'
     | '/layanan'
@@ -121,10 +144,12 @@ export interface FileRouteTypes {
     | '/robots.txt'
     | '/sitemap.xml'
     | '/tentang'
+    | '/api/leads.csv'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AdminRoute: typeof AdminRoute
   EstimasiBiayaRoute: typeof EstimasiBiayaRoute
   KontakRoute: typeof KontakRoute
   LayananRoute: typeof LayananRoute
@@ -132,6 +157,7 @@ export interface RootRouteChildren {
   RobotsDottxtRoute: typeof RobotsDottxtRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   TentangRoute: typeof TentangRoute
+  ApiLeadsDotcsvRoute: typeof ApiLeadsDotcsvRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -141,6 +167,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/estimasi-biaya': {
@@ -192,11 +225,19 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TentangRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/leads.csv': {
+      id: '/api/leads.csv'
+      path: '/api/leads.csv'
+      fullPath: '/api/leads.csv'
+      preLoaderRoute: typeof ApiLeadsDotcsvRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AdminRoute: AdminRoute,
   EstimasiBiayaRoute: EstimasiBiayaRoute,
   KontakRoute: KontakRoute,
   LayananRoute: LayananRoute,
@@ -204,6 +245,7 @@ const rootRouteChildren: RootRouteChildren = {
   RobotsDottxtRoute: RobotsDottxtRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   TentangRoute: TentangRoute,
+  ApiLeadsDotcsvRoute: ApiLeadsDotcsvRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

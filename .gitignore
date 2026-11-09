@@ -30,3 +30,7 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Data lokal (fallback penyimpanan lead saat Appwrite belum dikonfigurasi)
+.data/
+.env

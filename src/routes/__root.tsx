@@ -3,6 +3,7 @@ import {
   Link,
   createRootRoute,
   useRouter,
+  useRouterState,
   HeadContent,
   Scripts,
 } from "@tanstack/react-router";
@@ -111,11 +112,35 @@ export const Route = createRootRoute({
       { rel: "icon", type: "image/png", href: "/favicon.png" },
     ],
   }),
+  scripts: () => analyticsScripts(),
   shellComponent: RootShell,
   component: RootComponent,
   notFoundComponent: NotFoundComponent,
   errorComponent: ErrorComponent,
 });
+
+/** Script analytics aktif bila VITE_GA_ID atau VITE_PLAUSIBLE_DOMAIN diisi saat build. */
+function analyticsScripts() {
+  const gaId = import.meta.env["VITE_GA_ID"] as string | undefined;
+  const plausible = import.meta.env["VITE_PLAUSIBLE_DOMAIN"] as string | undefined;
+  const out: {
+    src?: string;
+    async?: boolean;
+    defer?: boolean;
+    children?: string;
+    "data-domain"?: string;
+  }[] = [];
+  if (gaId && /^G-[A-Z0-9]+$/.test(gaId)) {
+    out.push({ src: `https://www.googletagmanager.com/gtag/js?id=${gaId}`, async: true });
+    out.push({
+      children: `window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}window.gtag=gtag;gtag('js',new Date());gtag('config','${gaId}');`,
+    });
+  }
+  if (plausible && /^[a-z0-9.-]+$/i.test(plausible)) {
+    out.push({ src: "https://plausible.io/js/script.js", defer: true, "data-domain": plausible });
+  }
+  return out;
+}
 
 function RootShell({ children }: { children: ReactNode }) {
   return (
@@ -133,6 +158,10 @@ function RootShell({ children }: { children: ReactNode }) {
 
 function RootComponent() {
   useEffect(() => installWhatsAppTracking(), []);
+  const isAdmin = useRouterState({ select: (s) => s.location.pathname.startsWith("/admin") });
+
+  // Halaman admin memakai tampilan sendiri, tanpa header/footer situs.
+  if (isAdmin) return <Outlet />;
 
   return (
     <>

@@ -64,9 +64,28 @@ Ubah `CONTACT.whatsappDisplay` dan `CONTACT.whatsappIntl` di `src/content/site.t
 - `CONTACT.facebook` — URL halaman Facebook.
 - Foto di `src/assets/` + `src/content/images.ts` — ganti dengan foto proyek asli.
 
+## Form survei & dashboard admin
+
+- Form di `/kontak` menyimpan lead ke **Appwrite** (bila `APPWRITE_*` diisi) atau ke file lokal `.data/leads.json` (uji coba).
+- Setelah kirim, klien bisa lanjut chat WhatsApp dengan pesan yang sudah terisi.
+- **Dashboard**: buka `/admin`, masuk dengan `ADMIN_PASSWORD`. Fitur: filter status (Baru → Sudah dihubungi → Sudah disurvei → RAB dikirim → Deal / Batal), cari, catatan internal, tombol WhatsApp ke klien, **Export CSV**.
+- Notifikasi lead baru ke Telegram bila `TELEGRAM_BOT_TOKEN` & `TELEGRAM_CHAT_ID` diisi.
+- Anti-spam: honeypot + batas 5 kiriman / 10 menit per IP.
+
+### Menyiapkan Appwrite (sekali)
+
+1. Appwrite Console → buat project → **API Keys** → buat key dengan scope `databases`, `tables`, `columns`, `indexes`, `rows` (read & write).
+2. Jalankan:
+   ```sh
+   APPWRITE_ENDPOINT=... APPWRITE_PROJECT_ID=... APPWRITE_API_KEY=... npm run appwrite:setup
+   ```
+3. Isi env yang sama di Appwrite Sites, lalu deploy ulang.
+
+Semua environment variable ada di `.env.example`.
+
 ## Analytics
 
-Event `click_whatsapp`, `submit_form`, dan `use_calculator` otomatis dikirim ke Google Analytics 4 (`gtag`), Google Tag Manager (`dataLayer`), atau Plausible — cukup pasang salah satu script-nya di `src/routes/__root.tsx`. Lihat `src/lib/analytics.ts`.
+Isi `VITE_GA_ID` (Google Analytics 4, format `G-XXXX`) atau `VITE_PLAUSIBLE_DOMAIN`, lalu build ulang. Event `click_whatsapp`, `submit_form`, dan `use_calculator` terkirim otomatis. Lihat `src/lib/analytics.ts`.
 
 ## Deploy ke Appwrite Sites
 
