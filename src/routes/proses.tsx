@@ -29,17 +29,13 @@ function ProsesPage() {
     <>
       <PageHero
         label="Proses kerja"
-        title={
-          <>
-            Enam langkah, <Italic tone="dark">tanpa kejutan</Italic>
-          </>
-        }
-        intro="Setiap tahap punya dokumen yang jelas. Anda tahu apa yang dikerjakan, berapa biayanya, dan kapan selesai — sebelum membayar DP."
-      >
-        <div className="rounded-lg border border-white/10 bg-arang/60 p-6 sm:p-8">
-          <ProcessTimeline />
-        </div>
-      </PageHero>
+        title="Enam langkah, tanpa kejutan"
+        intro="Setiap tahap punya dokumen yang jelas. Anda tahu apa yang dikerjakan, berapa biayanya, dan kapan selesai sebelum membayar DP."
+      />
+
+      <Section inner="pt-10 md:pt-14">
+        <ProcessTimeline />
+      </Section>
 
       <Section id="transparansi">
         <SectionHeading
@@ -65,7 +61,6 @@ function ProsesPage() {
         </div>
       </Section>
 
-      <div className="h-16 md:h-28" />
       <CtaBand title="Mulai dari langkah pertama: konsultasi gratis.">
         <GoldButton href={waLink("konsultasi & survei gratis")}>Jadwalkan survei</GoldButton>
       </CtaBand>

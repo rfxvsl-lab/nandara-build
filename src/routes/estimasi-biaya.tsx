@@ -56,7 +56,7 @@ function EstimasiPage() {
         intro="Gunakan kalkulator untuk gambaran awal. Biaya pasti selalu dari RAB rinci setelah survei — dan itu gratis."
       />
 
-      <Section className="!pt-12 md:!pt-16">
+      <Section inner="pt-10 md:pt-14">
         <Estimator />
       </Section>
 

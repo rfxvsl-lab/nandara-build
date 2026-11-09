@@ -209,12 +209,12 @@ export const PROCESS_STEPS = [
   {
     title: "Konsultasi",
     body: "Ceritakan kebutuhan & budget Anda lewat WhatsApp atau telepon.",
-    doc: "Gratis",
+    doc: "Konsultasi gratis",
   },
   {
     title: "Survei lokasi",
     body: "Tim kami datang mengukur dan mengecek kondisi bangunan.",
-    doc: "Gratis",
+    doc: "Hasil ukur lokasi (gratis)",
   },
   {
     title: "Desain & RAB",

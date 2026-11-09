@@ -36,7 +36,7 @@ function LayananPage() {
         </GoldButton>
       </PageHero>
 
-      <Section className="!pt-12 md:!pt-20">
+      <Section inner="pt-6 md:pt-10">
         <div className="space-y-16 md:space-y-24">
           {SERVICES.map((s, i) => (
             <article

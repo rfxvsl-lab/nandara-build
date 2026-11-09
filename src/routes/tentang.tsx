@@ -82,7 +82,6 @@ function TentangPage() {
         </ul>
       </Section>
 
-      <div className="h-16 md:h-28" />
       <CtaBand title="Mari diskusikan rumah Anda." body={`Melayani ${SITE.area}.`}>
         <GoldButton href={waLink()}>Konsultasi gratis</GoldButton>
       </CtaBand>

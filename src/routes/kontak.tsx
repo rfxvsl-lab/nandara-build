@@ -33,7 +33,7 @@ function KontakPage() {
         intro="Isi form singkat atau chat langsung. Kami jadwalkan survei di lokasi Anda tanpa biaya."
       />
 
-      <Section className="!pt-12 md:!pt-16">
+      <Section inner="pt-10 md:pt-14">
         <div className="grid gap-10 lg:grid-cols-[1.3fr_0.7fr] lg:gap-14">
           <div className="rounded-lg border border-batu bg-white p-6 shadow-card sm:p-8">
             <h2 className="text-xl font-bold text-arang">Form survei gratis</h2>

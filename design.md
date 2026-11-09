@@ -316,3 +316,30 @@ Token di atas ditulis di `src/styles.css` sebagai berikut (ringkas):
 Variabel semantik shadcn (`--primary`, `--background`, dll.) dipetakan ke token ini: `--background: kapur`, `--foreground: arang`, `--primary: arang`, `--accent: emas`, `--ring: emas-ink`.
 
 Utility tambahan: `bg-blueprint` (grid tipis di latar gelap), `bg-blueprint-light` (grid di latar terang), `label-mono`, `tabular`.
+
+---
+
+## 13. Gaya v2: "Block × HDR" (dipilih pemilik, 9 Nov 2026)
+
+Pemilik memilih campuran dua referensi: **[Block Renovation](https://www.blockrenovation.com/)** (kerangka & tipografi) dan **[HDR Remodeling](https://hdrremodeling.com/)** (kehangatan & foto). Bagian ini **menggantikan** aturan yang bertentangan di atas (serif-italic, label mono "01 —", grid blueprint).
+
+### Diambil dari Block
+- **Bingkai halaman**: garis tipis vertikal di tepi konten (`main` max 1360 px, `border-x border-garis`) + garis horizontal pemisah section (`border-t border-garis`).
+- **Hero**: foto penuh, judul HURUF KAPITAL berbobot normal (bukan bold), tracking rapat; subjudul **font mono**; satu tombol.
+- **Judul section**: berbobot normal (400), huruf biasa, rata kiri.
+- **Cara kerja**: 4 kolom bersekat garis, judul → teks → tautan bergaris bawah → foto kecil membulat di bawah.
+- **Panel bukti**: panel putih membulat berisi kotak pasir dengan angka besar berwarna aksen. Angka hanya fakta kebijakan yang benar (Rp 0 survei, 100% item tertulis), bukan statistik karangan.
+- **Tabel "Dengan vs Tanpa"**, **panel krem "Perlindungan"** (teks kiri, daftar bergaris kanan), **FAQ** (judul kiri, daftar dengan ikon + di kanan), **ajakan penutup** tengah dengan 3 centang.
+
+### Diambil dari HDR
+- **Header**: logo di tengah, menu kecil kapital berjarak lebar terbagi kiri–kanan.
+- **Judul tengah kapital** berwarna aksen dengan garis pendek di bawahnya (`CenteredTitle`).
+- **Foto layanan** bersudut melengkung diagonal (`rounded-tr` + `rounded-bl` 2.5rem) dengan label bergaris putih di tengah.
+- **Banner foto penuh** "Siap mulai membangun?" dengan dua tombol.
+- **Footer gelap** (`#2b2a27`).
+
+### Token tambahan
+- `--color-garis: #e4d3a8` — garis bingkai & pemisah.
+- Font: Plus Jakarta Sans (400/500 untuk judul) + JetBrains Mono (subjudul, breadcrumb, angka kecil). Instrument Serif dihapus.
+- Radius: tombol 8 px, panel 12 px, foto kecil 8 px.
+- Aksen tetap **emas logo**. Bisa diganti ke oranye (Block) atau hijau (HDR) cukup lewat token di `src/styles.css`.

@@ -6,31 +6,31 @@ import { CONTACT, NAV, SITE, waLink } from "@/content/site";
 import { Wordmark } from "./header";
 import { WhatsAppIcon } from "./whatsapp-float";
 
+/** Footer gelap (HDR) dengan kalimat mono di kiri (Block). */
 export function Footer() {
   const year = new Date().getFullYear();
   return (
-    <footer
-      id="kontak"
-      className="scroll-mt-20 bg-arang px-4 pb-24 pt-16 text-kapur sm:px-8 sm:pb-12"
-    >
-      <div className="mx-auto w-full max-w-[1200px]">
-        <div className="grid gap-12 md:grid-cols-[1.4fr_1fr_1fr]">
+    <footer className="bg-[#2b2a27] px-5 pb-24 pt-14 text-kapur sm:px-8 sm:pb-10">
+      <div className="mx-auto w-full max-w-[1296px]">
+        <div className="grid gap-12 md:grid-cols-[1.5fr_1fr_1fr]">
           <div>
             <Wordmark size="lg" tone="dark" />
-            <p className="mt-6 max-w-sm font-serif text-[1.75rem] italic leading-tight text-kapur">
-              {SITE.headline}
+            <p className="mt-6 max-w-sm font-mono text-sm leading-relaxed text-kapur/80">
+              {SITE.headline}. RAB rinci dan SPK resmi sebelum DP, survei gratis. Melayani{" "}
+              {SITE.area}.
             </p>
-            <p className="mt-3 text-sm text-kapur/60">Melayani area {SITE.area}.</p>
           </div>
 
           <div>
-            <p className="label-mono text-emas">Navigasi</p>
+            <p className="text-[0.75rem] font-medium uppercase tracking-[0.14em] text-kapur/70">
+              Navigasi
+            </p>
             <ul className="mt-5 space-y-3">
               {NAV.map((item) => (
                 <li key={item.to}>
                   <Link
                     to={item.to}
-                    className="text-sm text-kapur/75 transition-colors hover:text-emas"
+                    className="text-sm text-kapur/80 transition-colors hover:text-emas"
                   >
                     {item.label}
                   </Link>
@@ -40,17 +40,19 @@ export function Footer() {
           </div>
 
           <div>
-            <p className="label-mono text-emas">Hubungi Kami</p>
+            <p className="text-[0.75rem] font-medium uppercase tracking-[0.14em] text-kapur/70">
+              Hubungi kami
+            </p>
             <ul className="mt-5 space-y-4 text-sm">
               <li>
                 <a
                   href={waLink()}
                   target="_blank"
                   rel="noreferrer"
-                  className="inline-flex items-center gap-2 text-kapur/75 transition-colors hover:text-emas"
+                  className="inline-flex items-center gap-2 text-kapur/80 transition-colors hover:text-emas"
                 >
                   <WhatsAppIcon className="h-4 w-4" />
-                  WhatsApp <span className="tabular">{CONTACT.whatsappDisplay}</span>
+                  <span className="font-mono">{CONTACT.whatsappDisplay}</span>
                 </a>
               </li>
               <li>
@@ -58,7 +60,7 @@ export function Footer() {
                   href={CONTACT.instagram.url}
                   target="_blank"
                   rel="noreferrer"
-                  className="inline-flex items-center gap-2 text-kapur/75 transition-colors hover:text-emas"
+                  className="inline-flex items-center gap-2 text-kapur/80 transition-colors hover:text-emas"
                 >
                   <Instagram className="h-4 w-4" />
                   {CONTACT.instagram.handle}
@@ -68,11 +70,11 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="mt-14 flex flex-col gap-2 border-t border-white/10 pt-6 text-xs text-kapur/50 sm:flex-row sm:justify-between">
+        <div className="mt-14 flex flex-col gap-2 border-t border-kapur/15 pt-6 text-xs text-kapur/70 sm:flex-row sm:justify-between">
           <p>
-            © {year} {SITE.name}. All rights reserved.
+            © {year} {SITE.name}
           </p>
-          <p className="label-mono text-[0.625rem]">{SITE.tagline}</p>
+          <p>{SITE.tagline}</p>
         </div>
       </div>
     </footer>

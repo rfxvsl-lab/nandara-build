@@ -143,7 +143,7 @@ function RootComponent() {
         Langsung ke konten
       </a>
       <Header />
-      <main id="konten">
+      <main id="konten" className="mx-auto w-full max-w-[1360px] border-x border-garis">
         {/* Halaman anak dirender di sini. Jangan hapus <Outlet />. */}
         <Outlet />
       </main>
