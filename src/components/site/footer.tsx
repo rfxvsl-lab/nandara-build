@@ -10,7 +10,7 @@ import { WhatsAppIcon } from "./whatsapp-float";
 export function Footer() {
   const year = new Date().getFullYear();
   return (
-    <footer className="bg-[#2b2a27] px-5 pb-24 pt-14 text-kapur sm:px-8 sm:pb-10">
+    <footer className="bg-[#2b2a27] px-5 pb-28 pt-14 text-kapur sm:px-8">
       <div className="mx-auto w-full max-w-[1296px]">
         <div className="grid gap-12 md:grid-cols-[1.5fr_1fr_1fr]">
           <div>

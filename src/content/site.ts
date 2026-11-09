@@ -66,6 +66,8 @@ export const HERO_POINTS: IconItem[] = [
 export type Service = {
   icon: LucideIcon;
   name: string;
+  /** Label pendek (1 baris) untuk foto layanan */
+  short: string;
   body: string;
   image: ResponsiveImage;
   /** Topik untuk pesan template WhatsApp */
@@ -79,6 +81,7 @@ export const SERVICES: Service[] = [
   {
     icon: PencilRuler,
     name: "Jasa Arsitektur & Desain",
+    short: "Arsitektur & Desain",
     body: "Konsep rancangan gambar, visual 3D, dan penataan tata ruang yang matang sebelum dibangun.",
     image: IMAGES.detailMaterial,
     waTopic: "jasa arsitektur & desain",
@@ -93,6 +96,7 @@ export const SERVICES: Service[] = [
   {
     icon: FileSpreadsheet,
     name: "Jasa Perencanaan & RAB",
+    short: "Perencanaan & RAB",
     body: "Estimasi biaya terperinci, akurat, dan transparan yang disesuaikan dengan budget Anda.",
     image: IMAGES.interiorSpace,
     waTopic: "jasa perencanaan & RAB",
@@ -107,6 +111,7 @@ export const SERVICES: Service[] = [
   {
     icon: HardHat,
     name: "Kontraktor Bangunan & Renovasi",
+    short: "Bangun & Renovasi",
     body: "Pelaksanaan konstruksi rumah baru, renovasi fasad, hingga pengerjaan interior.",
     image: IMAGES.processSite,
     waTopic: "kontraktor bangun / renovasi rumah",

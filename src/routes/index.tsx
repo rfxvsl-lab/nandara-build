@@ -183,7 +183,7 @@ function Services() {
       <CenteredTitle>Desain, RAB &amp; konstruksi</CenteredTitle>
       <div className="mx-auto mt-12 grid max-w-[1120px] gap-10 md:grid-cols-3 md:gap-6">
         {SERVICES.map((s) => (
-          <article key={s.name}>
+          <article key={s.name} className="flex flex-col">
             <div className="relative overflow-hidden rounded-bl-[2.5rem] rounded-tr-[2.5rem]">
               <Photo
                 image={s.image}
@@ -191,11 +191,12 @@ function Services() {
                 className="aspect-[4/5] w-full object-cover"
               />
               <div className="absolute inset-0 bg-arang/25" />
-              <span className="absolute left-1/2 top-1/2 w-[80%] -translate-x-1/2 -translate-y-1/2 border-2 border-kapur px-3 py-2 text-center text-lg font-semibold leading-tight text-kapur [text-shadow:0_1px_8px_rgb(0_0_0/0.35)] sm:text-xl">
-                {s.name}
+              <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 whitespace-nowrap border-2 border-kapur px-5 py-2 text-center text-lg font-semibold text-kapur [text-shadow:0_1px_8px_rgb(0_0_0/0.35)] sm:text-xl">
+                {s.short}
               </span>
             </div>
-            <p className="mt-5 text-[0.9375rem] leading-relaxed text-abu">{s.body}</p>
+            <h3 className="sr-only">{s.name}</h3>
+            <p className="mt-5 flex-1 text-[0.9375rem] leading-relaxed text-abu">{s.body}</p>
             <TextLink href={waLink(s.waTopic)} className="mt-3">
               Tanya layanan ini
             </TextLink>

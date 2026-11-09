@@ -2,10 +2,10 @@ import { Link } from "@tanstack/react-router";
 import { Menu, X } from "lucide-react";
 import { useEffect, useState } from "react";
 
-import logo from "@/assets/nandara-logo.png";
 import { CONTACT, NAV, SITE, waLink } from "@/content/site";
 import { cn } from "@/lib/utils";
 
+import { LogoMark } from "./logo-mark";
 import { WhatsAppIcon } from "./whatsapp-float";
 
 export function Wordmark({
@@ -20,18 +20,11 @@ export function Wordmark({
   const px = size === "lg" ? 48 : 40;
   return (
     <span className={cn("flex min-w-0 items-center gap-3", stacked && "flex-col gap-1")}>
-      <img
-        src={logo}
-        alt=""
-        className="shrink-0"
-        width={px}
-        height={px}
-        style={{ width: px, height: px }}
-      />
+      <LogoMark size={px} className="shrink-0" />
       <span className={cn("min-w-0 leading-none", stacked && "text-center")}>
         <span
           className={cn(
-            "block text-sm font-bold uppercase tracking-[0.24em]",
+            "-mr-[0.24em] block text-sm font-bold uppercase tracking-[0.24em]",
             tone === "dark" ? "text-kapur" : "text-arang",
           )}
         >
@@ -39,7 +32,7 @@ export function Wordmark({
         </span>
         <span
           className={cn(
-            "mt-1 block text-[0.625rem] font-semibold uppercase tracking-[0.5em]",
+            "-mr-[0.5em] mt-1 block text-[0.625rem] font-semibold uppercase tracking-[0.5em]",
             tone === "dark" ? "text-emas" : "text-emas-ink",
           )}
         >
