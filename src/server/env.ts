@@ -11,10 +11,6 @@ export const env = {
   sessionSecret: process.env["SESSION_SECRET"] ?? "",
   cookieSecure: process.env["COOKIE_SECURE"] !== "false",
   dataDir: process.env["DATA_DIR"] ?? ".data",
-  telegram: {
-    botToken: process.env["TELEGRAM_BOT_TOKEN"] ?? "",
-    chatId: process.env["TELEGRAM_CHAT_ID"] ?? "",
-  },
 };
 
 export function appwriteConfigured(): boolean {

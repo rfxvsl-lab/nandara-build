@@ -120,8 +120,7 @@ Tidak ada lagi ketergantungan pada Lovable (config Vite Lovable, error reporting
     │   ├── rate-limit.ts     Pembatas laju + IP klien yang aman
     │   ├── leads-store.ts    Penyimpanan lead (Appwrite / lokal)
     │   ├── content-store.ts  Proyek, testimoni, artikel, pengaturan, media publik & privat
-    │   ├── portal-store.ts   Proyek berjalan (portal klien)
-    │   └── notify.ts         Notifikasi Telegram (opsional)
+    │   └── portal-store.ts   Proyek berjalan (portal klien)
     ├── styles.css            Token desain Tailwind v4
     ├── server.ts             Entry SSR (pembungkus error + gzip HTML)
     └── start.ts              Middleware TanStack Start (error + CSRF server functions)
@@ -177,7 +176,7 @@ Server functions (RPC) ada di `src/lib/*.functions.ts`.
 - Validasi zod di client **dan** server (`lib/leads.ts`). Pilihan jadwal survei (tanggal + pagi/siang/sore).
 - Anti-spam: honeypot `website`, 5 kiriman / 10 menit per IP, 60 kiriman / jam total.
 - Setelah sukses: layar terima kasih + tombol "Lanjutkan chat di WhatsApp" (pesan terisi otomatis).
-- Notifikasi Telegram bila `TELEGRAM_*` diisi.
+- Lead **hanya masuk ke `/admin`** (tidak ada notifikasi eksternal — keputusan pemilik). Tab *Calon klien* menampilkan jumlah lead berstatus *Baru*.
 
 ### 6.2 Dashboard admin (`/admin`)
 
@@ -279,7 +278,6 @@ Lengkap dengan komentar di [`.env.example`](./.env.example).
 | `APPWRITE_*_TABLE_ID`, `APPWRITE_*_BUCKET_ID`                  | tidak                 | Default: `nandara`, `leads`, `projects`, `testimonials`, `articles`, `settings`, `client_projects`, `media`, `portal` |
 | `COOKIE_SECURE`                                                | tidak                 | Default `true`. Set `false` hanya untuk http non-localhost                                                            |
 | `DATA_DIR`                                                     | tidak                 | Folder fallback lokal (default `.data`)                                                                               |
-| `TELEGRAM_BOT_TOKEN`, `TELEGRAM_CHAT_ID`                       | tidak                 | Notifikasi lead baru                                                                                                  |
 | `VITE_GA_ID`, `VITE_PLAUSIBLE_DOMAIN`                          | tidak                 | Analytics (build time)                                                                                                |
 | `PORT`, `HOST`                                                 | tidak                 | Server Node (default 3000)                                                                                            |
 

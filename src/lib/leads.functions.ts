@@ -38,7 +38,6 @@ export const submitLead = createServerFn({ method: "POST" })
     }
 
     const { getLeadStore } = await import("@/server/leads-store");
-    const { notifyNewLead } = await import("@/server/notify");
     try {
       const lead = await getLeadStore().create({
         nama: data.nama,
@@ -50,7 +49,6 @@ export const submitLead = createServerFn({ method: "POST" })
         catatan: data.catatan ?? "",
         halaman: data.halaman ?? "",
       });
-      await notifyNewLead(lead);
       return { ok: true, id: lead.id };
     } catch (error) {
       console.error("Gagal menyimpan lead", error);

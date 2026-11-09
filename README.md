@@ -77,7 +77,7 @@ Ubah `CONTACT.whatsappDisplay` dan `CONTACT.whatsappIntl` di `src/content/site.t
 - Form di `/kontak` menyimpan lead ke **Appwrite** (bila `APPWRITE_*` diisi) atau ke file lokal `.data/leads.json` (uji coba).
 - Setelah kirim, klien bisa lanjut chat WhatsApp dengan pesan yang sudah terisi.
 - **Dashboard**: buka `/admin`, masuk dengan `ADMIN_PASSWORD` (≥ 12 karakter). **Wajib** juga mengisi `SESSION_SECRET` (≥ 32 karakter acak, `openssl rand -hex 32`); tanpa itu admin & portal tidak aktif. Fitur: filter status (Baru → Sudah dihubungi → Sudah disurvei → RAB dikirim → Deal / Batal), cari, catatan internal, tombol WhatsApp ke klien, **Export CSV**.
-- Notifikasi lead baru ke Telegram bila `TELEGRAM_BOT_TOKEN` & `TELEGRAM_CHAT_ID` diisi.
+- Lead baru hanya masuk ke `/admin`; tab **Calon klien** menampilkan jumlah lead berstatus *Baru*.
 - Anti-spam: honeypot + batas 5 kiriman / 10 menit per IP dan 60 kiriman / jam total. Login admin: maks. 10 salah / 15 menit per IP dan 50 total.
 
 ### Portofolio & testimoni (dari admin)

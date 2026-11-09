@@ -21,7 +21,13 @@ test("form survei: validasi, simpan, kelola di admin, export CSV", async ({ page
   await loginAdmin(page);
   const row = page.locator("main ul > li").filter({ hasText: nama });
   await expect(row).toBeVisible();
+  // Badge jumlah lead "baru" di tab, turun saat status diubah
+  const badge = page.getByLabel(/lead baru$/);
+  const before = Number(await badge.innerText());
+  expect(before).toBeGreaterThanOrEqual(1);
   await row.locator("select").selectOption("disurvei");
+  if (before > 1) await expect(badge).toHaveText(String(before - 1));
+  else await expect(badge).toHaveCount(0);
   await row.locator("textarea").fill("Survei Kamis");
   await row.getByRole("button", { name: "Simpan catatan" }).click();
   await expect(row.getByRole("button", { name: "Simpan catatan" })).toHaveCount(0);

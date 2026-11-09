@@ -59,7 +59,16 @@ const TABS: { id: Tab; label: string }[] = [
   { id: "harga", label: "Harga & termin" },
 ];
 
-function AdminTabs({ leads, storage }: { leads: Lead[]; storage: "appwrite" | "lokal" }) {
+function AdminTabs({
+  leads: initialLeads,
+  storage,
+}: {
+  leads: Lead[];
+  storage: "appwrite" | "lokal";
+}) {
+  // Dipegang di sini agar badge "baru" di tab ikut berubah saat status lead diubah.
+  const [leads, setLeads] = useState(initialLeads);
+  const newLeads = leads.filter((l) => l.status === "baru").length;
   const [tab, setTab] = useState<Tab>("leads");
   const [content, setContent] = useState<{
     projects: Project[];
@@ -121,10 +130,18 @@ function AdminTabs({ leads, storage }: { leads: Lead[]; storage: "appwrite" | "l
             )}
           >
             {t.label}
+            {t.id === "leads" && newLeads > 0 && (
+              <span
+                className="ml-2 inline-grid min-w-6 place-items-center rounded-full bg-emas px-1.5 py-0.5 font-mono text-xs text-arang"
+                aria-label={`${newLeads} lead baru`}
+              >
+                {newLeads}
+              </span>
+            )}
           </button>
         ))}
       </div>
-      {tab === "leads" && <Dashboard leads={leads} storage={storage} />}
+      {tab === "leads" && <Dashboard leads={leads} setLeads={setLeads} storage={storage} />}
       {tab === "proyek" &&
         (clientProjects ? (
           <ClientProjectsAdmin items={clientProjects} onChange={setClientProjects} />
@@ -272,8 +289,15 @@ function formatDate(iso: string) {
   });
 }
 
-function Dashboard({ leads: initial, storage }: { leads: Lead[]; storage: "appwrite" | "lokal" }) {
-  const [leads, setLeads] = useState(initial);
+function Dashboard({
+  leads,
+  setLeads,
+  storage,
+}: {
+  leads: Lead[];
+  setLeads: React.Dispatch<React.SetStateAction<Lead[]>>;
+  storage: "appwrite" | "lokal";
+}) {
   const [filter, setFilter] = useState<LeadStatus | "semua">("semua");
   const [q, setQ] = useState("");
 
