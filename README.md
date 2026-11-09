@@ -74,9 +74,9 @@ Ubah `CONTACT.whatsappDisplay` dan `CONTACT.whatsappIntl` di `src/content/site.t
 
 - Form di `/kontak` menyimpan lead ke **Appwrite** (bila `APPWRITE_*` diisi) atau ke file lokal `.data/leads.json` (uji coba).
 - Setelah kirim, klien bisa lanjut chat WhatsApp dengan pesan yang sudah terisi.
-- **Dashboard**: buka `/admin`, masuk dengan `ADMIN_PASSWORD`. Fitur: filter status (Baru → Sudah dihubungi → Sudah disurvei → RAB dikirim → Deal / Batal), cari, catatan internal, tombol WhatsApp ke klien, **Export CSV**.
+- **Dashboard**: buka `/admin`, masuk dengan `ADMIN_PASSWORD` (≥ 12 karakter). **Wajib** juga mengisi `SESSION_SECRET` (≥ 32 karakter acak, `openssl rand -hex 32`); tanpa itu admin & portal tidak aktif. Fitur: filter status (Baru → Sudah dihubungi → Sudah disurvei → RAB dikirim → Deal / Batal), cari, catatan internal, tombol WhatsApp ke klien, **Export CSV**.
 - Notifikasi lead baru ke Telegram bila `TELEGRAM_BOT_TOKEN` & `TELEGRAM_CHAT_ID` diisi.
-- Anti-spam: honeypot + batas 5 kiriman / 10 menit per IP.
+- Anti-spam: honeypot + batas 5 kiriman / 10 menit per IP dan 60 kiriman / jam total. Login admin: maks. 10 salah / 15 menit per IP dan 50 total.
 
 ### Portofolio & testimoni (dari admin)
 
@@ -94,7 +94,7 @@ Ubah `CONTACT.whatsappDisplay` dan `CONTACT.whatsappIntl` di `src/content/site.t
 
 - Di admin tab **Proyek berjalan**: buat proyek setelah SPK ditandatangani → sistem membuat **kode akses** (mis. `K7QM-3XPA`).
 - Klik **Kirim akses** untuk membuka WhatsApp ke klien dengan pesan berisi link `/pantau` dan kodenya.
-- Klien masuk dengan kode akses + **4 digit terakhir nomor WhatsApp**-nya (maks. 8 percobaan salah / 15 menit per IP).
+- Klien masuk dengan kode akses + **4 digit terakhir nomor WhatsApp**-nya (maks. 8 percobaan salah / 15 menit per IP). Kode bisa **diganti** (ikon kunci) bila bocor.
 - Isi & perbarui: progres %, status, tanggal, nilai kontrak, **tahapan** (ada isian standar), **termin** (bisa dihitung otomatis dari skema termin × nilai kontrak), **laporan progres berfoto**, dan **dokumen** (RAB/SPK/gambar kerja, PDF maks. 15 MB).
 - Foto progres & dokumen disimpan **privat** (bucket `portal` / `.data/private`), hanya bisa dibuka admin atau klien pemilik proyek. Matikan _Akses portal klien aktif_ untuk mencabut akses seketika.
 

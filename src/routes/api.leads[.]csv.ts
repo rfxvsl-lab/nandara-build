@@ -4,7 +4,7 @@ import { STATUS_LABEL } from "@/lib/leads";
 
 function csvCell(v: string): string {
   // Cegah formula injection di Excel/Sheets
-  const safe = /^[=+\-@]/.test(v) ? `'${v}` : v;
+  const safe = /^[=+\-@\t\r]/.test(v) ? `'${v}` : v;
   return `"${safe.replace(/"/g, '""')}"`;
 }
 

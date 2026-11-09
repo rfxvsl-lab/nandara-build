@@ -159,7 +159,10 @@ function Disabled() {
       <h1 className="text-2xl font-normal text-arang">Dashboard admin belum aktif</h1>
       <p className="mt-3 text-[0.9375rem] leading-relaxed text-abu">
         Isi environment variable <code className="font-mono text-arang">ADMIN_PASSWORD</code>{" "}
-        (minimal 8 karakter) di pengaturan hosting, lalu deploy ulang.
+        (minimal 12 karakter) dan <code className="font-mono text-arang">SESSION_SECRET</code>{" "}
+        (minimal 32 karakter acak, mis. hasil{" "}
+        <code className="font-mono">openssl rand -hex 32</code>) di pengaturan hosting, lalu deploy
+        ulang.
       </p>
     </div>
   );
@@ -178,7 +181,7 @@ function Login() {
     const res = await adminLogin({ data: { password } });
     setBusy(false);
     if (res.ok) await router.invalidate();
-    else setError("Kata sandi salah.");
+    else setError(res.error);
   }
 
   return (

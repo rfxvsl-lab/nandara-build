@@ -58,11 +58,20 @@ function appwriteStore(): LeadStore {
       return fromRow(row as unknown as Record<string, unknown>);
     },
     async list() {
-      const res = await db.listRows(databaseId, leadsTableId, [
-        Query.orderDesc("$createdAt"),
-        Query.limit(500),
-      ]);
-      return res.rows.map((r) => fromRow(r as unknown as Record<string, unknown>));
+      // Ambil semua halaman (cursor), bukan hanya 500 pertama.
+      const out: Lead[] = [];
+      let cursor: string | undefined;
+      for (let page = 0; page < 100; page++) {
+        const res = await db.listRows(databaseId, leadsTableId, [
+          Query.orderDesc("$createdAt"),
+          Query.limit(500),
+          ...(cursor ? [Query.cursorAfter(cursor)] : []),
+        ]);
+        out.push(...res.rows.map((r) => fromRow(r as unknown as Record<string, unknown>)));
+        if (res.rows.length < 500) break;
+        cursor = String((res.rows.at(-1) as unknown as Record<string, unknown>)["$id"]);
+      }
+      return out;
     },
     async update(id, patch) {
       const row = await db.updateRow(databaseId, leadsTableId, id, patch);

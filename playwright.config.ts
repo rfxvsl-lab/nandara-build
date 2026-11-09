@@ -29,6 +29,7 @@ export default defineConfig({
       PORT: String(PORT),
       HOST: "127.0.0.1",
       ADMIN_PASSWORD,
+      SESSION_SECRET: "e2e-session-secret-yang-panjang-dan-acak-0123456789",
       DATA_DIR: ".data-test",
       SITE_URL: "https://nandarabuild.test",
     },

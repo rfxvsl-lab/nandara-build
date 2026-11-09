@@ -40,8 +40,13 @@ export const getPublishedProjects = createServerFn({ method: "GET" }).handler(
 export const getProjectBySlug = createServerFn({ method: "GET" })
   .inputValidator(z.object({ slug: z.string().max(80) }))
   .handler(async ({ data }): Promise<Project | null> => {
-    const all = await (await stores()).projects.list();
-    return all.find((p) => p.published && p.slug === data.slug) ?? null;
+    try {
+      const all = await (await stores()).projects.list();
+      return all.find((p) => p.published && p.slug === data.slug) ?? null;
+    } catch (error) {
+      console.error("Gagal memuat proyek", error);
+      return null;
+    }
   });
 
 export const getPublishedTestimonials = createServerFn({ method: "GET" }).handler(

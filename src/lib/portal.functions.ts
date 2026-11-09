@@ -27,16 +27,11 @@ function toView(p: ClientProject): PortalView {
   return rest;
 }
 
-/* Pembatas percobaan login per IP (memori proses). */
-const attempts = new Map<string, number[]>();
-function tooManyAttempts(ip: string): boolean {
-  const now = Date.now();
-  const recent = (attempts.get(ip) ?? []).filter((t) => now - t < 15 * 60 * 1000);
-  attempts.set(ip, recent);
-  return recent.length >= 8;
-}
-function recordFailure(ip: string) {
-  attempts.set(ip, [...(attempts.get(ip) ?? []), Date.now()]);
+async function portalLimiter() {
+  const { RateLimiter } = await import("@/server/rate-limit");
+  const g = globalThis as { __nbPortalLimiter?: InstanceType<typeof RateLimiter> };
+  g.__nbPortalLimiter ??= new RateLimiter(8, 15 * 60 * 1000); // 8 salah / 15 menit / IP
+  return g.__nbPortalLimiter;
 }
 
 /* ───────────── Klien ───────────── */
@@ -70,15 +65,16 @@ export const portalLogin = createServerFn({ method: "POST" })
   .handler(async ({ data }): Promise<{ ok: true } | { ok: false; error: string }> => {
     const { adminEnabled, getPortalSession } = await import("@/server/admin-auth");
     if (!adminEnabled()) return { ok: false, error: "Portal belum aktif." };
-    const { getRequestIP } = await import("@tanstack/react-start/server");
-    const ip = getRequestIP({ xForwardedFor: true }) ?? "unknown";
-    if (tooManyAttempts(ip)) {
+    const { clientIp } = await import("@/server/rate-limit");
+    const ip = clientIp();
+    const limiter = await portalLimiter();
+    if (limiter.blocked(ip)) {
       return { ok: false, error: "Terlalu banyak percobaan. Coba lagi 15 menit lagi." };
     }
     await new Promise((r) => setTimeout(r, 300));
     const project = await (await store()).findByKode(normalizeKode(data.kode));
     if (!project || !project.aktif || !project.waKlien.endsWith(data.wa4)) {
-      recordFailure(ip);
+      limiter.record(ip);
       return { ok: false, error: "Kode akses atau nomor WhatsApp tidak cocok." };
     }
     const session = await getPortalSession();
@@ -131,4 +127,11 @@ export const adminDeletePrivateFile = createServerFn({ method: "POST" })
     const { getContentStores } = await import("@/server/content-store");
     await getContentStores().privateMedia.remove(data.id);
     return { ok: true };
+  });
+
+export const adminRegenerateKode = createServerFn({ method: "POST" })
+  .inputValidator(z.object({ id: z.string().min(1).max(64) }))
+  .handler(async ({ data }): Promise<ClientProject> => {
+    await requireAdmin();
+    return (await store()).regenerateKode(data.id);
   });

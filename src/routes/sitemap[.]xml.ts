@@ -24,7 +24,8 @@ export const Route = createFileRoute("/sitemap.xml")({
         return new Response(xml, {
           headers: {
             "content-type": "application/xml; charset=utf-8",
-            "cache-control": "public, max-age=3600",
+            // Tanpa SITE_URL, URL diambil dari Host request — jangan di-cache bersama.
+            "cache-control": process.env["SITE_URL"] ? "public, max-age=3600" : "no-store",
           },
         });
       },

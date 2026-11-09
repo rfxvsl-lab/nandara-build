@@ -20,6 +20,8 @@ export interface ClientProjectStore {
   findByKode(kode: string): Promise<ClientProject | undefined>;
   save(input: NewClientProject & { id?: string | undefined }): Promise<ClientProject>;
   remove(id: string): Promise<void>;
+  /** Buat kode akses baru (kode lama langsung tidak berlaku). */
+  regenerateKode(id: string): Promise<ClientProject>;
 }
 
 export function newKode(): string {
@@ -77,6 +79,10 @@ function appwriteStore(): ClientProjectStore {
     async remove(id) {
       await db.deleteRow(dbId, table, id);
     },
+    async regenerateKode(id) {
+      const row = await db.updateRow(dbId, table, id, { kode: newKode() });
+      return fromRow(row as unknown as Record<string, unknown>);
+    },
   };
 }
 
@@ -133,6 +139,17 @@ function localStore(): ClientProjectStore {
     remove: (id) =>
       lock(async () => {
         await writeAll((await readAll()).filter((p) => p.id !== id));
+      }),
+    regenerateKode: (id) =>
+      lock(async () => {
+        const all = await readAll();
+        const i = all.findIndex((p) => p.id === id);
+        if (i === -1) throw new Error("Proyek tidak ditemukan");
+        let kode = newKode();
+        while (all.some((p) => p.kode === kode)) kode = newKode();
+        all[i] = { ...all[i]!, kode, updatedAt: new Date().toISOString() };
+        await writeAll(all);
+        return all[i]!;
       }),
   };
 }

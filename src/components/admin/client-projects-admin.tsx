@@ -1,4 +1,15 @@
-import { Copy, FileText, ImagePlus, Loader2, Pencil, Plus, Trash2, Upload, X } from "lucide-react";
+import {
+  Copy,
+  FileText,
+  ImagePlus,
+  KeyRound,
+  Loader2,
+  Pencil,
+  Plus,
+  Trash2,
+  Upload,
+  X,
+} from "lucide-react";
 import { useRef, useState } from "react";
 
 import { WhatsAppIcon } from "@/components/site/whatsapp-float";
@@ -7,6 +18,7 @@ import { toIntlPhone } from "@/lib/leads";
 import {
   adminDeleteClientProject,
   adminDeletePrivateFile,
+  adminRegenerateKode,
   adminSaveClientProject,
 } from "@/lib/portal.functions";
 import {
@@ -129,6 +141,19 @@ export function ClientProjectsAdmin({
                   <span className="rounded-md bg-pasir px-3 py-2 font-mono text-sm tracking-wider text-arang">
                     {p.kode}
                   </span>
+                  <Btn
+                    variant="ghost"
+                    aria-label={`Ganti kode akses ${p.judul}`}
+                    title="Ganti kode akses (kode lama tidak berlaku lagi)"
+                    onClick={async () => {
+                      if (!confirm("Buat kode akses baru? Kode lama langsung tidak berlaku."))
+                        return;
+                      const updated = await adminRegenerateKode({ data: { id: p.id } });
+                      onChange(items.map((x) => (x.id === updated.id ? updated : x)));
+                    }}
+                  >
+                    <KeyRound className="h-4 w-4" aria-hidden />
+                  </Btn>
                   <Btn
                     variant="ghost"
                     onClick={async () => {

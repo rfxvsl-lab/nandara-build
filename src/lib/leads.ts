@@ -52,7 +52,11 @@ export const leadInputSchema = z.object({
     .or(z.literal("")),
   waktu: z.enum(TIME_SLOTS).optional().or(z.literal("")),
   catatan: z.string().trim().max(1000).optional().or(z.literal("")),
-  halaman: z.string().max(200).optional(),
+  halaman: z
+    .string()
+    .max(200)
+    .regex(/^\/[\w\-/]*$/)
+    .optional(),
   /** Honeypot anti-spam: harus kosong. */
   website: z.string().max(0).optional().or(z.literal("")),
 });

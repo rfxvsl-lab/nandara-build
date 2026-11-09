@@ -60,6 +60,20 @@ test("portal klien: akses, isi, file privat, cabut akses", async ({ page, browse
   const fileId = docHref!.split("/").pop()!.split("?")[0]!;
   expect(await fetchStatus(anon, `/media/${fileId}`)).toBe(404);
 
+  // Ganti kode akses: kode lama tidak berlaku
+  await item.getByRole("button", { name: `Ganti kode akses ${judul}` }).click();
+  await expect(item.locator("span.font-mono.tracking-wider")).not.toHaveText(kode);
+  const kodeBaru = (await item.locator("span.font-mono.tracking-wider").innerText()).trim();
+  const other = await (await browser.newContext()).newPage();
+  await other.goto("/pantau");
+  await other.fill("#kode", kode);
+  await other.fill("#wa4", "7890");
+  await other.click("button[type=submit]");
+  await expect(other.getByRole("alert")).toContainText("tidak cocok");
+  await other.fill("#kode", kodeBaru);
+  await other.click("button[type=submit]");
+  await expect(other.getByRole("progressbar")).toBeVisible();
+
   // Cabut akses
   await item.getByRole("button", { name: "Ubah" }).click();
   await page.getByLabel("Akses portal klien aktif").uncheck();

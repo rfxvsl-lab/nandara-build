@@ -8,14 +8,23 @@ import { env } from "./env";
 
 type AdminSession = { admin?: boolean };
 
+/**
+ * Kunci enkripsi cookie sesi. WAJIB SESSION_SECRET acak ≥ 32 karakter.
+ * (h3 menyegel cookie dengan PBKDF2 1 iterasi, jadi kunci yang diturunkan dari kata sandi
+ * bisa ditebak offline dari cookie mana pun — karena itu tidak ada lagi fallback.)
+ */
 function secret(): string {
-  if (env.sessionSecret.length >= 32) return env.sessionSecret;
-  // Turunkan dari ADMIN_PASSWORD bila SESSION_SECRET tidak diisi (minimal 32 karakter).
-  return createHash("sha256").update(`nandara-admin:${env.adminPassword}`).digest("hex");
+  return env.sessionSecret;
 }
 
+export const MIN_ADMIN_PASSWORD = 12;
+export const MIN_SESSION_SECRET = 32;
+
+/** Admin & portal hanya aktif bila sandi admin & SESSION_SECRET memadai. */
 export function adminEnabled(): boolean {
-  return env.adminPassword.length >= 8;
+  return (
+    env.adminPassword.length >= MIN_ADMIN_PASSWORD && env.sessionSecret.length >= MIN_SESSION_SECRET
+  );
 }
 
 export function getAdminSession() {

@@ -7,14 +7,19 @@ import { z } from "zod";
 
 import { LEAD_STATUSES, leadInputSchema, type Lead } from "./leads";
 
-/* Batas kirim sederhana per IP (memori proses). */
-const hits = new Map<string, number[]>();
-function rateLimited(ip: string, max = 5, windowMs = 10 * 60 * 1000): boolean {
-  const now = Date.now();
-  const recent = (hits.get(ip) ?? []).filter((t) => now - t < windowMs);
-  recent.push(now);
-  hits.set(ip, recent);
-  return recent.length > max;
+async function limiters() {
+  const { RateLimiter } = await import("@/server/rate-limit");
+  // Dibuat sekali per proses.
+  type L = InstanceType<typeof RateLimiter>;
+  type Limiters = { leadIp: L; leadGlobal: L; loginIp: L; loginGlobal: L };
+  const g = globalThis as { __nbLimiters?: Limiters };
+  g.__nbLimiters ??= {
+    leadIp: new RateLimiter(5, 10 * 60 * 1000), // 5 lead / 10 menit / IP
+    leadGlobal: new RateLimiter(60, 60 * 60 * 1000), // 60 lead / jam total
+    loginIp: new RateLimiter(10, 15 * 60 * 1000), // 10 salah / 15 menit / IP
+    loginGlobal: new RateLimiter(50, 15 * 60 * 1000), // 50 salah / 15 menit total
+  };
+  return g.__nbLimiters;
 }
 
 export const submitLead = createServerFn({ method: "POST" })
@@ -23,9 +28,9 @@ export const submitLead = createServerFn({ method: "POST" })
     // Honeypot terisi → anggap sukses agar bot tidak tahu, tapi jangan disimpan.
     if (data.website) return { ok: true, id: "ignored" };
 
-    const { getRequestIP } = await import("@tanstack/react-start/server");
-    const ip = getRequestIP({ xForwardedFor: true }) ?? "unknown";
-    if (rateLimited(ip)) {
+    const { clientIp } = await import("@/server/rate-limit");
+    const lim = await limiters();
+    if (lim.leadIp.hit(clientIp()) || lim.leadGlobal.hit("all")) {
       return {
         ok: false,
         error: "Terlalu banyak permintaan. Silakan coba lagi beberapa menit lagi.",
@@ -73,11 +78,21 @@ export const getAdminState = createServerFn({ method: "GET" }).handler(
 
 export const adminLogin = createServerFn({ method: "POST" })
   .inputValidator(z.object({ password: z.string().max(200) }))
-  .handler(async ({ data }): Promise<{ ok: boolean }> => {
+  .handler(async ({ data }): Promise<{ ok: true } | { ok: false; error: string }> => {
     const { getAdminSession, passwordMatches } = await import("@/server/admin-auth");
+    const { clientIp } = await import("@/server/rate-limit");
+    const lim = await limiters();
+    const ip = clientIp();
+    if (lim.loginIp.blocked(ip) || lim.loginGlobal.blocked("all")) {
+      return { ok: false, error: "Terlalu banyak percobaan. Coba lagi 15 menit lagi." };
+    }
     // Jeda kecil memperlambat tebakan kata sandi.
     await new Promise((r) => setTimeout(r, 400));
-    if (!passwordMatches(data.password)) return { ok: false };
+    if (!passwordMatches(data.password)) {
+      lim.loginIp.record(ip);
+      lim.loginGlobal.record("all");
+      return { ok: false, error: "Kata sandi salah." };
+    }
     const session = await getAdminSession();
     await session.update({ admin: true });
     return { ok: true };
