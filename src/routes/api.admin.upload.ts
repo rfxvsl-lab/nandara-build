@@ -1,9 +1,14 @@
 import { createFileRoute } from "@tanstack/react-router";
 
-const MAX_BYTES = 6 * 1024 * 1024;
-const ALLOWED = new Set(["image/webp", "image/jpeg", "image/png"]);
+const MAX_IMAGE = 6 * 1024 * 1024;
+const MAX_PDF = 15 * 1024 * 1024;
+const ALLOWED = new Set(["image/webp", "image/jpeg", "image/png", "application/pdf"]);
 
-/** Upload foto (khusus admin). Body: multipart/form-data dengan field "file". */
+/**
+ * Upload file (khusus admin). Body multipart: "file" + opsional "scope".
+ * scope=public  → foto portofolio (gambar saja), disajikan publik lewat /media/:id
+ * scope=private → foto progres & dokumen klien (gambar/PDF), hanya lewat /api/portal/file/:id
+ */
 export const Route = createFileRoute("/api/admin/upload")({
   server: {
     handlers: {
@@ -21,11 +26,23 @@ export const Route = createFileRoute("/api/admin/upload")({
         const file = form?.get("file");
         if (!(file instanceof File))
           return Response.json({ error: "File tidak ada" }, { status: 400 });
-        if (!ALLOWED.has(file.type)) {
-          return Response.json({ error: "Format harus JPG, PNG, atau WebP" }, { status: 415 });
+        const isPrivate = form?.get("scope") === "private";
+        if (!ALLOWED.has(file.type) || (!isPrivate && file.type === "application/pdf")) {
+          return Response.json(
+            {
+              error: isPrivate
+                ? "Format harus JPG, PNG, WebP, atau PDF"
+                : "Format harus JPG, PNG, atau WebP",
+            },
+            { status: 415 },
+          );
         }
-        if (file.size > MAX_BYTES) {
-          return Response.json({ error: "Ukuran maksimal 6 MB" }, { status: 413 });
+        const max = file.type === "application/pdf" ? MAX_PDF : MAX_IMAGE;
+        if (file.size > max) {
+          return Response.json(
+            { error: `Ukuran maksimal ${max / 1024 / 1024} MB` },
+            { status: 413 },
+          );
         }
         const bytes = new Uint8Array(await file.arrayBuffer());
         // Cek tanda tangan file (bukan hanya header Content-Type).
@@ -34,13 +51,21 @@ export const Route = createFileRoute("/api/admin/upload")({
         const isWebp =
           String.fromCharCode(...bytes.slice(0, 4)) === "RIFF" &&
           String.fromCharCode(...bytes.slice(8, 12)) === "WEBP";
-        if (!isJpg && !isPng && !isWebp) {
-          return Response.json({ error: "File bukan gambar yang valid" }, { status: 415 });
+        const isPdf = isPrivate && String.fromCharCode(...bytes.slice(0, 5)) === "%PDF-";
+        if (!isJpg && !isPng && !isWebp && !isPdf) {
+          return Response.json({ error: "File tidak valid" }, { status: 415 });
         }
-        const mime = isJpg ? "image/jpeg" : isPng ? "image/png" : "image/webp";
+        const mime = isPdf
+          ? "application/pdf"
+          : isJpg
+            ? "image/jpeg"
+            : isPng
+              ? "image/png"
+              : "image/webp";
         const { getContentStores } = await import("@/server/content-store");
-        const id = await getContentStores().media.put(bytes, mime);
-        return Response.json({ id });
+        const stores = getContentStores();
+        const id = await (isPrivate ? stores.privateMedia : stores.media).put(bytes, mime);
+        return Response.json({ id, mime });
       },
     },
   },

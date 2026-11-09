@@ -27,4 +27,6 @@ export const contentTables = {
   testimonials: process.env["APPWRITE_TESTIMONIALS_TABLE_ID"] ?? "testimonials",
   bucket: process.env["APPWRITE_MEDIA_BUCKET_ID"] ?? "media",
   settings: process.env["APPWRITE_SETTINGS_TABLE_ID"] ?? "settings",
+  clientProjects: process.env["APPWRITE_CLIENT_PROJECTS_TABLE_ID"] ?? "client_projects",
+  privateBucket: process.env["APPWRITE_PORTAL_BUCKET_ID"] ?? "portal",
 };

@@ -160,9 +160,11 @@ function RootShell({ children }: { children: ReactNode }) {
 
 function RootComponent() {
   useEffect(() => installWhatsAppTracking(), []);
-  const isAdmin = useRouterState({ select: (s) => s.location.pathname.startsWith("/admin") });
+  const isAdmin = useRouterState({
+    select: (s) => /^\/(admin|pantau)(\/|$)/.test(s.location.pathname),
+  });
 
-  // Halaman admin memakai tampilan sendiri, tanpa header/footer situs.
+  // Halaman admin & portal klien memakai tampilan sendiri, tanpa header/footer situs.
   if (isAdmin) return <Outlet />;
 
   return (

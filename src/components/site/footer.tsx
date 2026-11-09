@@ -56,6 +56,11 @@ export function Footer() {
                 </a>
               </li>
               <li>
+                <Link to="/pantau" className="text-kapur/80 transition-colors hover:text-emas">
+                  Pantau proyek (klien)
+                </Link>
+              </li>
+              <li>
                 <a
                   href={CONTACT.instagram.url}
                   target="_blank"

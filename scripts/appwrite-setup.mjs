@@ -140,6 +140,30 @@ await step(`tabel "${settingsTable}"`, () =>
 );
 await col(settingsTable).text("value");
 
+/* ── Portal klien: proyek berjalan ── */
+const clientTable = process.env.APPWRITE_CLIENT_PROJECTS_TABLE_ID ?? "client_projects";
+await step(`tabel "${clientTable}"`, () =>
+  db.createTable(databaseId, clientTable, "Proyek berjalan", [], false, true),
+);
+await col(clientTable).str("kode", 20, true);
+await col(clientTable).text("data");
+await new Promise((r) => setTimeout(r, 3000));
+await step("index kode akses", () =>
+  db.createIndex(databaseId, clientTable, "idx_kode", TablesDBIndexType.Unique, ["kode"]),
+);
+
+/* ── Bucket privat portal (foto progres & dokumen klien) ── */
+const portalBucket = process.env.APPWRITE_PORTAL_BUCKET_ID ?? "portal";
+await step(`bucket "${portalBucket}"`, () =>
+  storage.createBucket(portalBucket, "Portal klien", [], false, true, 15 * 1024 * 1024, [
+    "jpg",
+    "jpeg",
+    "png",
+    "webp",
+    "pdf",
+  ]),
+);
+
 /* ── Bucket foto (privat; disajikan lewat /media/:id di server) ── */
 await step(`bucket "${bucketId}"`, () =>
   storage.createBucket(bucketId, "Media", [], false, true, 6 * 1024 * 1024, [

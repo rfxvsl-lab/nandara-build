@@ -82,6 +82,14 @@ Ubah `CONTACT.whatsappDisplay` dan `CONTACT.whatsappIntl` di `src/content/site.t
 - Tab **Harga & termin**: ubah harga acuan per m² (dalam juta, mis. `4,5`) untuk tiap jenis pekerjaan & kualitas, tambah jenis pekerjaan baru, atur skema termin (total harus 100%) dan tanggal pembaruan.
 - Kalkulator di beranda & `/estimasi-biaya` langsung memakai angka terbaru, termasuk **simulasi termin** dan **unduh PDF estimasi** berkop Nandara Build.
 
+### Portal klien "Pantau Proyek" (`/pantau`)
+
+- Di admin tab **Proyek berjalan**: buat proyek setelah SPK ditandatangani → sistem membuat **kode akses** (mis. `K7QM-3XPA`).
+- Klik **Kirim akses** untuk membuka WhatsApp ke klien dengan pesan berisi link `/pantau` dan kodenya.
+- Klien masuk dengan kode akses + **4 digit terakhir nomor WhatsApp**-nya (maks. 8 percobaan salah / 15 menit per IP).
+- Isi & perbarui: progres %, status, tanggal, nilai kontrak, **tahapan** (ada isian standar), **termin** (bisa dihitung otomatis dari skema termin × nilai kontrak), **laporan progres berfoto**, dan **dokumen** (RAB/SPK/gambar kerja, PDF maks. 15 MB).
+- Foto progres & dokumen disimpan **privat** (bucket `portal` / `.data/private`), hanya bisa dibuka admin atau klien pemilik proyek. Matikan _Akses portal klien aktif_ untuk mencabut akses seketika.
+
 ### Menyiapkan Appwrite (sekali)
 
 1. Appwrite Console → buat project → **API Keys** → buat key dengan scope `databases`, `tables`, `columns`, `indexes`, `rows`, `buckets`, `files` (read & write).

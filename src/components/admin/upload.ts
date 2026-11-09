@@ -21,12 +21,32 @@ export async function compressImage(file: File): Promise<Blob> {
   return jpeg;
 }
 
-export async function uploadImage(file: File): Promise<string> {
-  const blob = await compressImage(file);
+async function send(blob: Blob, name: string, scope: "public" | "private") {
   const fd = new FormData();
-  fd.append("file", blob, blob.type === "image/webp" ? "foto.webp" : "foto.jpg");
+  fd.append("file", blob, name);
+  fd.append("scope", scope);
   const res = await fetch("/api/admin/upload", { method: "POST", body: fd });
-  const json = (await res.json().catch(() => ({}))) as { id?: string; error?: string };
+  const json = (await res.json().catch(() => ({}))) as {
+    id?: string;
+    mime?: string;
+    error?: string;
+  };
   if (!res.ok || !json.id) throw new Error(json.error ?? "Upload gagal");
-  return json.id;
+  return { id: json.id, mime: json.mime ?? blob.type };
+}
+
+/** Foto: dikompres dulu. scope "private" untuk foto progres klien. */
+export async function uploadImage(
+  file: File,
+  scope: "public" | "private" = "public",
+): Promise<string> {
+  const blob = await compressImage(file);
+  return (await send(blob, blob.type === "image/webp" ? "foto.webp" : "foto.jpg", scope)).id;
+}
+
+/** Dokumen klien (PDF dikirim apa adanya; gambar dikompres). Selalu privat. */
+export async function uploadDocument(file: File): Promise<{ id: string; mime: string }> {
+  if (file.type === "application/pdf") return send(file, file.name, "private");
+  const blob = await compressImage(file);
+  return send(blob, "dokumen.webp", "private");
 }

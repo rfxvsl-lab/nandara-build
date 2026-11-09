@@ -2,6 +2,7 @@ import { createFileRoute, Link, useRouter } from "@tanstack/react-router";
 import { Download, Loader2, LogOut, Search } from "lucide-react";
 import { useEffect, useMemo, useState, type FormEvent } from "react";
 
+import { ClientProjectsAdmin } from "@/components/admin/client-projects-admin";
 import { PricingAdmin } from "@/components/admin/pricing-admin";
 import { ProjectsAdmin } from "@/components/admin/projects-admin";
 import { TestimonialsAdmin } from "@/components/admin/testimonials-admin";
@@ -12,6 +13,8 @@ import { LEAD_STATUSES, STATUS_LABEL, toIntlPhone, type Lead, type LeadStatus } 
 import type { Project, Testimonial } from "@/lib/content-types";
 import { adminListContent, getPricing } from "@/lib/content.functions";
 import type { PricingSettings } from "@/lib/pricing";
+import type { ClientProject } from "@/lib/portal-types";
+import { adminListClientProjects } from "@/lib/portal.functions";
 import { adminLogin, adminLogout, adminUpdateLead, getAdminState } from "@/lib/leads.functions";
 import { cn } from "@/lib/utils";
 
@@ -44,9 +47,10 @@ function AdminPage() {
   );
 }
 
-type Tab = "leads" | "portofolio" | "testimoni" | "harga";
+type Tab = "leads" | "proyek" | "portofolio" | "testimoni" | "harga";
 const TABS: { id: Tab; label: string }[] = [
   { id: "leads", label: "Calon klien" },
+  { id: "proyek", label: "Proyek berjalan" },
   { id: "portofolio", label: "Portofolio" },
   { id: "testimoni", label: "Testimoni" },
   { id: "harga", label: "Harga & termin" },
@@ -60,6 +64,14 @@ function AdminTabs({ leads, storage }: { leads: Lead[]; storage: "appwrite" | "l
   } | null>(null);
   const [loadError, setLoadError] = useState("");
   const [pricing, setPricing] = useState<PricingSettings | null>(null);
+  const [clientProjects, setClientProjects] = useState<ClientProject[] | null>(null);
+
+  useEffect(() => {
+    if (tab !== "proyek" || clientProjects) return;
+    adminListClientProjects()
+      .then(setClientProjects)
+      .catch(() => setLoadError("Gagal memuat proyek berjalan."));
+  }, [tab, clientProjects]);
 
   useEffect(() => {
     if (tab !== "harga" || pricing) return;
@@ -69,7 +81,7 @@ function AdminTabs({ leads, storage }: { leads: Lead[]; storage: "appwrite" | "l
   }, [tab, pricing]);
 
   useEffect(() => {
-    if (tab === "leads" || tab === "harga" || content) return;
+    if (tab === "leads" || tab === "harga" || tab === "proyek" || content) return;
     adminListContent()
       .then(setContent)
       .catch(() => setLoadError("Gagal memuat konten."));
@@ -77,7 +89,11 @@ function AdminTabs({ leads, storage }: { leads: Lead[]; storage: "appwrite" | "l
 
   return (
     <div>
-      <div role="tablist" aria-label="Menu admin" className="mb-8 flex gap-1 border-b border-garis">
+      <div
+        role="tablist"
+        aria-label="Menu admin"
+        className="mb-8 flex gap-1 overflow-x-auto border-b border-garis"
+      >
         {TABS.map((t) => (
           <button
             key={t.id}
@@ -86,7 +102,7 @@ function AdminTabs({ leads, storage }: { leads: Lead[]; storage: "appwrite" | "l
             aria-selected={tab === t.id}
             onClick={() => setTab(t.id)}
             className={cn(
-              "-mb-px border-b-2 px-4 py-3 text-[0.9375rem] transition-colors",
+              "-mb-px shrink-0 whitespace-nowrap border-b-2 px-4 py-3 text-[0.9375rem] transition-colors",
               tab === t.id
                 ? "border-emas-ink text-arang"
                 : "border-transparent text-abu hover:text-arang",
@@ -97,6 +113,14 @@ function AdminTabs({ leads, storage }: { leads: Lead[]; storage: "appwrite" | "l
         ))}
       </div>
       {tab === "leads" && <Dashboard leads={leads} storage={storage} />}
+      {tab === "proyek" &&
+        (clientProjects ? (
+          <ClientProjectsAdmin items={clientProjects} onChange={setClientProjects} />
+        ) : (
+          <p className="flex items-center gap-2 text-abu">
+            <Loader2 className="h-4 w-4 animate-spin" aria-hidden /> Memuat…
+          </p>
+        ))}
       {tab === "harga" &&
         (pricing ? (
           <PricingAdmin initial={pricing} />
@@ -107,6 +131,7 @@ function AdminTabs({ leads, storage }: { leads: Lead[]; storage: "appwrite" | "l
         ))}
       {tab !== "leads" &&
         tab !== "harga" &&
+        tab !== "proyek" &&
         (loadError ? (
           <p className="text-danger">{loadError}</p>
         ) : !content ? (

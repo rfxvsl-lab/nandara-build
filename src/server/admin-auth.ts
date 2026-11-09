@@ -38,3 +38,15 @@ export async function isAdmin(): Promise<boolean> {
   const session = await getAdminSession();
   return session.data.admin === true;
 }
+
+/* ───────────── Sesi klien portal ───────────── */
+type PortalSession = { projectId?: string };
+
+export function getPortalSession() {
+  return openSession<PortalSession>({
+    password: secret(),
+    name: "nb_portal",
+    maxAge: 60 * 60 * 24 * 30,
+    cookie: { httpOnly: true, sameSite: "lax", secure: env.cookieSecure, path: "/" },
+  });
+}

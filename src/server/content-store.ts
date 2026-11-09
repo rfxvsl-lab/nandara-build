@@ -110,12 +110,11 @@ function appwriteCollection<T extends { id: string; urutan: number; createdAt: s
   };
 }
 
-function appwriteMedia(): MediaStore {
+function appwriteMedia(bucket: string): MediaStore {
   const storage = new Storage(appwriteClient());
-  const bucket = contentTables.bucket;
   return {
     async put(data, mime) {
-      const ext = mime === "image/png" ? "png" : mime === "image/jpeg" ? "jpg" : "webp";
+      const ext = MIME_EXT[mime] ?? "webp";
       const file = await storage.createFile(
         bucket,
         ID.unique(),
@@ -128,13 +127,15 @@ function appwriteMedia(): MediaStore {
         const meta = await storage.getFile(bucket, id);
         let buf: ArrayBuffer;
         try {
-          buf = width
-            ? await storage.getFilePreview(bucket, id, width)
-            : await storage.getFileView(bucket, id);
+          buf =
+            width && meta.mimeType.startsWith("image/")
+              ? await storage.getFilePreview(bucket, id, width)
+              : await storage.getFileView(bucket, id);
         } catch {
           buf = await storage.getFileView(bucket, id);
         }
-        return { data: new Uint8Array(buf), mime: width ? "image/webp" : meta.mimeType };
+        const isImage = meta.mimeType.startsWith("image/");
+        return { data: new Uint8Array(buf), mime: width && isImage ? "image/webp" : meta.mimeType };
       } catch {
         return undefined;
       }
@@ -208,12 +209,13 @@ const MIME_EXT: Record<string, string> = {
   "image/webp": "webp",
   "image/jpeg": "jpg",
   "image/png": "png",
+  "application/pdf": "pdf",
 };
 const EXT_MIME = Object.fromEntries(Object.entries(MIME_EXT).map(([m, e]) => [e, m]));
 
-function localMedia(): MediaStore {
-  const dir = path.resolve(env.dataDir, "media");
-  const safe = (id: string) => /^[a-f0-9]{24}\.(webp|jpg|png)$/.test(id);
+function localMedia(dirName: string): MediaStore {
+  const dir = path.resolve(env.dataDir, dirName);
+  const safe = (id: string) => /^[a-f0-9]{24}\.(webp|jpg|png|pdf)$/.test(id);
   return {
     async put(data, mime) {
       const id = `${randomBytes(12).toString("hex")}.${MIME_EXT[mime] ?? "webp"}`;
@@ -292,6 +294,7 @@ let cache:
       projects: Collection<Project>;
       testimonials: Collection<Testimonial>;
       media: MediaStore;
+      privateMedia: MediaStore;
       settings: SettingsStore;
     }
   | undefined;
@@ -309,14 +312,16 @@ export function getContentStores() {
         testimonialFromRow,
         (t) => ({ ...t }),
       ),
-      media: appwriteMedia(),
+      media: appwriteMedia(contentTables.bucket),
+      privateMedia: appwriteMedia(contentTables.privateBucket),
       settings: appwriteSettings(),
     };
   } else {
     cache = {
       projects: localCollection<Project>("projects"),
       testimonials: localCollection<Testimonial>("testimonials"),
-      media: localMedia(),
+      media: localMedia("media"),
+      privateMedia: localMedia("private"),
       settings: localSettings(),
     };
   }

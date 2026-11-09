@@ -14,6 +14,7 @@ import { Route as AdminRouteImport } from './routes/admin'
 import { Route as EstimasiBiayaRouteImport } from './routes/estimasi-biaya'
 import { Route as KontakRouteImport } from './routes/kontak'
 import { Route as LayananRouteImport } from './routes/layanan'
+import { Route as PantauRouteImport } from './routes/pantau'
 import { Route as ProsesRouteImport } from './routes/proses'
 import { Route as RobotsDottxtRouteImport } from './routes/robots[.]txt'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
@@ -23,6 +24,7 @@ import { Route as MediaIdRouteImport } from './routes/media.$id'
 import { Route as PortofolioIndexRouteImport } from './routes/portofolio.index'
 import { Route as PortofolioSlugRouteImport } from './routes/portofolio.$slug'
 import { Route as ApiAdminUploadRouteImport } from './routes/api.admin.upload'
+import { Route as ApiPortalFileIdRouteImport } from './routes/api.portal.file.$id'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -47,6 +49,11 @@ const KontakRoute = KontakRouteImport.update({
 const LayananRoute = LayananRouteImport.update({
   id: '/layanan',
   path: '/layanan',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PantauRoute = PantauRouteImport.update({
+  id: '/pantau',
+  path: '/pantau',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ProsesRoute = ProsesRouteImport.update({
@@ -94,6 +101,11 @@ const ApiAdminUploadRoute = ApiAdminUploadRouteImport.update({
   path: '/api/admin/upload',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiPortalFileIdRoute = ApiPortalFileIdRouteImport.update({
+  id: '/api/portal/file/$id',
+  path: '/api/portal/file/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -101,6 +113,7 @@ export interface FileRoutesByFullPath {
   '/estimasi-biaya': typeof EstimasiBiayaRoute
   '/kontak': typeof KontakRoute
   '/layanan': typeof LayananRoute
+  '/pantau': typeof PantauRoute
   '/proses': typeof ProsesRoute
   '/robots.txt': typeof RobotsDottxtRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
@@ -110,6 +123,7 @@ export interface FileRoutesByFullPath {
   '/portofolio/$slug': typeof PortofolioSlugRoute
   '/portofolio/': typeof PortofolioIndexRoute
   '/api/admin/upload': typeof ApiAdminUploadRoute
+  '/api/portal/file/$id': typeof ApiPortalFileIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -117,6 +131,7 @@ export interface FileRoutesByTo {
   '/estimasi-biaya': typeof EstimasiBiayaRoute
   '/kontak': typeof KontakRoute
   '/layanan': typeof LayananRoute
+  '/pantau': typeof PantauRoute
   '/proses': typeof ProsesRoute
   '/robots.txt': typeof RobotsDottxtRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
@@ -126,6 +141,7 @@ export interface FileRoutesByTo {
   '/portofolio/$slug': typeof PortofolioSlugRoute
   '/portofolio': typeof PortofolioIndexRoute
   '/api/admin/upload': typeof ApiAdminUploadRoute
+  '/api/portal/file/$id': typeof ApiPortalFileIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -134,6 +150,7 @@ export interface FileRoutesById {
   '/estimasi-biaya': typeof EstimasiBiayaRoute
   '/kontak': typeof KontakRoute
   '/layanan': typeof LayananRoute
+  '/pantau': typeof PantauRoute
   '/proses': typeof ProsesRoute
   '/robots.txt': typeof RobotsDottxtRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
@@ -143,6 +160,7 @@ export interface FileRoutesById {
   '/portofolio/$slug': typeof PortofolioSlugRoute
   '/portofolio/': typeof PortofolioIndexRoute
   '/api/admin/upload': typeof ApiAdminUploadRoute
+  '/api/portal/file/$id': typeof ApiPortalFileIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -152,6 +170,7 @@ export interface FileRouteTypes {
     | '/estimasi-biaya'
     | '/kontak'
     | '/layanan'
+    | '/pantau'
     | '/proses'
     | '/robots.txt'
     | '/sitemap.xml'
@@ -161,6 +180,7 @@ export interface FileRouteTypes {
     | '/portofolio/$slug'
     | '/portofolio/'
     | '/api/admin/upload'
+    | '/api/portal/file/$id'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -168,6 +188,7 @@ export interface FileRouteTypes {
     | '/estimasi-biaya'
     | '/kontak'
     | '/layanan'
+    | '/pantau'
     | '/proses'
     | '/robots.txt'
     | '/sitemap.xml'
@@ -177,6 +198,7 @@ export interface FileRouteTypes {
     | '/portofolio/$slug'
     | '/portofolio'
     | '/api/admin/upload'
+    | '/api/portal/file/$id'
   id:
     | '__root__'
     | '/'
@@ -184,6 +206,7 @@ export interface FileRouteTypes {
     | '/estimasi-biaya'
     | '/kontak'
     | '/layanan'
+    | '/pantau'
     | '/proses'
     | '/robots.txt'
     | '/sitemap.xml'
@@ -193,6 +216,7 @@ export interface FileRouteTypes {
     | '/portofolio/$slug'
     | '/portofolio/'
     | '/api/admin/upload'
+    | '/api/portal/file/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -201,6 +225,7 @@ export interface RootRouteChildren {
   EstimasiBiayaRoute: typeof EstimasiBiayaRoute
   KontakRoute: typeof KontakRoute
   LayananRoute: typeof LayananRoute
+  PantauRoute: typeof PantauRoute
   ProsesRoute: typeof ProsesRoute
   RobotsDottxtRoute: typeof RobotsDottxtRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
@@ -210,6 +235,7 @@ export interface RootRouteChildren {
   PortofolioSlugRoute: typeof PortofolioSlugRoute
   PortofolioIndexRoute: typeof PortofolioIndexRoute
   ApiAdminUploadRoute: typeof ApiAdminUploadRoute
+  ApiPortalFileIdRoute: typeof ApiPortalFileIdRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -247,6 +273,13 @@ declare module '@tanstack/react-router' {
       path: '/layanan'
       fullPath: '/layanan'
       preLoaderRoute: typeof LayananRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/pantau': {
+      id: '/pantau'
+      path: '/pantau'
+      fullPath: '/pantau'
+      preLoaderRoute: typeof PantauRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/proses': {
@@ -312,6 +345,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiAdminUploadRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/portal/file/$id': {
+      id: '/api/portal/file/$id'
+      path: '/api/portal/file/$id'
+      fullPath: '/api/portal/file/$id'
+      preLoaderRoute: typeof ApiPortalFileIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -321,6 +361,7 @@ const rootRouteChildren: RootRouteChildren = {
   EstimasiBiayaRoute: EstimasiBiayaRoute,
   KontakRoute: KontakRoute,
   LayananRoute: LayananRoute,
+  PantauRoute: PantauRoute,
   ProsesRoute: ProsesRoute,
   RobotsDottxtRoute: RobotsDottxtRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
@@ -330,6 +371,7 @@ const rootRouteChildren: RootRouteChildren = {
   PortofolioSlugRoute: PortofolioSlugRoute,
   PortofolioIndexRoute: PortofolioIndexRoute,
   ApiAdminUploadRoute: ApiAdminUploadRoute,
+  ApiPortalFileIdRoute: ApiPortalFileIdRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
