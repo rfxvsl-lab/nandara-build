@@ -123,6 +123,7 @@ Isi `VITE_GA_ID` (Google Analytics 4, format `G-XXXX`) atau `VITE_PLAUSIBLE_DOMA
    - Output directory: `./.output`
 4. Environment variable (Settings → Environment variables):
    - `SITE_URL` = domain final, mis. `https://nandarabuild.com` (dipakai di `sitemap.xml` & `robots.txt`)
-5. Deploy. SSR aktif otomatis.
+5. Isi juga `VITE_SITE_URL` (domain final) agar gambar preview share link memakai URL absolut.
+6. Deploy. SSR aktif otomatis.
 
 Referensi: [Appwrite — TanStack Start quick start](https://appwrite.io/docs/products/sites/quick-start/tanstack-start).

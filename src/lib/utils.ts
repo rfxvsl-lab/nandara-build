@@ -20,3 +20,12 @@ export function formatRupiahShort(value: number): string {
   const jt = value / 1_000_000;
   return `Rp ${jt.toLocaleString("id-ID", { maximumFractionDigits: jt < 100 ? 1 : 0 })} jt`;
 }
+
+/** "2026-11-09" → "9 November 2026" */
+export function formatTanggal(d: string): string {
+  return new Date(`${d}T00:00:00`).toLocaleDateString("id-ID", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  });
+}

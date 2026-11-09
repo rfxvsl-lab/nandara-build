@@ -12,6 +12,7 @@ import { useEffect, type ReactNode } from "react";
 import { Footer } from "@/components/site/footer";
 import { Header } from "@/components/site/header";
 import { WhatsAppFloat } from "@/components/site/whatsapp-float";
+import { absUrl } from "@/lib/abs-url";
 import { installWhatsAppTracking } from "@/lib/analytics";
 
 import jakartaFont from "@fontsource-variable/plus-jakarta-sans/files/plus-jakarta-sans-latin-wght-normal.woff2?url";
@@ -95,6 +96,13 @@ export const Route = createRootRoute({
           "Perencanaan matang, RAB transparan, dan garansi ketepatan waktu untuk rumah impian Anda.",
       },
       { property: "og:type", content: "website" },
+      { property: "og:site_name", content: "Nandara Build" },
+      { property: "og:locale", content: "id_ID" },
+      { property: "og:image", content: absUrl("/og-image.png") },
+      { property: "og:image:width", content: "1200" },
+      { property: "og:image:height", content: "630" },
+      { property: "og:image:alt", content: "Nandara Build: Bangun & renovasi tanpa repot" },
+      { name: "twitter:image", content: absUrl("/og-image.png") },
       { name: "twitter:card", content: "summary_large_image" },
     ],
     links: [

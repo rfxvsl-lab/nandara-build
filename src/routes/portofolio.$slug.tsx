@@ -4,6 +4,7 @@ import { BeforeAfter } from "@/components/site/before-after";
 import { GoldButton, Section } from "@/components/site/nandara";
 import { CtaBand } from "@/components/site/page-hero";
 import { SITE, waLink } from "@/content/site";
+import { absUrl } from "@/lib/abs-url";
 import { coverImage, mediaUrl } from "@/lib/content-types";
 import { getProjectBySlug } from "@/lib/content.functions";
 
@@ -24,7 +25,7 @@ export const Route = createFileRoute("/portofolio/$slug")({
         { name: "description", content: desc },
         { property: "og:title", content: loaderData.title },
         { property: "og:description", content: desc },
-        ...(cover ? [{ property: "og:image", content: mediaUrl(cover.id, 1200) }] : []),
+        ...(cover ? [{ property: "og:image", content: absUrl(mediaUrl(cover.id, 1200)) }] : []),
       ],
     };
   },

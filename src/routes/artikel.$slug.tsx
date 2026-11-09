@@ -1,12 +1,13 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 
-import { formatTanggal } from "@/components/site/article-card";
 import { GoldButton, OutlineButton, Section } from "@/components/site/nandara";
 import { CtaBand } from "@/components/site/page-hero";
 import { RichText } from "@/components/site/rich-text";
 import { SITE, waLink } from "@/content/site";
+import { absUrl } from "@/lib/abs-url";
 import { mediaUrl, readingMinutes } from "@/lib/content-types";
 import { getArticleBySlug } from "@/lib/content.functions";
+import { formatTanggal } from "@/lib/utils";
 
 export const Route = createFileRoute("/artikel/$slug")({
   loader: async ({ params }) => {
@@ -26,7 +27,7 @@ export const Route = createFileRoute("/artikel/$slug")({
       inLanguage: "id-ID",
       author: { "@type": "Organization", name: SITE.name },
       publisher: { "@type": "Organization", name: SITE.name },
-      ...(a.cover ? { image: mediaUrl(a.cover, 1200) } : {}),
+      ...(a.cover ? { image: absUrl(mediaUrl(a.cover, 1200)) } : {}),
     };
     return {
       meta: [
@@ -35,7 +36,7 @@ export const Route = createFileRoute("/artikel/$slug")({
         { property: "og:type", content: "article" },
         { property: "og:title", content: a.title },
         { property: "og:description", content: a.ringkasan },
-        ...(a.cover ? [{ property: "og:image", content: mediaUrl(a.cover, 1200) }] : []),
+        ...(a.cover ? [{ property: "og:image", content: absUrl(mediaUrl(a.cover, 1200)) }] : []),
       ],
       scripts: [{ type: "application/ld+json", children: JSON.stringify(jsonLd) }],
     };

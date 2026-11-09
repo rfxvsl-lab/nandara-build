@@ -1,14 +1,7 @@
 import { Link } from "@tanstack/react-router";
 
 import { mediaUrl, readingMinutes, type Article } from "@/lib/content-types";
-
-export function formatTanggal(d: string) {
-  return new Date(`${d}T00:00:00`).toLocaleDateString("id-ID", {
-    day: "numeric",
-    month: "long",
-    year: "numeric",
-  });
-}
+import { formatTanggal } from "@/lib/utils";
 
 /** Kartu artikel: sampul (opsional), kategori · tanggal, judul, ringkasan. */
 export function ArticleCard({ article }: { article: Article }) {

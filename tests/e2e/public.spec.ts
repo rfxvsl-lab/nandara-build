@@ -40,6 +40,15 @@ test.describe("halaman publik", () => {
     expect(robots).toContain("Disallow: /pantau");
   });
 
+  test("gambar preview share link (og:image)", async ({ page, request }) => {
+    await page.goto("/");
+    const og = await page.locator('meta[property="og:image"]').getAttribute("content");
+    expect(og).toMatch(/\/og-image\.png$/);
+    const res = await request.get("/og-image.png");
+    expect(res.status()).toBe(200);
+    expect(res.headers()["content-type"]).toBe("image/png");
+  });
+
   test("menu HP terbuka & tertutup dengan Esc", async ({ page }) => {
     await page.setViewportSize({ width: 390, height: 844 });
     await page.goto("/");
