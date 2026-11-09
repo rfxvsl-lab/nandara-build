@@ -20,6 +20,14 @@ npm run build        # hasil di ./.output
 npm start            # server Node → http://localhost:3000 (atur dengan env PORT)
 ```
 
+Uji end-to-end (Playwright, 25 skenario: halaman publik, kalkulator & PDF, form & admin, portofolio, harga, portal klien):
+
+```sh
+npm run build
+npm run test:e2e            # penyimpanan lokal sementara (.data-test)
+# atau terhadap Appwrite: set APPWRITE_ENDPOINT/PROJECT_ID/API_KEY lalu jalankan perintah yang sama
+```
+
 Cek kualitas sebelum commit:
 
 ```sh

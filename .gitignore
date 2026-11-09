@@ -37,3 +37,6 @@ dist-ssr
 
 # Appwrite lokal
 dev/appwrite/.env
+.data-test/
+test-results/
+playwright-report/
