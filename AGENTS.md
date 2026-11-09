@@ -9,3 +9,4 @@
 - **Server**: kode server di `src/server/` & `*.functions.ts`; impor modul server secara dinamis di dalam handler. Setiap fungsi admin wajib cek `isAdmin()`. Jangan pernah render HTML mentah dari data pengguna (pakai `RichText`).
 - **Sebelum commit**: `npm run check` (lint + typecheck + build) dan `npm run test:e2e` harus lolos.
 - **Hosting**: Appwrite Sites (Node SSR, output `./.output`). Tidak memakai Lovable.
+- **Commit & PR tanpa atribusi AI**: jangan tambahkan `Co-Authored-By`, `Claude-Session`, atau tanda "Generated with …". Keputusan pemilik repo.
