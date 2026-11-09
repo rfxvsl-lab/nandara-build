@@ -1,4 +1,3 @@
-import { Send } from "lucide-react";
 import { useId, useState, type FormEvent } from "react";
 
 import { CONTACT } from "@/content/site";
@@ -55,8 +54,8 @@ export function LeadForm({ tone = "dark" }: { tone?: "light" | "dark" }) {
   const labelCls = cn("mb-2 block text-sm font-semibold", dark ? "text-kapur" : "text-arang");
   const inputCls = (err?: string) =>
     cn(
-      "h-12 w-full rounded-sm border bg-kapur px-4 text-base text-arang placeholder:text-abu/70",
-      err ? "border-danger" : "border-batu",
+      "h-12 w-full rounded-sm border bg-white px-4 text-base text-arang placeholder:text-abu/70",
+      err ? "border-danger" : dark ? "border-transparent" : "border-arang/40",
     );
   const errCls = cn("mt-1.5 text-sm", dark ? "text-[#f2b8b5]" : "text-danger");
 
@@ -147,19 +146,21 @@ export function LeadForm({ tone = "dark" }: { tone?: "light" | "dark" }) {
           name="catatan"
           rows={3}
           placeholder="mis. renovasi dapur & kamar mandi, budget ±150 jt"
-          className="w-full rounded-sm border border-batu bg-kapur px-4 py-3 text-base text-arang placeholder:text-abu/70"
+          className={cn(
+            "w-full rounded-sm border bg-white px-4 py-3 text-base text-arang placeholder:text-abu/70",
+            dark ? "border-transparent" : "border-arang/40",
+          )}
         />
       </div>
       <div className="flex flex-col gap-3 sm:col-span-2 sm:flex-row sm:items-center sm:justify-between">
         <p className={cn("text-sm", dark ? "text-kapur/60" : "text-abu")}>
-          Data dikirim lewat WhatsApp. Kami membalas di jam kerja.
+          Data Anda terkirim sebagai pesan WhatsApp ke kami.
         </p>
         <button
           type="submit"
-          className="inline-flex min-h-12 items-center justify-center gap-2 rounded-md bg-emas px-6 py-3 text-sm font-semibold text-arang transition-colors hover:bg-emas-muda"
+          className="inline-flex min-h-12 items-center justify-center gap-2 rounded-sm bg-emas px-5 text-[0.9375rem] font-semibold text-arang transition-colors hover:bg-emas-muda"
         >
-          <Send className="h-4 w-4" />
-          Minta Survei Gratis
+          Kirim lewat WhatsApp
         </button>
       </div>
     </form>

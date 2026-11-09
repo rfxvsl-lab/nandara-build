@@ -1,11 +1,11 @@
 import { createFileRoute } from "@tanstack/react-router";
 
 import { FaqList } from "@/components/site/faq";
-import { GoldButton, Italic, Section, SectionHeading } from "@/components/site/nandara";
+import { GoldButton, Section, SectionHead } from "@/components/site/nandara";
 import { CtaBand, PageHero } from "@/components/site/page-hero";
-import { ProcessTimeline } from "@/components/site/process-timeline";
-import { RabPreview } from "@/components/site/rab-preview";
-import { SpkCard } from "@/components/site/spk-card";
+import { ProcessTable } from "@/components/site/process-timeline";
+import { RabSheet } from "@/components/site/rab-preview";
+import { SpkSheet } from "@/components/site/spk-card";
 import { SITE, waLink } from "@/content/site";
 import { faqJsonLd } from "@/lib/seo";
 
@@ -16,7 +16,7 @@ export const Route = createFileRoute("/proses")({
       {
         name: "description",
         content:
-          "Enam langkah kerja Nandara Build: konsultasi, survei, desain & RAB, SPK resmi, pembangunan, serah terima. Semua tertulis sebelum DP.",
+          "Enam tahap kerja Nandara Build: konsultasi, survei, desain & RAB, SPK resmi, pembangunan, serah terima. Semua tertulis sebelum DP.",
       },
     ],
     scripts: [{ type: "application/ld+json", children: JSON.stringify(faqJsonLd()) }],
@@ -28,45 +28,38 @@ function ProsesPage() {
   return (
     <>
       <PageHero
-        label="Proses kerja"
-        title={
-          <>
-            Enam langkah, <Italic tone="dark">tanpa kejutan</Italic>
-          </>
-        }
-        intro="Setiap tahap punya dokumen yang jelas. Anda tahu apa yang dikerjakan, berapa biayanya, dan kapan selesai — sebelum membayar DP."
-      >
-        <div className="rounded-lg border border-white/10 bg-arang/60 p-6 sm:p-8">
-          <ProcessTimeline />
-        </div>
-      </PageHero>
+        label="Proses"
+        title="Enam tahap, masing-masing dengan dokumennya"
+        intro="Anda tahu apa yang dikerjakan, berapa biayanya, dan kapan selesai sebelum membayar DP."
+      />
 
-      <Section id="transparansi">
-        <SectionHeading
-          index="01"
-          label="Dokumen"
-          title={
-            <>
-              RAB & SPK: <Italic>dua dokumen kunci</Italic> Anda
-            </>
-          }
-          intro="RAB menunjukkan dari mana setiap rupiah berasal. SPK mengunci harga, spesifikasi, jadwal, dan garansi secara hukum."
-        />
-        <div className="mt-12 grid gap-6 lg:grid-cols-[1.35fr_1fr] lg:items-start">
-          <RabPreview />
-          <SpkCard />
+      <Section className="!pt-10 md:!pt-14">
+        <div className="md:ml-[calc(220px+2rem)]">
+          <ProcessTable tone="light" />
         </div>
       </Section>
 
       <Section className="bg-pasir">
-        <div className="grid gap-12 lg:grid-cols-[0.8fr_1.2fr] lg:gap-16">
-          <SectionHeading index="02" label="Pertanyaan umum" title="Yang sering ditanyakan" />
+        <SectionHead
+          number="01"
+          label="Dokumen"
+          title="RAB dan SPK, dua dokumen yang melindungi Anda"
+          intro="RAB menunjukkan asal setiap rupiah. SPK mengunci harga, spesifikasi, jadwal, dan garansi secara hukum."
+        />
+        <div className="mt-10 grid gap-8 md:ml-[calc(220px+2rem)] xl:grid-cols-[1.5fr_1fr]">
+          <RabSheet />
+          <SpkSheet />
+        </div>
+      </Section>
+
+      <Section>
+        <SectionHead number="02" label="Tanya jawab" title="Pertanyaan yang sering masuk" />
+        <div className="mt-10 md:ml-[calc(220px+2rem)] md:max-w-[46rem]">
           <FaqList />
         </div>
       </Section>
 
-      <div className="h-16 md:h-28" />
-      <CtaBand title="Mulai dari langkah pertama: konsultasi gratis.">
+      <CtaBand title="Mulai dari tahap pertama: konsultasi gratis">
         <GoldButton href={waLink("konsultasi & survei gratis")}>Jadwalkan survei</GoldButton>
       </CtaBand>
     </>

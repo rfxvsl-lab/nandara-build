@@ -11,20 +11,20 @@ export function Footer() {
   return (
     <footer
       id="kontak"
-      className="scroll-mt-20 bg-arang px-4 pb-24 pt-16 text-kapur sm:px-8 sm:pb-12"
+      className="scroll-mt-20 bg-arang border-t border-kapur/15 px-4 pb-24 pt-16 text-kapur sm:px-8 sm:pb-12"
     >
       <div className="mx-auto w-full max-w-[1200px]">
         <div className="grid gap-12 md:grid-cols-[1.4fr_1fr_1fr]">
           <div>
             <Wordmark size="lg" tone="dark" />
-            <p className="mt-6 max-w-sm font-serif text-[1.75rem] italic leading-tight text-kapur">
+            <p className="mt-6 max-w-sm text-lg font-semibold leading-snug text-kapur">
               {SITE.headline}
             </p>
             <p className="mt-3 text-sm text-kapur/60">Melayani area {SITE.area}.</p>
           </div>
 
           <div>
-            <p className="label-mono text-emas">Navigasi</p>
+            <p className="text-sm font-semibold text-kapur/50">Navigasi</p>
             <ul className="mt-5 space-y-3">
               {NAV.map((item) => (
                 <li key={item.to}>
@@ -40,7 +40,7 @@ export function Footer() {
           </div>
 
           <div>
-            <p className="label-mono text-emas">Hubungi Kami</p>
+            <p className="text-sm font-semibold text-kapur/50">Hubungi kami</p>
             <ul className="mt-5 space-y-4 text-sm">
               <li>
                 <a
@@ -72,7 +72,7 @@ export function Footer() {
           <p>
             © {year} {SITE.name}. All rights reserved.
           </p>
-          <p className="label-mono text-[0.625rem]">{SITE.tagline}</p>
+          <p>{SITE.tagline}</p>
         </div>
       </div>
     </footer>

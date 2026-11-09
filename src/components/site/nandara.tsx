@@ -2,6 +2,11 @@ import type { ReactNode } from "react";
 
 import { cn } from "@/lib/utils";
 
+/**
+ * Primitif desain Nandara Build — lihat design.md §12 (aturan anti-template).
+ * Bahasa visual: lembar dokumen proyek. Garis tipis, tabel, angka. Tanpa dekorasi.
+ */
+
 export function Section({
   id,
   className,
@@ -12,52 +17,70 @@ export function Section({
   children: ReactNode;
 }) {
   return (
-    <section id={id} className={cn("scroll-mt-20 px-4 py-16 sm:px-8 md:py-28", className)}>
+    <section id={id} className={cn("scroll-mt-20 px-4 py-16 sm:px-8 md:py-24", className)}>
       <div className="mx-auto w-full max-w-[1200px]">{children}</div>
     </section>
   );
 }
 
-/** Label teknis bergaya gambar kerja, mis. "01 — Layanan" (design.md §4.1). */
-export function Eyebrow({
-  children,
-  index,
+/**
+ * Kepala section bergaya kop dokumen: garis atas, nomor & nama bagian di kolom kiri,
+ * judul di kolom kanan. Nomor dipakai untuk navigasi dokumen, bukan hiasan.
+ */
+export function SectionHead({
+  number,
+  label,
+  title,
+  intro,
   tone = "light",
+  aside,
 }: {
-  children: ReactNode;
-  index?: string | undefined;
+  number: string;
+  label: string;
+  title: ReactNode;
+  intro?: ReactNode;
   tone?: "light" | "dark";
+  aside?: ReactNode;
 }) {
+  const dark = tone === "dark";
   return (
-    <span
+    <header
       className={cn(
-        "label-mono inline-flex items-center gap-2",
-        tone === "dark" ? "text-emas" : "text-emas-ink",
+        "grid gap-4 border-t pt-5 md:grid-cols-[220px_1fr] md:gap-8",
+        dark ? "border-kapur/25" : "border-arang",
       )}
     >
-      {index ? <span>{index} —</span> : <span aria-hidden className="h-px w-6 bg-current" />}
-      {children}
-    </span>
-  );
-}
-
-/** Aksen serif italic untuk 1–3 kata di judul. */
-export function Italic({
-  children,
-  tone = "light",
-}: {
-  children: ReactNode;
-  tone?: "light" | "dark";
-}) {
-  return (
-    <em
-      className={cn(
-        "font-serif font-normal italic tracking-normal",
-        tone === "dark" ? "text-emas" : "text-emas-ink",
-      )}
-    >
-      {children}
-    </em>
+      <p className={cn("text-sm font-semibold", dark ? "text-kapur/70" : "text-abu")}>
+        <span className="tabular">{number}</span>
+        <span className="mx-2" aria-hidden>
+          /
+        </span>
+        {label}
+      </p>
+      <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+        <div className="max-w-[44rem]">
+          <h2
+            className={cn(
+              "text-[1.875rem] font-bold leading-[1.12] tracking-[-0.02em] sm:text-[2.5rem]",
+              dark ? "text-kapur" : "text-arang",
+            )}
+          >
+            {title}
+          </h2>
+          {intro ? (
+            <p
+              className={cn(
+                "mt-4 max-w-[38rem] text-base leading-relaxed sm:text-[1.0625rem]",
+                dark ? "text-kapur/70" : "text-abu",
+              )}
+            >
+              {intro}
+            </p>
+          ) : null}
+        </div>
+        {aside ? <div className="shrink-0">{aside}</div> : null}
+      </div>
+    </header>
   );
 }
 
@@ -72,9 +95,9 @@ function linkTarget(href: string) {
 }
 
 const buttonBase =
-  "inline-flex min-h-12 items-center justify-center gap-2 rounded-md px-6 py-3 text-sm font-semibold transition-colors duration-150";
+  "inline-flex min-h-12 items-center justify-center gap-2 rounded-sm px-5 text-[0.9375rem] font-semibold transition-colors duration-150";
 
-/** Tombol utama (emas). Maksimal satu per layar HP — design.md §2.3. */
+/** Tombol utama. Maksimal satu per layar HP (design.md §2.3). */
 export function GoldButton({ href, children, className }: ButtonProps) {
   return (
     <a
@@ -87,7 +110,20 @@ export function GoldButton({ href, children, className }: ButtonProps) {
   );
 }
 
-/** Tombol sekunder bergaris arang (latar terang). */
+/** Tombol gelap solid untuk latar terang. */
+export function DarkButton({ href, children, className }: ButtonProps) {
+  return (
+    <a
+      href={href}
+      {...linkTarget(href)}
+      className={cn(buttonBase, "bg-arang text-kapur hover:bg-beton", className)}
+    >
+      {children}
+    </a>
+  );
+}
+
+/** Tombol bergaris untuk latar terang. */
 export function OutlineButton({ href, children, className }: ButtonProps) {
   return (
     <a
@@ -95,7 +131,7 @@ export function OutlineButton({ href, children, className }: ButtonProps) {
       {...linkTarget(href)}
       className={cn(
         buttonBase,
-        "border-[1.5px] border-arang text-arang hover:bg-arang hover:text-kapur",
+        "border border-arang text-arang hover:bg-arang hover:text-kapur",
         className,
       )}
     >
@@ -104,7 +140,7 @@ export function OutlineButton({ href, children, className }: ButtonProps) {
   );
 }
 
-/** Tombol sekunder untuk section gelap (arang). */
+/** Tombol bergaris untuk latar gelap. */
 export function GhostButton({ href, children, className }: ButtonProps) {
   return (
     <a
@@ -112,7 +148,7 @@ export function GhostButton({ href, children, className }: ButtonProps) {
       {...linkTarget(href)}
       className={cn(
         buttonBase,
-        "border border-emas/50 text-kapur hover:border-emas hover:bg-white/5",
+        "border border-kapur/40 text-kapur hover:border-kapur hover:bg-kapur/5",
         className,
       )}
     >
@@ -121,77 +157,33 @@ export function GhostButton({ href, children, className }: ButtonProps) {
   );
 }
 
-/** Kepala section: label bernomor + judul + paragraf opsional. */
-export function SectionHeading({
-  index,
-  label,
-  title,
-  intro,
-  tone = "light",
-  align = "left",
-}: {
-  index?: string | undefined;
-  label: string;
-  title: ReactNode;
-  intro?: ReactNode;
-  tone?: "light" | "dark";
-  align?: "left" | "center";
-}) {
-  return (
-    <div className={cn("max-w-2xl", align === "center" && "mx-auto text-center")}>
-      <Eyebrow index={index} tone={tone}>
-        {label}
-      </Eyebrow>
-      <h2
-        className={cn(
-          "mt-5 text-[2rem] font-extrabold leading-[1.1] tracking-tight sm:text-[2.5rem]",
-          tone === "dark" ? "text-kapur" : "text-arang",
-        )}
-      >
-        {title}
-      </h2>
-      {intro ? (
-        <p
-          className={cn(
-            "mt-5 text-base leading-relaxed sm:text-lg",
-            tone === "dark" ? "text-kapur/75" : "text-abu",
-          )}
-        >
-          {intro}
-        </p>
-      ) : null}
-    </div>
-  );
-}
-
-/** Garis ukur gaya gambar kerja: |——— LABEL ———| (design.md §4.1). */
-export function MeasureLine({
-  label,
+/** Tautan teks dengan garis bawah — untuk aksi sekunder di dalam konten. */
+export function TextLink({
+  href,
+  children,
   tone = "light",
   className,
-}: {
-  label: string;
-  tone?: "light" | "dark";
-  className?: string;
-}) {
-  const color = tone === "dark" ? "text-emas-muda/70" : "text-abu";
+}: ButtonProps & { tone?: "light" | "dark" }) {
   return (
-    <div className={cn("flex items-center gap-2", color, className)} aria-hidden>
-      <span className="h-3 w-px bg-current" />
-      <span className="h-px flex-1 bg-current opacity-60" />
-      <span className="label-mono whitespace-nowrap text-[0.6875rem]">{label}</span>
-      <span className="h-px flex-1 bg-current opacity-60" />
-      <span className="h-3 w-px bg-current" />
-    </div>
+    <a
+      href={href}
+      {...linkTarget(href)}
+      className={cn(
+        "inline-flex w-fit items-center gap-1 text-[0.9375rem] font-semibold underline decoration-1 underline-offset-[6px] transition-colors",
+        tone === "dark"
+          ? "text-kapur decoration-emas hover:text-emas"
+          : "text-arang decoration-emas-ink hover:text-emas-ink",
+        className,
+      )}
+    >
+      {children}
+    </a>
   );
 }
 
-/** Badge kecil penanda konten contoh/ilustrasi — agar tidak dikira data asli. */
-export function SampleBadge({ children = "Contoh ilustrasi" }: { children?: ReactNode }) {
+/** Catatan kecil penanda format contoh — agar tidak dikira data asli. */
+export function SampleNote({ children = "Contoh format" }: { children?: ReactNode }) {
   return (
-    <span className="label-mono inline-flex items-center gap-1.5 rounded-sm border border-bata/40 bg-kapur px-2 py-1 text-[0.625rem] text-bata">
-      <span className="h-1.5 w-1.5 rounded-full bg-current" />
-      {children}
-    </span>
+    <span className="text-xs font-semibold uppercase tracking-wide text-bata">{children}</span>
   );
 }

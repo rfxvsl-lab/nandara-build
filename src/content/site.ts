@@ -158,7 +158,41 @@ export const MISSION = [
   "Memberikan garansi dan tanggung jawab atas hasil kerja.",
 ] as const;
 
-/* ───────────────────────── Data Tahap C ───────────────────────── */
+/* ───────────────────────── Data beranda ───────────────────────── */
+
+/** Perbandingan: borongan tanpa dokumen vs cara kerja Nandara (dari copy promo pemilik). */
+export const COMPARISON = [
+  {
+    aspect: "Harga",
+    them: "Disepakati lisan, bisa berubah di tengah jalan",
+    us: "Dikunci di SPK sesuai RAB",
+  },
+  {
+    aspect: "Rincian biaya",
+    them: "Satu angka borongan per m²",
+    us: "Volume × harga satuan untuk setiap item",
+  },
+  {
+    aspect: "Material",
+    them: "Tidak disebut merek atau spesifikasinya",
+    us: "Merek & spesifikasi tertulis",
+  },
+  {
+    aspect: "Jadwal",
+    them: "Tidak ada tanggal selesai yang mengikat",
+    us: "Tanggal serah terima tertulis di SPK",
+  },
+  {
+    aspect: "Pembayaran",
+    them: "Tergantung kesepakatan lisan",
+    us: "Termin mengikuti progres pekerjaan",
+  },
+  {
+    aspect: "Garansi",
+    them: "Janji lisan",
+    us: "Surat garansi setelah serah terima",
+  },
+] as const;
 
 /**
  * Statistik — HANYA isi dengan angka nyata (design.md §10).
@@ -209,32 +243,32 @@ export const PROCESS_STEPS = [
   {
     title: "Konsultasi",
     body: "Ceritakan kebutuhan & budget Anda lewat WhatsApp atau telepon.",
-    doc: "Gratis",
+    doc: "Jadwal survei (gratis)",
   },
   {
     title: "Survei lokasi",
     body: "Tim kami datang mengukur dan mengecek kondisi bangunan.",
-    doc: "Gratis",
+    doc: "Hasil ukur lokasi (gratis)",
   },
   {
     title: "Desain & RAB",
     body: "Gambar rancangan dan RAB rinci per item pekerjaan.",
-    doc: "Gambar + RAB",
+    doc: "Gambar rancangan & RAB rinci",
   },
   {
     title: "Tanda tangan SPK",
     body: "Semua kesepakatan dikunci di kontrak resmi sebelum DP.",
-    doc: "SPK resmi",
+    doc: "SPK bertanda tangan",
   },
   {
     title: "Pembangunan",
     body: "Pekerjaan sesuai jadwal, dengan laporan progres berkala.",
-    doc: "Laporan progres",
+    doc: "Laporan progres berkala",
   },
   {
     title: "Serah terima",
     body: "Pengecekan bersama, serah kunci, dan masa garansi dimulai.",
-    doc: "Berita acara + garansi",
+    doc: "Berita acara & surat garansi",
   },
 ] as const;
 
