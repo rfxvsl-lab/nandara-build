@@ -4,6 +4,8 @@ Website resmi **Nandara Build**: jasa arsitektur, perencanaan RAB, dan kontrakto
 
 Dibangun dengan TanStack Start (React 19, SSR), Tailwind CSS v4, dan TypeScript.
 
+> 📘 Dokumentasi teknis lengkap (arsitektur, data, keamanan, deploy, backlog): **[`dokumentasi.md`](./dokumentasi.md)**
+
 ## Menjalankan di komputer sendiri
 
 Butuh **Node.js 22+** (atau [Bun](https://bun.sh)).
