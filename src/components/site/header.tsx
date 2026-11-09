@@ -50,8 +50,9 @@ const navActive = { className: "!text-emas-ink" };
 /** Header: logo di tengah, menu terbagi kiri–kanan (HDR); tombol aksi (Block). */
 export function Header() {
   const [open, setOpen] = useState(false);
-  const left = NAV.slice(0, 3);
-  const right = NAV.slice(3);
+  const main = NAV.filter((n) => !("footerOnly" in n));
+  const left = main.slice(0, 3);
+  const right = main.slice(3);
 
   useEffect(() => {
     if (!open) return;

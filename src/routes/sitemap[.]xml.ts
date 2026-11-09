@@ -11,11 +11,18 @@ export const Route = createFileRoute("/sitemap.xml")({
         const projects = await getContentStores()
           .projects.list()
           .catch(() => []);
+        const today = new Date().toISOString().slice(0, 10);
+        const articles = await getContentStores()
+          .articles.list()
+          .catch(() => []);
         const paths = [
           ...PUBLIC_PATHS,
           ...projects
             .filter((p) => p.published)
             .map((p) => ({ path: `/portofolio/${p.slug}`, priority: "0.7" })),
+          ...articles
+            .filter((a) => a.published && a.tanggal <= today)
+            .map((a) => ({ path: `/artikel/${a.slug}`, priority: "0.7" })),
         ];
         const urls = paths
           .map((p) => `  <url><loc>${base}${p.path}</loc><priority>${p.priority}</priority></url>`)

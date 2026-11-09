@@ -107,3 +107,51 @@ export function coverImage(p: Project): ProjectImage | undefined {
     p.images[0]
   );
 }
+
+/* ───────────── Artikel / panduan ───────────── */
+
+export const ARTICLE_CATEGORIES = [
+  "Panduan biaya",
+  "Tips renovasi",
+  "Perizinan",
+  "Cerita proyek",
+] as const;
+
+export type Article = {
+  id: string;
+  slug: string;
+  title: string;
+  kategori: string;
+  ringkasan: string;
+  /** Teks format sederhana: "## Judul", "- daftar", "**tebal**", paragraf dipisah baris kosong. */
+  isi: string;
+  cover: string;
+  tanggal: string;
+  published: boolean;
+  urutan: number;
+  createdAt: string;
+};
+
+export const articleInputSchema = z.object({
+  id: z.string().max(64).optional(),
+  title: z.string().trim().min(5, "Judul minimal 5 karakter").max(160),
+  slug: z
+    .string()
+    .trim()
+    .max(80)
+    .regex(/^[a-z0-9-]*$/, "Slug hanya huruf kecil, angka, dan tanda hubung")
+    .optional(),
+  kategori: z.enum(ARTICLE_CATEGORIES),
+  ringkasan: z.string().trim().min(20, "Ringkasan minimal 20 karakter").max(300),
+  isi: z.string().trim().min(50, "Isi artikel minimal 50 karakter").max(30_000),
+  cover: z.string().regex(/^[A-Za-z0-9._-]{0,64}$/),
+  tanggal: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "Isi tanggal terbit"),
+  published: z.boolean(),
+  urutan: z.number().int().min(0).max(9999),
+});
+export type ArticleInput = z.input<typeof articleInputSchema>;
+
+/** Perkiraan waktu baca (menit), 200 kata/menit. */
+export function readingMinutes(text: string): number {
+  return Math.max(1, Math.round(text.split(/\s+/).filter(Boolean).length / 200));
+}

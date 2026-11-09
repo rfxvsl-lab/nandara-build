@@ -9,7 +9,7 @@ import path from "node:path";
 
 import { Client, ID, Query, Storage, TablesDB } from "node-appwrite";
 
-import type { Project, Testimonial } from "@/lib/content-types";
+import type { Article, Project, Testimonial } from "@/lib/content-types";
 
 import { appwriteConfigured, contentTables, env } from "./env";
 
@@ -61,6 +61,20 @@ const testimonialFromRow = (r: Row): Testimonial => ({
   kota: String(r["kota"] ?? ""),
   proyek: String(r["proyek"] ?? ""),
   kutipan: String(r["kutipan"] ?? ""),
+  published: Boolean(r["published"]),
+  urutan: Number(r["urutan"] ?? 0),
+});
+
+const articleFromRow = (r: Row): Article => ({
+  id: String(r["$id"] ?? r["id"]),
+  createdAt: String(r["$createdAt"] ?? r["createdAt"] ?? ""),
+  slug: String(r["slug"] ?? ""),
+  title: String(r["title"] ?? ""),
+  kategori: String(r["kategori"] ?? ""),
+  ringkasan: String(r["ringkasan"] ?? ""),
+  isi: String(r["isi"] ?? ""),
+  cover: String(r["cover"] ?? ""),
+  tanggal: String(r["tanggal"] ?? ""),
   published: Boolean(r["published"]),
   urutan: Number(r["urutan"] ?? 0),
 });
@@ -293,6 +307,7 @@ let cache:
   | {
       projects: Collection<Project>;
       testimonials: Collection<Testimonial>;
+      articles: Collection<Article>;
       media: MediaStore;
       privateMedia: MediaStore;
       settings: SettingsStore;
@@ -312,6 +327,9 @@ export function getContentStores() {
         testimonialFromRow,
         (t) => ({ ...t }),
       ),
+      articles: appwriteCollection<Article>(contentTables.articles, articleFromRow, (a) => ({
+        ...a,
+      })),
       media: appwriteMedia(contentTables.bucket),
       privateMedia: appwriteMedia(contentTables.privateBucket),
       settings: appwriteSettings(),
@@ -320,6 +338,7 @@ export function getContentStores() {
     cache = {
       projects: localCollection<Project>("projects"),
       testimonials: localCollection<Testimonial>("testimonials"),
+      articles: localCollection<Article>("articles"),
       media: localMedia("media"),
       privateMedia: localMedia("private"),
       settings: localSettings(),

@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { Check, X } from "lucide-react";
 
 import { Estimator } from "@/components/site/estimator";
+import { ArticleCard } from "@/components/site/article-card";
 import { ProjectCard } from "@/components/site/project-card";
 import { FaqList } from "@/components/site/faq";
 import {
@@ -15,9 +16,10 @@ import {
 } from "@/components/site/nandara";
 import { IMAGES, type ResponsiveImage } from "@/content/images";
 import { CONTACT, SERVICES, SITE, waLink } from "@/content/site";
-import type { Project, Testimonial } from "@/lib/content-types";
+import type { Article, Project, Testimonial } from "@/lib/content-types";
 import {
   getPricing,
+  getPublishedArticles,
   getPublishedProjects,
   getPublishedTestimonials,
 } from "@/lib/content.functions";
@@ -54,12 +56,13 @@ export const Route = createFileRoute("/")({
     ],
   }),
   loader: async () => {
-    const [projects, testimonials, pricing] = await Promise.all([
+    const [projects, testimonials, pricing, articles] = await Promise.all([
       getPublishedProjects(),
       getPublishedTestimonials(),
       getPricing(),
+      getPublishedArticles(),
     ]);
-    return { projects, testimonials, pricing };
+    return { projects, testimonials, pricing, articles };
   },
   component: Index,
 });
@@ -421,6 +424,26 @@ function Testimonials({ items }: { items: Testimonial[] }) {
   );
 }
 
+/* ── Panduan terbaru (tampil bila ada artikel) ── */
+function LatestArticles({ articles }: { articles: Article[] }) {
+  if (articles.length === 0) return null;
+  return (
+    <Section id="artikel">
+      <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+        <SectionHeading title="Panduan terbaru" />
+        <OutlineButton href="/artikel" className="self-start md:self-auto">
+          Semua artikel
+        </OutlineButton>
+      </div>
+      <div className="mt-10 grid gap-x-6 gap-y-12 sm:grid-cols-2 lg:grid-cols-3">
+        {articles.slice(0, 3).map((a) => (
+          <ArticleCard key={a.id} article={a} />
+        ))}
+      </div>
+    </Section>
+  );
+}
+
 /* ── Banner foto penuh (HDR "Ready to start building?") ── */
 function PhotoCta() {
   return (
@@ -484,7 +507,7 @@ function ClosingCta() {
 }
 
 function Index() {
-  const { projects, testimonials, pricing } = Route.useLoaderData();
+  const { projects, testimonials, pricing, articles } = Route.useLoaderData();
   return (
     <>
       <Hero />
@@ -497,6 +520,7 @@ function Index() {
       <Estimate pricing={pricing} />
       <Testimonials items={testimonials} />
       <PhotoCta />
+      <LatestArticles articles={articles} />
       <Faq />
       <ClosingCta />
     </>

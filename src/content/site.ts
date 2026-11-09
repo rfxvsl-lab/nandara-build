@@ -53,6 +53,7 @@ export const NAV = [
   { label: "Estimasi Biaya", to: "/estimasi-biaya" },
   { label: "Tentang", to: "/tentang" },
   { label: "Kontak", to: "/kontak" },
+  { label: "Artikel", to: "/artikel", footerOnly: true },
 ] as const;
 
 type IconItem = { icon: LucideIcon; title: string; body: string };

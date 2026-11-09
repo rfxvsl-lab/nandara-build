@@ -14,6 +14,7 @@ export const PUBLIC_PATHS = [
   { path: "/", priority: "1.0" },
   { path: "/layanan", priority: "0.9" },
   { path: "/portofolio", priority: "0.9" },
+  { path: "/artikel", priority: "0.8" },
   { path: "/estimasi-biaya", priority: "0.9" },
   { path: "/proses", priority: "0.8" },
   { path: "/kontak", priority: "0.8" },

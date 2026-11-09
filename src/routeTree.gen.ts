@@ -20,6 +20,8 @@ import { Route as RobotsDottxtRouteImport } from './routes/robots[.]txt'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as TentangRouteImport } from './routes/tentang'
 import { Route as ApiLeadsDotcsvRouteImport } from './routes/api.leads[.]csv'
+import { Route as ArtikelIndexRouteImport } from './routes/artikel.index'
+import { Route as ArtikelSlugRouteImport } from './routes/artikel.$slug'
 import { Route as MediaIdRouteImport } from './routes/media.$id'
 import { Route as PortofolioIndexRouteImport } from './routes/portofolio.index'
 import { Route as PortofolioSlugRouteImport } from './routes/portofolio.$slug'
@@ -81,6 +83,16 @@ const ApiLeadsDotcsvRoute = ApiLeadsDotcsvRouteImport.update({
   path: '/api/leads.csv',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ArtikelIndexRoute = ArtikelIndexRouteImport.update({
+  id: '/artikel/',
+  path: '/artikel/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ArtikelSlugRoute = ArtikelSlugRouteImport.update({
+  id: '/artikel/$slug',
+  path: '/artikel/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const MediaIdRoute = MediaIdRouteImport.update({
   id: '/media/$id',
   path: '/media/$id',
@@ -119,8 +131,10 @@ export interface FileRoutesByFullPath {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/tentang': typeof TentangRoute
   '/api/leads.csv': typeof ApiLeadsDotcsvRoute
+  '/artikel/$slug': typeof ArtikelSlugRoute
   '/media/$id': typeof MediaIdRoute
   '/portofolio/$slug': typeof PortofolioSlugRoute
+  '/artikel/': typeof ArtikelIndexRoute
   '/portofolio/': typeof PortofolioIndexRoute
   '/api/admin/upload': typeof ApiAdminUploadRoute
   '/api/portal/file/$id': typeof ApiPortalFileIdRoute
@@ -137,8 +151,10 @@ export interface FileRoutesByTo {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/tentang': typeof TentangRoute
   '/api/leads.csv': typeof ApiLeadsDotcsvRoute
+  '/artikel/$slug': typeof ArtikelSlugRoute
   '/media/$id': typeof MediaIdRoute
   '/portofolio/$slug': typeof PortofolioSlugRoute
+  '/artikel': typeof ArtikelIndexRoute
   '/portofolio': typeof PortofolioIndexRoute
   '/api/admin/upload': typeof ApiAdminUploadRoute
   '/api/portal/file/$id': typeof ApiPortalFileIdRoute
@@ -156,8 +172,10 @@ export interface FileRoutesById {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/tentang': typeof TentangRoute
   '/api/leads.csv': typeof ApiLeadsDotcsvRoute
+  '/artikel/$slug': typeof ArtikelSlugRoute
   '/media/$id': typeof MediaIdRoute
   '/portofolio/$slug': typeof PortofolioSlugRoute
+  '/artikel/': typeof ArtikelIndexRoute
   '/portofolio/': typeof PortofolioIndexRoute
   '/api/admin/upload': typeof ApiAdminUploadRoute
   '/api/portal/file/$id': typeof ApiPortalFileIdRoute
@@ -176,8 +194,10 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/tentang'
     | '/api/leads.csv'
+    | '/artikel/$slug'
     | '/media/$id'
     | '/portofolio/$slug'
+    | '/artikel/'
     | '/portofolio/'
     | '/api/admin/upload'
     | '/api/portal/file/$id'
@@ -194,8 +214,10 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/tentang'
     | '/api/leads.csv'
+    | '/artikel/$slug'
     | '/media/$id'
     | '/portofolio/$slug'
+    | '/artikel'
     | '/portofolio'
     | '/api/admin/upload'
     | '/api/portal/file/$id'
@@ -212,8 +234,10 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/tentang'
     | '/api/leads.csv'
+    | '/artikel/$slug'
     | '/media/$id'
     | '/portofolio/$slug'
+    | '/artikel/'
     | '/portofolio/'
     | '/api/admin/upload'
     | '/api/portal/file/$id'
@@ -231,8 +255,10 @@ export interface RootRouteChildren {
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   TentangRoute: typeof TentangRoute
   ApiLeadsDotcsvRoute: typeof ApiLeadsDotcsvRoute
+  ArtikelSlugRoute: typeof ArtikelSlugRoute
   MediaIdRoute: typeof MediaIdRoute
   PortofolioSlugRoute: typeof PortofolioSlugRoute
+  ArtikelIndexRoute: typeof ArtikelIndexRoute
   PortofolioIndexRoute: typeof PortofolioIndexRoute
   ApiAdminUploadRoute: typeof ApiAdminUploadRoute
   ApiPortalFileIdRoute: typeof ApiPortalFileIdRoute
@@ -317,6 +343,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiLeadsDotcsvRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/artikel/': {
+      id: '/artikel/'
+      path: '/artikel'
+      fullPath: '/artikel/'
+      preLoaderRoute: typeof ArtikelIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/artikel/$slug': {
+      id: '/artikel/$slug'
+      path: '/artikel/$slug'
+      fullPath: '/artikel/$slug'
+      preLoaderRoute: typeof ArtikelSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/media/$id': {
       id: '/media/$id'
       path: '/media/$id'
@@ -367,8 +407,10 @@ const rootRouteChildren: RootRouteChildren = {
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   TentangRoute: TentangRoute,
   ApiLeadsDotcsvRoute: ApiLeadsDotcsvRoute,
+  ArtikelSlugRoute: ArtikelSlugRoute,
   MediaIdRoute: MediaIdRoute,
   PortofolioSlugRoute: PortofolioSlugRoute,
+  ArtikelIndexRoute: ArtikelIndexRoute,
   PortofolioIndexRoute: PortofolioIndexRoute,
   ApiAdminUploadRoute: ApiAdminUploadRoute,
   ApiPortalFileIdRoute: ApiPortalFileIdRoute,

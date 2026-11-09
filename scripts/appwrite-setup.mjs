@@ -133,6 +133,24 @@ await step("index slug proyek", () =>
   db.createIndex(databaseId, projectsTable, "idx_slug", TablesDBIndexType.Unique, ["slug"]),
 );
 
+/* ── Artikel ── */
+const articlesTable = process.env.APPWRITE_ARTICLES_TABLE_ID ?? "articles";
+await step(`tabel "${articlesTable}"`, () =>
+  db.createTable(databaseId, articlesTable, "Artikel", [], false, true),
+);
+{
+  const c = col(articlesTable);
+  await c.str("slug", 80, true);
+  await c.str("title", 160, true);
+  await c.str("kategori", 40);
+  await c.str("ringkasan", 300);
+  await c.text("isi");
+  await c.str("cover", 64);
+  await c.str("tanggal", 10);
+  await c.bool("published");
+  await c.int("urutan");
+}
+
 /* ── Pengaturan (harga & termin) ── */
 const settingsTable = process.env.APPWRITE_SETTINGS_TABLE_ID ?? "settings";
 await step(`tabel "${settingsTable}"`, () =>
@@ -183,6 +201,7 @@ for (const [k, v] of [
   ["APPWRITE_PROJECTS_TABLE_ID", projectsTable],
   ["APPWRITE_TESTIMONIALS_TABLE_ID", testimonialsTable],
   ["APPWRITE_SETTINGS_TABLE_ID", settingsTable],
+  ["APPWRITE_ARTICLES_TABLE_ID", articlesTable],
   ["APPWRITE_CLIENT_PROJECTS_TABLE_ID", clientTable],
   ["APPWRITE_MEDIA_BUCKET_ID", bucketId],
   ["APPWRITE_PORTAL_BUCKET_ID", portalBucket],
